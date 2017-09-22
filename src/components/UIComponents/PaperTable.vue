@@ -9,11 +9,21 @@
     <div class="content table-responsive table-full-width">
       <table class="table" :class="tableClass">
         <thead>
-          <th v-for="column in columns">{{column}}</th>
+          <th v-for="column in columns" :key="column">{{column}}</th>
         </thead>
         <tbody>
-          <tr v-for="item in data">
-            <td v-for="column in columns" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
+          <tr v-for="(item, index) in data" :key="index">
+            <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
+            <td>
+              <div class="cell">
+                <a class="btn btn-simple btn-xs btn-warning btn-icon edit">
+                  <i class="ti-pencil-alt"></i>
+                </a>
+                <a class="btn btn-simple btn-xs btn-danger btn-icon remove" @click="del(item.id)">
+                  <i class="ti-close"></i>
+                </a>
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -21,38 +31,42 @@
   </div>
 </template>
 <script>
-  export default {
-    props: {
-      columns: Array,
-      data: Array,
-      type: {
-        type: String, // striped | hover
-        default: 'Striped'
-      },
-      title: {
-        type: String,
-        default: ''
-      },
-      subTitle: {
-        type: String,
-        default: ''
+export default {
+  props: {
+    columns: Array,
+    data: Array,
+    del: Function,
+    type: {
+      type: String, // striped | hover
+      default: 'Striped'
+    },
+    title: {
+      type: String,
+      default: ''
+    },
+    subTitle: {
+      type: String,
+      default: ''
 
-      }
+    }
+  },
+  computed: {
+    tableClass() {
+      return `table-${this.type}`
+    }
+  },
+  methods: {
+    hasValue(item, column) {
+      return item[column.toLowerCase()] !== 'undefined'
     },
-    computed: {
-      tableClass () {
-        return `table-${this.type}`
-      }
+    itemValue(item, column) {
+      return item[column.toLowerCase()]
     },
-    methods: {
-      hasValue (item, column) {
-        return item[column.toLowerCase()] !== 'undefined'
-      },
-      itemValue (item, column) {
-        return item[column.toLowerCase()]
-      }
+    getId(id) {
+      this.del(id)
     }
   }
+}
 
 </script>
 <style>
