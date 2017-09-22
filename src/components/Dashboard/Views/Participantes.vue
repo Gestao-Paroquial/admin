@@ -8,7 +8,7 @@
 			<i class="fa fa-plus" aria-hidden="true"></i>
 		</button>
 		<div class="card card-plain">
-			<paper-table type="hover" :del="del" :title="table1.title" :sub-title="table1.subTitle" :data="participantes" :columns="table1.columns">
+			<paper-table type="hover" :update="update" :del="del" :title="table1.title" :sub-title="table1.subTitle" :data="participantes" :columns="table1.columns">
 			</paper-table>
 		</div>
 	</div>
@@ -20,48 +20,52 @@ import PaperTable from 'components/UIComponents/PaperTable.vue'
 import Modal from 'components/UIComponents/Modal/Modal.vue'
 import SimpleForm from 'components/UIComponents/Forms/SimpleForm.vue'
 const participantesHeaders = ['Id', 'Name', 'Telefone', 'Email']
-const inputs = [{
-	label: 'Nome',
-	name: 'name',
-	type: 'text',
-	value: '',
-	placeholder: '',
-	required: true
-},
-{
-	label: 'Telefone',
-	name: 'telefone',
-	type: 'text',
-	value: '',
-	placeholder: '',
-	required: false
-},
-{
-	label: 'E-mail',
-	name: 'email',
-	type: 'email',
-	value: '',
-	placeholder: '',
-	required: false
-}]
-const participantes = [{
-	id: 1,
-	name: 'Dakota Rice',
-	telefone: '11 98765-4321',
-	email: 'Niger@gmail.com'
-},
-{
-	id: 2,
-	name: 'Minerva Hooper',
-	telefone: '11 98765-4321',
-	email: 'Curaçao@gmail.com'
-},
-{
-	id: 3,
-	name: 'Sage Rodriguez',
-	telefone: '11 98765-4321',
-	email: 'Netherlands@hotmail.com'
-}]
+const inputs = [
+	{
+		label: 'Nome',
+		name: 'name',
+		type: 'text',
+		value: '',
+		placeholder: '',
+		required: true
+	},
+	{
+		label: 'Telefone',
+		name: 'telefone',
+		type: 'text',
+		value: '',
+		placeholder: '',
+		required: false
+	},
+	{
+		label: 'E-mail',
+		name: 'email',
+		type: 'email',
+		value: '',
+		placeholder: '',
+		required: false
+	}
+];
+const participantes = [
+	{
+		id: 1,
+		name: 'Dakota Rice',
+		telefone: '11 98765-4321',
+		email: 'Niger@gmail.com'
+	},
+	{
+		id: 2,
+		name: 'Minerva Hooper',
+		telefone: '11 98765-4321',
+		email: 'Curaçao@gmail.com'
+	},
+	{
+		id: 3,
+		name: 'Sage Rodriguez',
+		telefone: '11 98765-4321',
+		email: 'Netherlands@hotmail.com'
+	}
+]
 
 export default {
 	components: {
@@ -89,10 +93,10 @@ export default {
 		}
 	},
 	methods: {
-		closeModal: function() {
+		closeModal() {
 			this.showModal = false;
 		},
-		add: function(participante) {
+		add(participante) {
 			this.participantes.push(participante);
 			this.showModal = false;
 
@@ -101,6 +105,13 @@ export default {
 		del(id) {
 			if (confirm("Você tem certeza?"))
 				this.participantes.splice(id, 1);
+		},
+		update(id) {
+			const participante = this.participantes.find((item) => {
+				return item.id = id;
+			});
+
+			console.log(participante);
 		}
 	}
 }
