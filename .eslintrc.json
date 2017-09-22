@@ -24,12 +24,20 @@
         //     2
         //     // "windows"
         // ],
+        "indent": [
+            "warn",
+            "tab"
+        ],
+        "linebreak-style": [
+            2,
+            "windows"
+        ],
         "quotes": [
-            "error",
+            "warn",
             "single"
         ],
         "semi": [
-            "error",
+            "warn",
             "always"
         ]
     },
