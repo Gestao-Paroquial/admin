@@ -1,13 +1,13 @@
 <template>
 	<div class="col-md-12">
-		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Participante'">
+		<!-- <modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Participante'">
 			<simple-form slot="body" :inputs="inputs" :action="add" :btnMsg="'Adicionar'" :btnClass="'btn-fill btn-info btn-wd'">
 			</simple-form>
 		</modal>
 		<modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar Participante'">
 			<simple-form slot="body" :inputs="inputsUpdate" :action="update" :btnClass="'btn-fill btn-warning  btn-wd'"  :btnMsg="'Alterar'">
 			</simple-form>
-		</modal>
+		</modal> -->
 		<button type="button" class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">Adicionar
 			<i class="fa fa-plus" aria-hidden="true"></i>
 		</button>
@@ -22,7 +22,7 @@
 <script>
 import PaperTable from 'components/UIComponents/PaperTable.vue'
 import Modal from 'components/UIComponents/Modal/Modal.vue'
-import SimpleForm from 'components/UIComponents/Forms/SimpleForm.vue'
+// import SimpleForm from 'components/UIComponents/Forms/SimpleForm.vue'
 const participantesHeaders = ['Id', 'Name', 'Telefone', 'Email']
 const inputs = [
 	{
