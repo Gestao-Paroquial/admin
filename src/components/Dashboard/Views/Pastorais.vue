@@ -20,9 +20,9 @@
 	</div>
 </template>
 <script>
-import PaperTable from 'components/UIComponents/PaperTable.vue'
-import Modal from 'components/UIComponents/Modal/Modal.vue'
-import SimpleForm from 'components/UIComponents/Forms/SimpleForm.vue'
+import PaperTable from 'components/UIComponents/PaperTable.vue';
+import Modal from 'components/UIComponents/Modal/Modal.vue';
+import SimpleForm from 'components/UIComponents/Forms/SimpleForm.vue';
 const pastoraisHeaders = ['Id', 'Name', 'Dia']
 const inputs = [
 	{
