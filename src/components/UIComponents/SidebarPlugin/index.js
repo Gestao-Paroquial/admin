@@ -15,8 +15,13 @@ const SidebarStore = {
 		},
 		{
 			name: 'Pastorais',
-			icon: 'fa fa-users',
+			icon: 'fa fa-building-o',
 			path: '/admin/pastorais'
+		},
+		{
+			name: 'Comunidades',
+			icon: 'fa fa-globe',
+			path: '/admin/comunidades'
 		},
 		{
 			name: 'User Profile',
