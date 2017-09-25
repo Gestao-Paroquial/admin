@@ -5,14 +5,14 @@
 			</simple-form>
 		</modal>
 		<modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar Participante'">
-			<simple-form slot="body" :inputs="inputsUpdate" :action="update" :btnClass="'btn-fill btn-warning  btn-wd'"  :btnMsg="'Alterar'">
+			<simple-form slot="body" :inputs="inputsUpdate" :action="update" :btnClass="'btn-fill btn-warning  btn-wd'" :btnMsg="'Alterar'">
 			</simple-form>
 		</modal>
 		<button type="button" class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">Adicionar
 			<i class="fa fa-plus" aria-hidden="true"></i>
 		</button>
 		<div class="card card-plain">
-			<paper-table type="hover" :getId="getId" :del="del" :title="table1.title" :sub-title="table1.subTitle" :data="participantes" :columns="table1.columns">
+			<paper-table type="hover" :getId="getId" :del="del" :title="table1.title" :sub-title="table1.subTitle" :data="pastorais" :columns="table1.columns">
 			</paper-table>
 		</div>
 	</div>
@@ -23,7 +23,7 @@
 import PaperTable from 'components/UIComponents/PaperTable.vue'
 import Modal from 'components/UIComponents/Modal/Modal.vue'
 import SimpleForm from 'components/UIComponents/Forms/SimpleForm.vue'
-const participantesHeaders = ['Id', 'Name', 'Telefone', 'Email']
+const pastoraisHeaders = ['Id', 'Name', 'Dia']
 const inputs = [
 	{
 		label: 'Nome',
@@ -34,40 +34,24 @@ const inputs = [
 		required: true
 	},
 	{
-		label: 'Telefone',
-		name: 'telefone',
+		label: 'Dia e horário de encontro',
+		name: 'dia',
 		type: 'text',
-		value: '',
-		placeholder: '',
-		required: false
-	},
-	{
-		label: 'E-mail',
-		name: 'email',
-		type: 'email',
 		value: '',
 		placeholder: '',
 		required: false
 	}
 ];
-const participantes = [
+const pastorais = [
 	{
 		id: 10,
-		name: 'Dakota Rice',
-		telefone: '11 98765-4321',
-		email: 'Niger@gmail.com'
+		name: 'Pastoral da Juventude',
+		dia: 'Quarta feira 12:00'
 	},
 	{
 		id: 21,
-		name: 'Minerva Hooper',
-		telefone: '11 98765-4321',
-		email: 'Curaçao@gmail.com'
-	},
-	{
-		id: 301,
-		name: 'Sage Rodriguez',
-		telefone: '11 98765-4321',
-		email: 'Netherlands@hotmail.com'
+		name: 'Pastoral Teste',
+		dia: 'Quarta feira 12:00'
 	}
 ]
 
@@ -83,12 +67,12 @@ export default {
 			showModalUpdate: false,
 			inputs: inputs,
 			inputsUpdate: [],
-			participantes: participantes,
+			pastorais: pastorais,
 			table1: {
-				title: 'Lista de Participantes',
-				subTitle: 'Aqui você ira encontrar a lista de participantes completa',
-				columns: [...participantesHeaders],
-				data: [...participantes]
+				title: 'Lista de Pastorais',
+				subTitle: 'Aqui você ira encontrar a lista de pastorais completa',
+				columns: [...pastoraisHeaders],
+				data: [...pastorais]
 			}
 		}
 	},
@@ -99,51 +83,43 @@ export default {
 		closeModalUpdate() {
 			this.showModalUpdate = false;
 		},
-		add(participante) {
-			this.participantes.push(participante);
+		add(pastoral) {
+			this.pastorais.push(pastoral);
 			this.showModalAdd = false;
 
-			console.log(this.participantes);
+			console.log(this.pastorais);
 		},
 		del(id) {
 
-			const index = this.participantes.findIndex(participante => participante.id == id);
+			const index = this.pastorais.findIndex(pastoral => pastoral.id == id);
 
 			if (confirm("Você tem certeza?"))
-				this.participantes.splice(index, 1);
+				this.pastorais.splice(index, 1);
 		},
 		getId(id) {
-			const participante = this.participantes.find(item => item.id == id);
+			const pastoral = this.pastorais.find(item => item.id == id);
 
 			const inputs = [
 				{
 					label: 'Nome',
 					name: 'name',
 					type: 'text',
-					value: participante.name,
+					value: pastoral.name,
 					placeholder: '',
 					required: true
 				},
 				{
 					label: 'Telefone',
-					name: 'telefone',
+					name: 'dia',
 					type: 'text',
-					value: participante.telefone,
-					placeholder: '',
-					required: false
-				},
-				{
-					label: 'E-mail',
-					name: 'email',
-					type: 'email',
-					value: participante.email,
+					value: pastoral.dia,
 					placeholder: '',
 					required: false
 				},
 				{
 					name: 'id',
 					type: 'hidden',
-					value: participante.id,
+					value: pastoral.id,
 					required: true
 				}
 			];
@@ -153,12 +129,12 @@ export default {
 			this.showModalUpdate = true;
 
 		},
-		update(participante) {
-			console.log(participante);
+		update(pastoral) {
+			console.log(pastoral);
 
-			const index = this.participantes.findIndex(item => item.id == participante.id);
+			const index = this.pastorais.findIndex(item => item.id == pastoral.id);
 
-			this.$set(this.participantes, index, participante);
+			this.$set(this.pastorais, index, pastoral);
 
 			this.closeModalUpdate();
 		}

@@ -11,6 +11,7 @@ import Maps from 'src/components/Dashboard/Views/Maps.vue';
 import Typography from 'src/components/Dashboard/Views/Typography.vue';
 import TableList from 'src/components/Dashboard/Views/TableList.vue';
 import Participantes from 'src/components/Dashboard/Views/Participantes.vue';
+import Pastorais from 'src/components/Dashboard/Views/Pastorais.vue';
 
 const routes = [
 	{
@@ -32,6 +33,11 @@ const routes = [
 				path: 'participantes',
 				name: 'participantes',
 				component: Participantes
+			},
+			{
+				path: 'pastorais',
+				name: 'pastorais',
+				component: Pastorais
 			},
 			{
 				path: 'stats',

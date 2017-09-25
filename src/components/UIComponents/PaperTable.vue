@@ -16,10 +16,10 @@
             <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
             <td>
               <div class="cell">
-                <a class="btn btn-simple btn-xs btn-warning btn-icon edit">
+                <a class="btn btn-simple btn-xs btn-warning btn-icon edit" @click="getId(item.id)">
                   <i class="ti-pencil-alt"></i>
                 </a>
-                <a class="btn btn-simple btn-xs btn-danger btn-icon remove" @click="del(item.id)">
+                <a class="btn btn-simple btn-xs btn-danger btn-icon remove " @click="del(item.id)">
                   <i class="ti-close"></i>
                 </a>
               </div>
@@ -36,6 +36,7 @@ export default {
     columns: Array,
     data: Array,
     del: Function,
+    getId: Function,
     type: {
       type: String, // striped | hover
       default: 'Striped'
@@ -62,9 +63,6 @@ export default {
     itemValue(item, column) {
       return item[column.toLowerCase()]
     },
-    getId(id) {
-      this.del(id)
-    }
   }
 }
 
