@@ -10,7 +10,7 @@ const SidebarStore = {
 		},
 		{
 			name: 'Participantes',
-			icon: 'ti-user',
+			icon: 'fa fa-users',
 			path: '/admin/participantes'
 		},
 		{

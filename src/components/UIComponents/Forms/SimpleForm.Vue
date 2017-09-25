@@ -1,10 +1,10 @@
 <template>
 	<form slot="body" @submit="makeObj">
 		<div>
-			<fg-input v-for="input in inputs" :key="input.name" :label="input.label" :required="true" :name="input.name" :type="input.type" :placeholder="input.placeholder"></fg-input>
+			<fg-input v-for="input in inputs" :key="input.name" :label="input.label" :required="true" :name="input.name" :type="input.type" :value="input.value" :placeholder="input.placeholder"></fg-input>
 		</div>
 		<div class="text-center">
-			<button type="submit" class="btn btn-fill btn-info btn-wd">Enviar</button>
+			<button type="submit" :class="btnClass" class="btn">{{btnMsg}}</button>
 		</div>
 	</form>
 </template>
@@ -18,7 +18,9 @@ export default {
 	},
 	props: {
 		inputs: Array,
-		add: Function
+		action: Function,
+		btnMsg: String,
+		btnClass: String
 	},
 	methods: {
 		makeObj: function(event) {
@@ -26,7 +28,7 @@ export default {
 
 			const obj = {};
 
-			obj.id = this.inputs.length + 1;
+			obj.id = Math.random();
 
 			for (let index = 0; index < this.inputs.length; index++) {
 				const input = this.$el[index];
@@ -34,7 +36,7 @@ export default {
 				input.value = '';
 			}
 
-			this.add(obj);
+			this.action(obj);
 		}
 	}
 }

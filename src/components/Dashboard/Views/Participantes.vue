@@ -1,14 +1,18 @@
 <template>
 	<div class="col-md-12">
-		<modal :showModal="showModal" :closeModal="closeModal" :title="'Adicionar Participante'">
-			<simple-form slot="body" :inputs="inputs" :add="add">
+		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Participante'">
+			<simple-form slot="body" :inputs="inputs" :action="add" :btnMsg="'Adicionar'" :btnClass="'btn-fill btn-info btn-wd'">
 			</simple-form>
 		</modal>
-		<button type="button" class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#myModal" @click="showModal = true">Adicionar
+		<modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar Participante'">
+			<simple-form slot="body" :inputs="inputsUpdate" :action="update" :btnClass="'btn-fill btn-warning  btn-wd'"  :btnMsg="'Alterar'">
+			</simple-form>
+		</modal>
+		<button type="button" class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">Adicionar
 			<i class="fa fa-plus" aria-hidden="true"></i>
 		</button>
 		<div class="card card-plain">
-			<paper-table type="hover" :update="update" :del="del" :title="table1.title" :sub-title="table1.subTitle" :data="participantes" :columns="table1.columns">
+			<paper-table type="hover" :getId="getId" :del="del" :title="table1.title" :sub-title="table1.subTitle" :data="participantes" :columns="table1.columns">
 			</paper-table>
 		</div>
 	</div>
@@ -48,19 +52,19 @@ const inputs = [
 ];
 const participantes = [
 	{
-		id: 1,
+		id: 10,
 		name: 'Dakota Rice',
 		telefone: '11 98765-4321',
 		email: 'Niger@gmail.com'
 	},
 	{
-		id: 2,
+		id: 21,
 		name: 'Minerva Hooper',
 		telefone: '11 98765-4321',
 		email: 'Curaçao@gmail.com'
 	},
 	{
-		id: 3,
+		id: 301,
 		name: 'Sage Rodriguez',
 		telefone: '11 98765-4321',
 		email: 'Netherlands@hotmail.com'
@@ -75,8 +79,10 @@ export default {
 	},
 	data() {
 		return {
-			showModal: false,
+			showModalAdd: false,
+			showModalUpdate: false,
 			inputs: inputs,
+			inputsUpdate: [],
 			participantes: participantes,
 			table1: {
 				title: 'Lista de Participantes',
@@ -89,29 +95,78 @@ export default {
 				subTitle: 'Here is a subtitle for this table',
 				columns: [...participantesHeaders],
 				data: [...participantes]
-			}
+			},
 		}
 	},
 	methods: {
-		closeModal() {
-			this.showModal = false;
+		closeModalAdd() {
+			this.showModalAdd = false;
+		},
+		closeModalUpdate() {
+			this.showModalUpdate = false;
 		},
 		add(participante) {
 			this.participantes.push(participante);
-			this.showModal = false;
+			this.showModalAdd = false;
 
 			console.log(this.participantes);
 		},
 		del(id) {
-			if (confirm("Você tem certeza?"))
-				this.participantes.splice(id, 1);
-		},
-		update(id) {
-			const participante = this.participantes.find((item) => {
-				return item.id = id;
-			});
 
+			const index = this.participantes.findIndex(participante => participante.id == id);
+
+			if (confirm("Você tem certeza?"))
+				this.participantes.splice(index, 1);
+		},
+		getId(id) {
+			const participante = this.participantes.find(item => item.id == id);
+
+			const inputs = [
+				{
+					label: 'Nome',
+					name: 'name',
+					type: 'text',
+					value: participante.name,
+					placeholder: '',
+					required: true
+				},
+				{
+					label: 'Telefone',
+					name: 'telefone',
+					type: 'text',
+					value: participante.telefone,
+					placeholder: '',
+					required: false
+				},
+				{
+					label: 'E-mail',
+					name: 'email',
+					type: 'email',
+					value: participante.email,
+					placeholder: '',
+					required: false
+				},
+				{
+					name: 'id',
+					type: 'hidden',
+					value: participante.id,
+					required: true
+				}
+			];
+
+			this.inputsUpdate = inputs;
+
+			this.showModalUpdate = true;
+
+		},
+		update(participante) {
 			console.log(participante);
+
+			const index = this.participantes.findIndex(item => item.id == participante.id);
+
+			this.$set(this.participantes, index, participante);
+
+			this.closeModalUpdate();
 		}
 	}
 }
