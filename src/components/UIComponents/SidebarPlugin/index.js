@@ -14,6 +14,11 @@ const SidebarStore = {
 			path: '/admin/participantes'
 		},
 		{
+			name: 'Pastorais',
+			icon: 'fa fa-users',
+			path: '/admin/pastorais'
+		},
+		{
 			name: 'User Profile',
 			icon: 'ti-user',
 			path: '/admin/stats'

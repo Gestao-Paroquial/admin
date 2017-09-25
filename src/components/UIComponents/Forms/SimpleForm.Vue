@@ -28,7 +28,7 @@ export default {
 
 			const obj = {};
 
-			obj.id = Math.random();
+			obj.id = Math.round(Math.random() * (10000 - 0));
 
 			for (let index = 0; index < this.inputs.length; index++) {
 				const input = this.$el[index];
