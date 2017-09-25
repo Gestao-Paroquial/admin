@@ -10,7 +10,7 @@
 </template>
 <script>
 
-import fgInput from './../Inputs/formGroupInput.vue';
+import fgInput from 'components/UIComponents/Inputs/formGroupInput.vue';
 
 export default {
 	components: {
