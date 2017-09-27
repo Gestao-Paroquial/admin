@@ -11,10 +11,21 @@
 
 		<div class="card">
 
-			<paper-table type="hover" :getId="getId" :del="del" :title="table1.title" :sub-title="table1.subTitle" :data="participantes" :columns="table1.columns">
-				<button slot="header" type="button" class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">Adicionar
-					<i class="fa fa-plus" aria-hidden="true"></i>
-				</button>
+			<paper-table type="hover" :getId="getId" :del="del" :title="table.title" :sub-title="table.subTitle" :data="table.data" :columns="table.columns">
+				<div slot="header">
+					<div class="col-sm-6">
+						<button type="button" class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">Adicionar
+							<i class="fa fa-plus" aria-hidden="true"></i>
+						</button>
+					</div>
+					<div class="col-sm-6">
+						<div class="pull-right">
+							<label class="label-search">
+								<input type="search" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm" @keydown="search">
+							</label>
+						</div>
+					</div>
+				</div>
 			</paper-table>
 		</div>
 	</div>
@@ -138,7 +149,8 @@ export default {
 			inputs: inputs,
 			inputsUpdate: [],
 			participantes: participantes,
-			table1: {
+			participantesHeaders: participantesHeaders,
+			table: {
 				title: 'Lista de Participantes',
 				subTitle: 'Aqui você ira encontrar a lista de participantes completa',
 				columns: [...participantesHeaders],
@@ -147,22 +159,40 @@ export default {
 		}
 	},
 	methods: {
+		search(event) {
+			const value = event.target.value;
+
+			const participantesFiltrados = this.participantes.filter(function(obj) {
+				return Object.keys(obj).some(function(key) {
+					return obj[key].toString().toLowerCase().indexOf(value) != -1;
+				});
+			});
+
+
+			this.updateTable(participantesFiltrados);
+		},
 		closeModalAdd() {
 			this.showModalAdd = false;
 		},
 		closeModalUpdate() {
 			this.showModalUpdate = false;
 		},
+		updateTable(participantes) {
+			this.table.data = [...participantes];
+		},
 		add(participante) {
 			this.participantes.push(participante);
+			this.updateTable(this.participantes);
 			this.showModalAdd = false;
 		},
 		del(id) {
 
 			const index = this.participantes.findIndex(participante => participante.id == id);
 
-			if (confirm("Você tem certeza?"))
+			if (confirm("Você tem certeza?")) {
 				this.participantes.splice(index, 1);
+				this.updateTable(this.participantes);
+			}
 		},
 		getId(id) {
 			const participante = this.participantes.find(item => item.id == id);
@@ -210,13 +240,14 @@ export default {
 			const index = this.participantes.findIndex(item => item.id == participante.id);
 
 			this.$set(this.participantes, index, participante);
-
+			this.updateTable(this.participantes);
 			this.closeModalUpdate();
 		}
 	}
 }
 
 </script>
+
 <style lang="scss">
 #participantes {
 	thead th {
@@ -232,6 +263,11 @@ export default {
 
 	.table tbody>tr:nth-of-type(2n+1) {
 		background-color: #F3F2EE;
+	}
+
+	.label-search {
+		border: 1px solid #dddddd;
+		border-radius: 5px;
 	}
 }
 </style>
