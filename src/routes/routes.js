@@ -12,6 +12,7 @@ import Typography from 'src/components/Dashboard/Views/Typography.vue';
 import TableList from 'src/components/Dashboard/Views/TableList.vue';
 import Participantes from 'src/components/Dashboard/Views/Participantes.vue';
 import Pastorais from 'src/components/Dashboard/Views/Pastorais.vue';
+import Comunidades from 'src/components/Dashboard/Views/Comunidades.vue';
 
 const routes = [
 	{
@@ -38,6 +39,11 @@ const routes = [
 				path: 'pastorais',
 				name: 'pastorais',
 				component: Pastorais
+			},
+			{
+				path: 'comunidades',
+				name: 'comunidades',
+				component: Comunidades
 			},
 			{
 				path: 'stats',

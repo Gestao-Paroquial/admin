@@ -86,8 +86,6 @@ export default {
 		add(pastoral) {
 			this.pastorais.push(pastoral);
 			this.showModalAdd = false;
-
-			console.log(this.pastorais);
 		},
 		del(id) {
 
@@ -130,8 +128,6 @@ export default {
 
 		},
 		update(pastoral) {
-			console.log(pastoral);
-
 			const index = this.pastorais.findIndex(item => item.id == pastoral.id);
 
 			this.$set(this.pastorais, index, pastoral);
