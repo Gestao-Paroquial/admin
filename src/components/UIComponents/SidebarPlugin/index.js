@@ -14,6 +14,11 @@ const SidebarStore = {
 			path: '/admin/participantes'
 		},
 		{
+			name: 'Dizimistas',
+			icon: 'fa fa-user-plus',
+			path: '/admin/dizimistas'
+		},
+		{
 			name: 'Pastorais',
 			icon: 'fa fa-building-o',
 			path: '/admin/pastorais'

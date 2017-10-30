@@ -1,5 +1,5 @@
 <template>
-	<div class="col-md-12" id="participantes">
+	<div class="col-md-12" id="dizimistas">
 		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Participante'">
 			<simple-form slot="body" :inputs="inputs" :action="add" :btnMsg="'Adicionar'" :btnClass="'btn-fill btn-info btn-wd'">
 			</simple-form>
@@ -10,9 +10,8 @@
 		</modal>
 		<h4 class="title">{{title}}</h4>
 		<p class="category">{{subTitle}}</p>
-		<div class="card card-plain">
-
-			<paper-table type="hover" :getId="getId" :del="del" :title="table.title" :sub-title="table.subTitle" :data="table.data" :columns="table.columns">
+		<div class=" card card-plain">
+			<paper-table type="hover" :getId="getId" :del="del"  :data="table.data" :columns="table.columns">
 				<div slot="header">
 					<div class="col-sm-6">
 						<button type="button" class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">Adicionar
@@ -22,7 +21,7 @@
 					<div class="col-sm-6">
 						<div class="pull-right">
 							<label class="label-search">
-								<input type="search" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm" @keydown="search">
+								<input type="search" placeholder="Buscar registros" aria-controls="datatables" class="form-control search_input input-sm" @keydown="search">
 							</label>
 						</div>
 					</div>
@@ -35,7 +34,15 @@
 import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
-const participantesHeaders = ["Id", "Name", "Telefone", "Email"];
+const dizimistasHeaders = [
+  "Id",
+  "Nome",
+  "Estado Civil",
+  "Profissão",
+  "Endereço",
+  "Bairro",
+  "Data de nascimento"
+];
 const inputs = [
   {
     label: "Nome",
@@ -62,78 +69,11 @@ const inputs = [
     required: false
   }
 ];
-const participantes = [
+const dizimistas = [
   {
     id: 10,
-    name: "Dakota Rice",
-    telefone: "11 98765-4321",
-    email: "Niger@gmail.com"
-  },
-  {
-    id: 21,
-    name: "Minerva Hooper",
-    telefone: "11 98765-4321",
-    email: "Curacao@gmail.com"
-  },
-  {
-    id: 301,
-    name: "Sage Rodriguez",
-    telefone: "11 98765-4321",
-    email: "Netherlands@hotmail.com"
-  },
-  {
-    id: 31,
-    name: "Sage Rodriguez",
-    telefone: "11 98765-4321",
-    email: "Netherlands@hotmail.com"
-  },
-  {
-    id: 311,
-    name: "Sage Rodriguez",
-    telefone: "11 98765-4321",
-    email: "Netherlands@hotmail.com"
-  },
-  {
-    id: 651,
-    name: "Sage Rodriguez",
-    telefone: "11 98765-4321",
-    email: "Netherlands@hotmail.com"
-  },
-  {
-    id: 35061,
-    name: "Sage Rodriguez",
-    telefone: "11 98765-4321",
-    email: "Netherlands@hotmail.com"
-  },
-  {
-    id: 3051,
-    name: "Sage Rodriguez",
-    telefone: "11 98765-4321",
-    email: "Netherlands@hotmail.com"
-  },
-  {
-    id: 351,
-    name: "Sage Rodriguez",
-    telefone: "11 98765-4321",
-    email: "Netherlands@hotmail.com"
-  },
-  {
-    id: 3151,
-    name: "Sage Rodriguez",
-    telefone: "11 98765-4321",
-    email: "Netherlands@hotmail.com"
-  },
-  {
-    id: 641,
-    name: "Sage Rodriguez",
-    telefone: "11 98765-4321",
-    email: "Netherlands@hotmail.com"
-  },
-  {
-    id: 30641,
-    name: "Sage Rodriguez",
-    telefone: "11 98765-4321",
-    email: "Netherlands@hotmail.com"
+    nome: "Dakota Rice",
+    "data de nascimento": "20/10"
   }
 ];
 
@@ -149,13 +89,13 @@ export default {
       showModalUpdate: false,
       inputs: inputs,
       inputsUpdate: [],
-      participantes: participantes,
-      participantesHeaders: participantesHeaders,
+      dizimistas: dizimistas,
+      dizimistasHeaders: dizimistasHeaders,
       title: "Lista de Participantes",
-      subTitle: "Aqui você ira encontrar a lista de participantes completa",
+      subTitle: "Aqui você ira encontrar a lista de dizimistas completa",
       table: {
-        columns: [...participantesHeaders],
-        data: [...participantes]
+        columns: [...dizimistasHeaders],
+        data: [...dizimistas]
       }
     };
   },
@@ -163,7 +103,7 @@ export default {
     search(event) {
       const value = event.target.value;
 
-      const participantesFiltrados = this.participantes.filter(function(obj) {
+      const dizimistasFiltrados = this.dizimistas.filter(function(obj) {
         return Object.keys(obj).some(function(key) {
           return (
             obj[key]
@@ -174,7 +114,7 @@ export default {
         });
       });
 
-      this.updateTable(participantesFiltrados);
+      this.updateTable(dizimistasFiltrados);
     },
     closeModalAdd() {
       this.showModalAdd = false;
@@ -182,33 +122,31 @@ export default {
     closeModalUpdate() {
       this.showModalUpdate = false;
     },
-    updateTable(participantes) {
-      this.table.data = [...participantes];
+    updateTable(dizimistas) {
+      this.table.data = [...dizimistas];
     },
-    add(participante) {
-      this.participantes.push(participante);
-      this.updateTable(this.participantes);
+    add(dizimista) {
+      this.dizimistas.push(dizimista);
+      this.updateTable(this.dizimistas);
       this.showModalAdd = false;
     },
     del(id) {
-      const index = this.participantes.findIndex(
-        participante => participante.id == id
-      );
+      const index = this.dizimistas.findIndex(dizimista => dizimista.id == id);
 
       if (confirm("Você tem certeza?")) {
-        this.participantes.splice(index, 1);
-        this.updateTable(this.participantes);
+        this.dizimistas.splice(index, 1);
+        this.updateTable(this.dizimistas);
       }
     },
     getId(id) {
-      const participante = this.participantes.find(item => item.id == id);
+      const dizimista = this.dizimistas.find(item => item.id == id);
 
       const inputs = [
         {
           label: "Nome",
           name: "name",
           type: "text",
-          value: participante.name,
+          value: dizimista.name,
           placeholder: "",
           required: true
         },
@@ -216,7 +154,7 @@ export default {
           label: "Telefone",
           name: "telefone",
           type: "text",
-          value: participante.telefone,
+          value: dizimista.telefone,
           placeholder: "",
           required: false
         },
@@ -224,14 +162,14 @@ export default {
           label: "E-mail",
           name: "email",
           type: "email",
-          value: participante.email,
+          value: dizimista.email,
           placeholder: "",
           required: false
         },
         {
           name: "id",
           type: "hidden",
-          value: participante.id,
+          value: dizimista.id,
           required: true
         }
       ];
@@ -240,13 +178,11 @@ export default {
 
       this.showModalUpdate = true;
     },
-    update(participante) {
-      const index = this.participantes.findIndex(
-        item => item.id == participante.id
-      );
+    update(dizimista) {
+      const index = this.dizimistas.findIndex(item => item.id == dizimista.id);
 
-      this.$set(this.participantes, index, participante);
-      this.updateTable(this.participantes);
+      this.$set(this.dizimistas, index, dizimista);
+      this.updateTable(this.dizimistas);
       this.closeModalUpdate();
     }
   }
@@ -254,14 +190,11 @@ export default {
 </script>
 
 <style lang="scss">
-#participantes {
-  thead {
-    background-color: #fff;
-    border-radius: 5px;
-  }
+#dizimistas {
   thead th {
     white-space: nowrap;
     overflow: hidden;
+    background-color: #fff;
     height: 40px;
     min-width: 0;
     text-overflow: ellipsis;
@@ -269,16 +202,25 @@ export default {
     position: relative;
   }
 
-  .table {
-    margin-top: 20px;
-  }
   .table tbody > tr:nth-of-type(2n + 1) {
     background-color: #f3f2ee;
   }
 
-  .label-search {
-    border: 1px solid #dddddd;
-    border-radius: 5px;
+  .search_input {
+    height: 30px;
+    line-height: 30px;
+    box-sizing: border-box;
+    border: 1px solid #999;
+    color: #2c3e50;
+    outline: none;
+    border-radius: 15px;
+    margin-right: 10px;
+    transition: border-color 0.2s ease;
+    background: #fff;
+    background-size: 20px;
+    padding: 7px 18px;
+    vertical-align: middle !important;
+    margin-bottom: 2em;
   }
 }
 </style>

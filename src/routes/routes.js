@@ -13,6 +13,7 @@ import TableList from 'src/components/Dashboard/Views/TableList.vue';
 import Participantes from 'src/components/Dashboard/Views/Participantes.vue';
 import Pastorais from 'src/components/Dashboard/Views/Pastorais.vue';
 import Comunidades from 'src/components/Dashboard/Views/Comunidades.vue';
+import Dizimistas from 'src/components/Dashboard/Views/Dizimistas.vue';
 
 const routes = [
 	{
@@ -34,6 +35,11 @@ const routes = [
 				path: 'participantes',
 				name: 'participantes',
 				component: Participantes
+			},
+			{
+				path: 'dizimistas',
+				name: 'dizimistas',
+				component: Dizimistas
 			},
 			{
 				path: 'pastorais',

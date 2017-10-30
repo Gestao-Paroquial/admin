@@ -62,15 +62,15 @@ export default {
     getId: Function,
     type: {
       type: String, // striped | hover
-      default: 'Striped'
+      default: "Striped"
     },
     title: {
       type: String,
-      default: ''
+      default: ""
     },
     subTitle: {
       type: String,
-      default: ''
+      default: ""
     },
     itemsPerPage: {
       default: 5,
@@ -80,12 +80,12 @@ export default {
   data() {
     return {
       page: 0,
-      start: 0,
-    }
+      start: 0
+    };
   },
   computed: {
     tableClass() {
-      return `table-${this.type}`
+      return `table-${this.type}`;
     }
   },
   methods: {
@@ -102,36 +102,35 @@ export default {
       }
     },
     hasValue(item, column) {
-      return item[column.toLowerCase()] !== 'undefined'
+      return item[column.toLowerCase()] !== "undefined";
     },
     itemValue(item, column) {
-      return item[column.toLowerCase()]
-    },
+      return item[column.toLowerCase()];
+    }
   }
-}
-
+};
 </script>
 <style>
-.pagination>li>a:hover,
-.pagination>li>a:focus,
-.pagination>li>a:active,
-.pagination>li.active>a,
-.pagination>li.active>span,
-.pagination>li.active>a:hover,
-.pagination>li.active>span:hover,
-.pagination>li.active>a:focus,
-.pagination>li.active>span:focus {
-  background-color: #66615B !important;
-  border-color: #66615B !important;
-  color: #FFFFFF !important;
+.pagination > li > a:hover,
+.pagination > li > a:focus,
+.pagination > li > a:active,
+.pagination > li.active > a,
+.pagination > li.active > span,
+.pagination > li.active > a:hover,
+.pagination > li.active > span:hover,
+.pagination > li.active > a:focus,
+.pagination > li.active > span:focus {
+  background-color: #66615b !important;
+  border-color: #66615b !important;
+  color: #ffffff !important;
 }
 
-.pagination>li>a,
-.pagination>li>span {
+.pagination > li > a,
+.pagination > li > span {
   background-color: transparent;
-  border: 2px solid #66615B;
+  border: 2px solid #66615b;
   border-radius: 20px;
-  color: #66615B !important;
+  color: #66615b !important;
   height: 36px;
   font-weight: 600;
   margin: 0 2px;
@@ -141,10 +140,10 @@ export default {
   text-align: center;
 }
 
-.pagination>li:first-child>a,
-.pagination>li:first-child>span,
-.pagination>li:last-child>a,
-.pagination>li:last-child>span {
+.pagination > li:first-child > a,
+.pagination > li:first-child > span,
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
   border-radius: 20px !important;
 }
 </style>

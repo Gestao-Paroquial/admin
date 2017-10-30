@@ -20,123 +20,119 @@
 	</div>
 </template>
 <script>
-import PaperTable from 'components/UIComponents/PaperTable.vue'
-import Modal from 'components/UIComponents/Modal/Modal.vue'
-import SimpleForm from 'components/UIComponents/Forms/SimpleForm.vue'
-const pastoraisHeaders = ['Id', 'Name', 'Dia']
+import PaperTable from "components/UIComponents/PaperTable.vue";
+import Modal from "components/UIComponents/Modal/Modal.vue";
+import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
+const pastoraisHeaders = ["Id", "Name", "Dia e horário de encontro"];
 const inputs = [
-	{
-		label: 'Nome',
-		name: 'name',
-		type: 'text',
-		value: '',
-		placeholder: '',
-		required: true
-	},
-	{
-		label: 'Dia e horário de encontro',
-		name: 'dia',
-		type: 'text',
-		value: '',
-		placeholder: '',
-		required: false
-	}
+  {
+    label: "Nome",
+    name: "name",
+    type: "text",
+    value: "",
+    placeholder: "",
+    required: true
+  },
+  {
+    label: "Dia e horário de encontro",
+    name: "dia e horário de encontro",
+    type: "text",
+    value: "",
+    placeholder: "",
+    required: false
+  }
 ];
 const pastorais = [
-	{
-		id: 10,
-		name: 'Pastoral da Juventude',
-		dia: 'Quarta feira 12:00'
-	},
-	{
-		id: 21,
-		name: 'Pastoral Teste',
-		dia: 'Quarta feira 12:00'
-	}
-]
+  {
+    id: 10,
+    name: "Pastoral da Juventude",
+    "dia e horário de encontro": "Quarta feira 12:00"
+  },
+  {
+    id: 21,
+    name: "Pastoral Teste",
+    "dia e horário de encontro": "Quarta feira 12:00"
+  }
+];
 
 export default {
-	components: {
-		PaperTable,
-		Modal,
-		SimpleForm
-	},
-	data() {
-		return {
-			showModalAdd: false,
-			showModalUpdate: false,
-			inputs: inputs,
-			inputsUpdate: [],
-			pastorais: pastorais,
-			table1: {
-				title: 'Lista de Pastorais',
-				subTitle: 'Aqui você ira encontrar a lista de pastorais completa',
-				columns: [...pastoraisHeaders],
-				data: [...pastorais]
-			}
-		}
-	},
-	methods: {
-		closeModalAdd() {
-			this.showModalAdd = false;
-		},
-		closeModalUpdate() {
-			this.showModalUpdate = false;
-		},
-		add(pastoral) {
-			this.pastorais.push(pastoral);
-			this.showModalAdd = false;
-		},
-		del(id) {
+  components: {
+    PaperTable,
+    Modal,
+    SimpleForm
+  },
+  data() {
+    return {
+      showModalAdd: false,
+      showModalUpdate: false,
+      inputs: inputs,
+      inputsUpdate: [],
+      pastorais: pastorais,
+      table1: {
+        title: "Lista de Pastorais",
+        subTitle: "Aqui você ira encontrar a lista de pastorais completa",
+        columns: [...pastoraisHeaders],
+        data: [...pastorais]
+      }
+    };
+  },
+  methods: {
+    closeModalAdd() {
+      this.showModalAdd = false;
+    },
+    closeModalUpdate() {
+      this.showModalUpdate = false;
+    },
+    add(pastoral) {
+      this.pastorais.push(pastoral);
+      this.showModalAdd = false;
+    },
+    del(id) {
+      const index = this.pastorais.findIndex(pastoral => pastoral.id == id);
 
-			const index = this.pastorais.findIndex(pastoral => pastoral.id == id);
+      if (confirm("Você tem certeza?")) this.pastorais.splice(index, 1);
+    },
+    getId(id) {
+      const pastoral = this.pastorais.find(item => item.id == id);
 
-			if (confirm("Você tem certeza?"))
-				this.pastorais.splice(index, 1);
-		},
-		getId(id) {
-			const pastoral = this.pastorais.find(item => item.id == id);
+      const inputs = [
+        {
+          label: "Nome",
+          name: "name",
+          type: "text",
+          value: pastoral.name,
+          placeholder: "",
+          required: true
+        },
+        {
+          label: "Dia e horário de Encontro",
+          name: "dia e horário de encontro",
+          type: "text",
+          value: pastoral["dia e horário de encontro"],
+          placeholder: "",
+          required: false
+        },
+        {
+          name: "id",
+          type: "hidden",
+          value: pastoral.id,
+          required: true
+        }
+      ];
 
-			const inputs = [
-				{
-					label: 'Nome',
-					name: 'name',
-					type: 'text',
-					value: pastoral.name,
-					placeholder: '',
-					required: true
-				},
-				{
-					label: 'Telefone',
-					name: 'dia',
-					type: 'text',
-					value: pastoral.dia,
-					placeholder: '',
-					required: false
-				},
-				{
-					name: 'id',
-					type: 'hidden',
-					value: pastoral.id,
-					required: true
-				}
-			];
+      this.inputsUpdate = inputs;
 
-			this.inputsUpdate = inputs;
+      this.showModalUpdate = true;
+    },
+    update(pastoral) {
+      const index = this.pastorais.findIndex(item => item.id == pastoral.id);
 
-			this.showModalUpdate = true;
+      this.$set(this.pastorais, index, pastoral);
 
-		},
-		update(pastoral) {
-			const index = this.pastorais.findIndex(item => item.id == pastoral.id);
-
-			this.$set(this.pastorais, index, pastoral);
-
-			this.closeModalUpdate();
-		}
-	}
-}
-
+      this.closeModalUpdate();
+    }
+  }
+};
 </script>
 <style>
 

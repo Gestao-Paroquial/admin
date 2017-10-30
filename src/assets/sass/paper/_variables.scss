@@ -15,14 +15,16 @@ $medium-pale-bg: #F1EAE0 !default;
 $table-line-color: #CCC5B9 !default;
 $muted-color: #a49e93 !default;
 
-$black-bg: rgba(30, 30, 30, .97) !default;
+$black-bg: rgba(30, 30, 30, 0.97) !default;
 
 $black-color: #333333 !default;
 $black-hr: #444444 !default;
 
 $white-background-color: #FFFFFF !default;
 $black-background-color: #212120 !default;
-$darkblue-background-color: #35495E !default; // this is the dark blue color from Vue.js branding
+$darkblue-background-color: #35495E !default;
+
+// this is the dark blue color from Vue.js branding
 
 $light-gray: #E3E3E3 !default;
 $medium-gray: #DDDDDD !default;
@@ -42,7 +44,9 @@ $primary-color: #7A9E9F !default;
 $primary-bg: #7A9E9F !default;
 $primary-states-color: #427C89 !default;
 
-$success-color: #41B883 !default;   // this is the green color from Vue.js branding
+$success-color: #41B883 !default;
+
+// this is the green color from Vue.js branding
 $success-bg: #41B883 !default;
 $success-states-color: #229863 !default;
 
@@ -62,11 +66,11 @@ $link-disabled-color: #666666 !default;
 
 /*      light colors - used for select dropdown         */
 
-$light-blue: rgba($primary-color, .2);
-$light-azure: rgba($info-color, .2);
-$light-green: rgba($success-color, .2);
-$light-orange: rgba($warning-color, .2);
-$light-red: rgba($danger-color, .2);
+$light-blue: rgba($primary-color, 0.2);
+$light-azure: rgba($info-color, 0.2);
+$light-green: rgba($success-color, 0.2);
+$light-orange: rgba($warning-color, 0.2);
+$light-red: rgba($danger-color, 0.2);
 
 //== Components
 //
@@ -181,14 +185,14 @@ $width-icon: 64px !default;
 $padding-icon: 12px !default;
 $border-radius-icon: 15px !default;
 
-$white-navbar: rgba(#FFFFFF, .96);
-$blue-navbar: rgba(#34ACDC, .98);
-$azure-navbar: rgba(#5BCAFF, .98);
-$green-navbar: rgba(#4CD964, .98);
-$orange-navbar: rgba(#FF9500, .98);
-$red-navbar: rgba(#FF4C40, .98);
+$white-navbar: rgba(#FFFFFF, 0.96);
+$blue-navbar: rgba(#34ACDC, 0.98);
+$azure-navbar: rgba(#5BCAFF, 0.98);
+$green-navbar: rgba(#4CD964, 0.98);
+$orange-navbar: rgba(#FF9500, 0.98);
+$red-navbar: rgba(#FF4C40, 0.98);
 
-$bg-nude: #f4f3ef !default;
+$bg-nude: #fff !default;
 $bg-primary: #8ECFD5 !default;
 $bg-info: #7CE4FE !default;
 $bg-success: #8EF3C5 !default;
