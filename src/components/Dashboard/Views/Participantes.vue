@@ -1,5 +1,5 @@
 <template>
-	<div class="col-md-12" id="participantes">
+	<div class="col-md-12" id="dizimistas">
 		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Participante'">
 			<simple-form slot="body" :inputs="inputs" :action="add" :btnMsg="'Adicionar'" :btnClass="'btn-fill btn-info btn-wd'">
 			</simple-form>
@@ -10,21 +10,16 @@
 		</modal>
 		<h4 class="title">{{title}}</h4>
 		<p class="category">{{subTitle}}</p>
-		<div class="card card-plain">
-
-			<paper-table type="hover" :getId="getId" :del="del" :title="table.title" :sub-title="table.subTitle" :data="table.data" :columns="table.columns">
+		<div class=" card card-plain">
+			<paper-table type="hover" :getId="getId" :del="del"  :data="table.data" :columns="table.columns">
 				<div slot="header">
-					<div class="col-sm-6">
-						<button type="button" class="btn btn-success btn-fill btn-wd" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">Adicionar
-							<i class="fa fa-plus" aria-hidden="true"></i>
-						</button>
-					</div>
-					<div class="col-sm-6">
-						<div class="pull-right">
+					<div class="col-sm-12">									
 							<label class="label-search">
 								<input type="search" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm" @keydown="search">
 							</label>
-						</div>
+								<button type="button" class="btn btn-success btn-fill pull-right" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">
+							<i class="fa fa-plus" aria-hidden="true"></i>
+						</button>
 					</div>
 				</div>
 			</paper-table>
