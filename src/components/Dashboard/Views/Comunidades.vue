@@ -1,10 +1,10 @@
 <template>
 	<div class="col-md-12">
-		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Participantes'">
+		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Comunidade'">
 			<simple-form slot="body" :inputs="inputs" :action="add" :btnMsg="'Adicionar'" :btnClass="'btn-fill btn-info btn-wd'">
 			</simple-form>
 		</modal>
-		<modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar Participantes'">
+		<modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar Comunidade'">
 			<simple-form slot="body" :inputs="inputsUpdate" :action="update" :btnClass="'btn-fill btn-warning  btn-wd'" :btnMsg="'Alterar'">
 			</simple-form>
 		</modal>
@@ -30,35 +30,61 @@
 import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
-const pastoraisHeaders = ["Id", "Name", "Dia e horário de encontro"];
+const comunidadesHeaders = ["Id", "Name", "Local", "Missas", "Foto"];
+
 const inputs = [
   {
     label: "Nome",
     name: "name",
     type: "text",
     value: "",
-    placeholder: "",
     required: true
   },
   {
-    label: "Dia e horário de encontro",
-    name: "dia e horário de encontro",
+    label: "Localização",
+    name: "local",
     type: "text",
     value: "",
-    placeholder: "",
-    required: false
-  }
-];
-const pastorais = [
-  {
-    id: 10,
-    name: "Pastoral da Juventude",
-    "dia e horário de encontro": "Quarta feira 12:00"
+    required: true
   },
   {
-    id: 21,
-    name: "Pastoral Teste",
-    "dia e horário de encontro": "Quarta feira 12:00"
+    label: "Horários das Missas",
+    name: "missas",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Foto",
+    name: "foto",
+    type: "text",
+    value: "",
+    accept: "image/x-png,image/gif,image/jpeg",
+    required: true
+  }
+];
+
+const comunidades = [
+  {
+    name: "Teste1",
+    foto: "teste1.jpg",
+    local: "Av. Um",
+    missas: "12.00",
+    id: 10
+  },
+  {
+    name: "Teste2",
+    foto: "teste2.jpg",
+    local: "Av. Dois",
+    missas: "12.00",
+    id: 101
+  },
+  {
+    name: "Teste3",
+    foto: "teste3.jpg",
+    local: "Av. Três",
+    missas: "12.00",
+    id: 102
   }
 ];
 
@@ -74,13 +100,13 @@ export default {
       showModalUpdate: false,
       inputs: inputs,
       inputsUpdate: [],
-      pastorais: pastorais,
-      pastoraisHeaders: pastoraisHeaders,
+      comunidades: comunidades,
+      comunidadesHeaders: comunidadesHeaders,
       title: "Lista de Participantes",
-      subTitle: "Aqui você ira encontrar a lista de pastorais completa",
+      subTitle: "Aqui você ira encontrar a lista de comunidades completa",
       table: {
-        columns: [...pastoraisHeaders],
-        data: [...pastorais]
+        columns: [...comunidadesHeaders],
+        data: [...comunidades]
       }
     };
   },
@@ -88,7 +114,7 @@ export default {
     search(event) {
       const value = event.target.value;
 
-      const pastoraisFiltrados = this.pastorais.filter(function(obj) {
+      const comunidadesFiltrados = this.comunidades.filter(function(obj) {
         return Object.keys(obj).some(function(key) {
           return (
             obj[key]
@@ -99,7 +125,7 @@ export default {
         });
       });
 
-      this.updateTable(pastoraisFiltrados);
+      this.updateTable(comunidadesFiltrados);
     },
     closeModalAdd() {
       this.showModalAdd = false;
@@ -107,46 +133,61 @@ export default {
     closeModalUpdate() {
       this.showModalUpdate = false;
     },
-    updateTable(pastorais) {
-      this.table.data = [...pastorais];
+    updateTable(comunidades) {
+      this.table.data = [...comunidades];
     },
-    add(pastoral) {
-      this.pastorais.push(pastoral);
-      this.updateTable(this.pastorais);
+    add(comunidade) {
+      this.comunidades.push(comunidade);
+      this.updateTable(this.comunidades);
       this.showModalAdd = false;
     },
     del(id) {
-      const index = this.pastorais.findIndex(pastoral => pastoral.id == id);
+      const index = this.comunidades.findIndex(
+        comunidade => comunidade.id == id
+      );
 
       if (confirm("Você tem certeza?")) {
-        this.pastorais.splice(index, 1);
-        this.updateTable(this.pastorais);
+        this.comunidades.splice(index, 1);
+        this.updateTable(this.comunidades);
       }
     },
     getId(id) {
-      const pastoral = this.pastorais.find(item => item.id == id);
+      const comunidade = this.comunidades.find(item => item.id == id);
 
       const inputs = [
         {
           label: "Nome",
           name: "name",
           type: "text",
-          value: pastoral.name,
-          placeholder: "",
+          value: comunidade.name,
           required: true
         },
         {
-          label: "Dia e horário de encontro",
-          name: "dia e horário de encontro",
+          label: "Localização",
+          name: "local",
           type: "text",
-          value: pastoral["dia e horário de encontro"],
-          placeholder: "",
+          value: comunidade.local,
+          required: true
+        },
+        {
+          label: "Horários das Missas",
+          name: "missas",
+          type: "text",
+          value: comunidade.missas,
           required: false
+        },
+        {
+          label: "Foto",
+          name: "foto",
+          type: "text",
+          value: comunidade.foto,
+          accept: "image/x-png,image/gif,image/jpeg",
+          required: true
         },
         {
           name: "id",
           type: "hidden",
-          value: pastoral.id,
+          value: comunidade.id,
           required: true
         }
       ];
@@ -155,11 +196,15 @@ export default {
 
       this.showModalUpdate = true;
     },
-    update(pastoral) {
-      const index = this.pastorais.findIndex(item => item.id == pastoral.id);
+    update(comunidade) {
+      console.log(comunidade);
 
-      this.$set(this.pastorais, index, pastoral);
-      this.updateTable(this.pastorais);
+      const index = this.comunidades.findIndex(
+        item => item.id == comunidade.id
+      );
+
+      this.$set(this.comunidades, index, comunidade);
+
       this.closeModalUpdate();
     }
   }
