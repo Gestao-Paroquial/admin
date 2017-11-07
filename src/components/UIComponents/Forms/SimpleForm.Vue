@@ -9,38 +9,37 @@
 	</form>
 </template>
 <script>
-
-import fgInput from 'components/UIComponents/Inputs/formGroupInput.vue';
+import fgInput from "components/UIComponents/Inputs/formGroupInput.vue";
 
 export default {
-	components: {
-		fgInput
-	},
-	props: {
-		inputs: Array,
-		action: Function,
-		btnMsg: String,
-		btnClass: String
-	},
-	methods: {
-		makeObj: function(event) {
-			event.preventDefault();
+  components: {
+    fgInput
+  },
+  props: {
+    inputs: Array,
+    action: Function,
+    btnMsg: String,
+    btnClass: String
+  },
+  methods: {
+    makeObj: function(event) {
+      event.preventDefault();
 
-			const obj = {};
+      const obj = {};
 
-			obj.id = Math.round(Math.random() * (10000 - 0));
+      //Criar Id Aleatorio
+      obj.id = Math.round(Math.random() * 10000);
 
-			for (let index = 0; index < this.inputs.length; index++) {
-				const input = this.$el[index];
-				obj[input.name] = input.value;
-				input.value = '';
-			}
+      for (let index = 0; index < this.inputs.length; index++) {
+        const input = this.$el[index];
+        obj[input.name] = input.value;
+        input.value = "";
+      }
 
-			this.action(obj);
-		}
-	}
-}
-
+      this.action(obj);
+    }
+  }
+};
 </script>
 <style>
 

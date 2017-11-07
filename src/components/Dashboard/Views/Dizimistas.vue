@@ -1,10 +1,10 @@
 <template>
-  <div class="col-md-12" id="dizimistas">
-    <modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Participante'">
+  <div class="col-md-12" >
+    <modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Dizimista'">
       <simple-form slot="body" :inputs="inputs" :action="add" :btnMsg="'Adicionar'" :btnClass="'btn-fill btn-info btn-wd'">
       </simple-form>
     </modal>
-    <modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar Participante'">
+    <modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar Dizimista'">
       <simple-form slot="body" :inputs="inputsUpdate" :action="update" :btnClass="'btn-fill btn-warning  btn-wd'" :btnMsg="'Alterar'">
       </simple-form>
     </modal>
@@ -89,7 +89,7 @@ export default {
       inputsUpdate: [],
       dizimistas: dizimistas,
       dizimistasHeaders: dizimistasHeaders,
-      title: "Lista de Participantes",
+      title: "Lista de Dizimistas",
       subTitle: "Aqui você ira encontrar a lista de dizimistas completa",
       table: {
         columns: [...dizimistasHeaders],
@@ -181,23 +181,22 @@ export default {
 </script>
 
 <style lang="scss">
-#dizimistas {
-  thead th {
-    white-space: nowrap;
-    overflow: hidden;
-    background-color: #fff;
-    height: 40px;
-    min-width: 0;
-    text-overflow: ellipsis;
-    vertical-align: middle;
-    position: relative;
-  }
-  .table tbody > tr:nth-of-type(2n + 1) {
-    background-color: #f3f2ee;
-  }
-  .label-search {
-    border: 1px solid #dddddd;
-    border-radius: 5px;
-  }
+thead th {
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: #fff;
+  height: 40px;
+  min-width: 0;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  position: relative;
+  text-align: center;
+}
+.table tbody > tr:nth-of-type(2n + 1) {
+  background-color: #f3f2ee;
+}
+.label-search {
+  border: 1px solid #dddddd;
+  border-radius: 5px;
 }
 </style>

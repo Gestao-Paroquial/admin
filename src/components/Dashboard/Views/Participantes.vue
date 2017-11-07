@@ -1,5 +1,5 @@
 <template>
-	<div class="col-md-12" id="dizimistas">
+	<div class="col-md-12">
 		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Participante'">
 			<simple-form slot="body" :inputs="inputs" :action="add" :btnMsg="'Adicionar'" :btnClass="'btn-fill btn-info btn-wd'">
 			</simple-form>
@@ -249,31 +249,29 @@ export default {
 </script>
 
 <style lang="scss">
-#participantes {
-  thead {
-    background-color: #fff;
-    border-radius: 5px;
-  }
-  thead th {
-    white-space: nowrap;
-    overflow: hidden;
-    height: 40px;
-    min-width: 0;
-    text-overflow: ellipsis;
-    vertical-align: middle;
-    position: relative;
-  }
+thead {
+  background-color: #fff;
+  border-radius: 5px;
+}
+thead th {
+  white-space: nowrap;
+  overflow: hidden;
+  height: 40px;
+  min-width: 0;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  position: relative;
+}
 
-  .table {
-    margin-top: 20px;
-  }
-  .table tbody > tr:nth-of-type(2n + 1) {
-    background-color: #f3f2ee;
-  }
+.table {
+  margin-top: 20px;
+}
+.table tbody > tr:nth-of-type(2n + 1) {
+  background-color: #f3f2ee;
+}
 
-  .label-search {
-    border: 1px solid #dddddd;
-    border-radius: 5px;
-  }
+.label-search {
+  border: 1px solid #dddddd;
+  border-radius: 5px;
 }
 </style>
