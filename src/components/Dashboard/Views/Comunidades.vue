@@ -30,6 +30,7 @@
 import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
+import axios from 'axios';
 const comunidadesHeaders = ["Id", "Name", "Local", "Missas", "Foto"];
 
 const inputs = [
@@ -87,6 +88,15 @@ const comunidades = [
     id: 102
   }
 ];
+
+axios.get('http://localhost:8000/api/usuarios')
+  .then(function (response) {
+    console.log(response);
+    console.log(object)
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 
 export default {
   components: {
