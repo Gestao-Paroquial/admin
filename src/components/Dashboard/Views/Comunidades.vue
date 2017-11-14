@@ -11,7 +11,7 @@
 		<h4 class="title">{{title}}</h4>
 		<p class="category">{{subTitle}}</p>
 		<div class=" card card-plain">
-			<paper-table type="hover" :getId="getId" :del="del"  :data="table.data" :columns="table.columns">
+			<paper-table type="hover" :getId="getId" :del="del"  :data="comunidades" :columns="table.columns">
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -30,8 +30,8 @@
 import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
-import axios from 'axios';
-const comunidadesHeaders = ["Id", "Name", "Local", "Missas", "Foto"];
+import axios from "axios";
+const comunidadesHeaders = ["Id", "nome", "Local", "Missas", "Foto"];
 
 const inputs = [
   {
@@ -89,15 +89,6 @@ const comunidades = [
   }
 ];
 
-axios.get('http://localhost:8000/api/usuarios')
-  .then(function (response) {
-    console.log(response);
-    console.log(object)
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-
 export default {
   components: {
     PaperTable,
@@ -112,13 +103,24 @@ export default {
       inputsUpdate: [],
       comunidades: comunidades,
       comunidadesHeaders: comunidadesHeaders,
-      title: "Lista de Participantes",
+      title: "Lista de Comunidades",
       subTitle: "Aqui você ira encontrar a lista de comunidades completa",
       table: {
         columns: [...comunidadesHeaders],
-        data: [...comunidades]
       }
     };
+  },
+  created() {
+    const vm = this;
+    axios
+      .get("http://localhost:8000/api/comunidades")
+      .then(function(response) {
+        console.log(response);
+        vm.comunidades = response.data;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   },
   methods: {
     search(event) {
