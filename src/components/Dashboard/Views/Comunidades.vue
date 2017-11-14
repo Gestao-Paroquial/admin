@@ -31,62 +31,31 @@ import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
-const comunidadesHeaders = ["Id", "nome", "Local", "Missas", "Foto"];
+const comunidadesHeaders = ["Id", "Nome", "Cidade", "UF"];
 
 const inputs = [
   {
     label: "Nome",
-    name: "name",
+    name: "nome",
     type: "text",
     value: "",
     required: true
   },
   {
-    label: "Localização",
-    name: "local",
+    label: "Cidade",
+    name: "cidade",
     type: "text",
     value: "",
     required: true
   },
   {
-    label: "Horários das Missas",
-    name: "missas",
+    label: "UF",
+    name: "uf",
     type: "text",
     value: "",
     required: false
   },
-  {
-    label: "Foto",
-    name: "foto",
-    type: "text",
-    value: "",
-    accept: "image/x-png,image/gif,image/jpeg",
-    required: true
-  }
-];
 
-const comunidades = [
-  {
-    name: "Teste1",
-    foto: "teste1.jpg",
-    local: "Av. Um",
-    missas: "12.00",
-    id: 10
-  },
-  {
-    name: "Teste2",
-    foto: "teste2.jpg",
-    local: "Av. Dois",
-    missas: "12.00",
-    id: 101
-  },
-  {
-    name: "Teste3",
-    foto: "teste3.jpg",
-    local: "Av. Três",
-    missas: "12.00",
-    id: 102
-  }
 ];
 
 export default {
@@ -101,12 +70,12 @@ export default {
       showModalUpdate: false,
       inputs: inputs,
       inputsUpdate: [],
-      comunidades: comunidades,
+      comunidades: [],
       comunidadesHeaders: comunidadesHeaders,
       title: "Lista de Comunidades",
       subTitle: "Aqui você ira encontrar a lista de comunidades completa",
       table: {
-        columns: [...comunidadesHeaders],
+        columns: [...comunidadesHeaders]
       }
     };
   },
@@ -145,12 +114,9 @@ export default {
     closeModalUpdate() {
       this.showModalUpdate = false;
     },
-    updateTable(comunidades) {
-      this.table.data = [...comunidades];
-    },
     add(comunidade) {
+      console.log(comunidade)
       this.comunidades.push(comunidade);
-      this.updateTable(this.comunidades);
       this.showModalAdd = false;
     },
     del(id) {
@@ -160,7 +126,7 @@ export default {
 
       if (confirm("Você tem certeza?")) {
         this.comunidades.splice(index, 1);
-        this.updateTable(this.comunidades);
+
       }
     },
     getId(id) {
