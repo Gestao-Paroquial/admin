@@ -184,7 +184,6 @@ export default {
       comunidade.updated_at = "2017-11-14 21:38:30";
       const vm = this;
 
-      console.log(JSON.stringify(comunidade));
       axios
         .post(
           "http://localhost:8000/api/comunidades",
@@ -225,32 +224,87 @@ export default {
       const inputs = [
         {
           label: "Nome",
-          name: "name",
+          name: "nome",
           type: "text",
-          value: comunidade.name,
-          required: true
-        },
-        {
-          label: "Localização",
-          name: "local",
-          type: "text",
-          value: comunidade.local,
-          required: true
-        },
-        {
-          label: "Horários das Missas",
-          name: "missas",
-          type: "text",
-          value: comunidade.missas,
+          value: comunidade.nome,
           required: false
         },
         {
-          label: "Foto",
-          name: "foto",
+          label: "E-mail",
+          name: "email",
           type: "text",
-          value: comunidade.foto,
-          accept: "image/x-png,image/gif,image/jpeg",
-          required: true
+          value: comunidade.email,
+          required: false
+        },
+        {
+          label: "CNPJ",
+          name: "cnpj",
+          type: "text",
+          value: comunidade.cnpj,
+          required: false
+        },
+        {
+          label: "Telefone",
+          name: "Telefone",
+          type: "text",
+          value: comunidade.Telefone,
+          required: false
+        },
+        {
+          label: "Celular",
+          name: "Celular",
+          type: "text",
+          value: comunidade.Celular,
+          required: false
+        },
+        {
+          label: "Endereço",
+          name: "Endereco",
+          type: "text",
+          value: comunidade.Endereco,
+          required: false
+        },
+        {
+          label: "Número",
+          name: "nro",
+          type: "text",
+          value: comunidade.nro,
+          required: false
+        },
+        {
+          label: "Complemento",
+          name: "compl",
+          type: "text",
+          value: comunidade.compl,
+          required: false
+        },
+        {
+          label: "Bairro",
+          name: "bairro",
+          type: "text",
+          value: comunidade.bairro,
+          required: false
+        },
+        {
+          label: "Cidade",
+          name: "cidade",
+          type: "text",
+          value: comunidade.cidade,
+          required: false
+        },
+        {
+          label: "UF",
+          name: "uf",
+          type: "text",
+          value: comunidade.uf,
+          required: false
+        },
+        {
+          label: "CEP",
+          name: "cep",
+          type: "text",
+          value: comunidade.cep,
+          required: false
         },
         {
           name: "id",
@@ -265,11 +319,27 @@ export default {
       this.showModalUpdate = true;
     },
     update(comunidade) {
-      const index = this.comunidades.findIndex(
-        item => item.id == comunidade.id
-      );
+      const vm = this;
 
-      this.$set(this.comunidades, index, comunidade);
+      axios
+        .put(
+          "http://localhost:8000/api/comunidades/" + comunidade.id,
+          JSON.stringify(comunidade),
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        )
+        .then(function(response) {
+          console.log(response);
+          vm.get();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
+      // this.$set(this.comunidades, index, comunidade);
 
       this.closeModalUpdate();
     }
