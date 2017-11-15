@@ -66,7 +66,8 @@ export default {
       pastorais: [],
       pastoraisHeaders: pastoraisHeaders,
       title: "Lista de Participantes",
-      subTitle: "Aqui você ira encontrar a lista de pastorais completa"
+      subTitle: "Aqui você ira encontrar a lista de pastorais completa",
+      urlApi: "http://localhost:8000/api/pastorais"
     };
   },
   created() {
@@ -76,7 +77,7 @@ export default {
     get() {
       const vm = this;
       axios
-        .get("http://localhost:8000/api/pastorais")
+        .get(this.urlApi)
         .then(function(response) {
           console.log(response);
           vm.pastorais = response.data;
@@ -118,7 +119,7 @@ export default {
 
       console.log(JSON.stringify(pastoral));
       axios
-        .post("http://localhost:8000/api/pastorais", JSON.stringify(pastoral), {
+        .post(this.urlApi, JSON.stringify(pastoral), {
           headers: {
             "Content-Type": "application/json"
           }
@@ -134,11 +135,18 @@ export default {
       this.showModalAdd = false;
     },
     del(id) {
-      const index = this.pastorais.findIndex(pastoral => pastoral.id == id);
-
       if (confirm("Você tem certeza?")) {
-        this.pastorais.splice(index, 1);
-        this.updateTable(this.pastorais);
+        const vm = this;
+
+        axios
+          .delete(this.urlApi + "/" + id)
+          .then(function(response) {
+            console.log(response);
+            vm.get();
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
     },
     getId(id) {

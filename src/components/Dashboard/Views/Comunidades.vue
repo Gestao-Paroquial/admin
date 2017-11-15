@@ -131,6 +131,7 @@ export default {
       showModalAdd: false,
       showModalUpdate: false,
       inputs: inputs,
+      urlApi: "http://localhost:8000/api/comunidades",
       inputsUpdate: [],
       comunidades: [],
       comunidadesHeaders: comunidadesHeaders,
@@ -167,7 +168,7 @@ export default {
     get() {
       const vm = this;
       axios
-        .get("http://localhost:8000/api/comunidades")
+        .get(this.urlApi)
         .then(function(response) {
           console.log(response);
           vm.comunidades = response.data;
@@ -182,15 +183,11 @@ export default {
       const vm = this;
 
       axios
-        .post(
-          "http://localhost:8000/api/comunidades",
-          JSON.stringify(comunidade),
-          {
-            headers: {
-              "Content-Type": "application/json"
-            }
+        .post(this.urlApi, JSON.stringify(comunidade), {
+          headers: {
+            "Content-Type": "application/json"
           }
-        )
+        })
         .then(function(response) {
           console.log(response);
           vm.get();
@@ -205,7 +202,7 @@ export default {
       if (confirm("Você tem certeza?")) {
         const vm = this;
         axios
-          .delete("http://localhost:8000/api/comunidades/" + id)
+          .delete(this.urlApi + "/" + id)
           .then(function(response) {
             console.log(response);
             vm.get();
@@ -319,17 +316,14 @@ export default {
       const vm = this;
 
       comunidade.updated_at = new Date();
-      console.log( JSON.stringify(comunidade));
+     
+     
       axios
-        .put(
-          "http://localhost:8000/api/comunidades/" + comunidade.id,
-          JSON.stringify(comunidade),
-          {
-            headers: {
-              "Content-Type": "application/json"
-            }
+        .put(this.urlApi + "/" + comunidade.id, JSON.stringify(comunidade), {
+          headers: {
+            "Content-Type": "application/json"
           }
-        )
+        })
         .then(function(response) {
           console.log(response);
           vm.get();
