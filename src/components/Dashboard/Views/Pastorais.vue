@@ -11,7 +11,7 @@
 		<h4 class="title">{{title}}</h4>
 		<p class="category">{{subTitle}}</p>
 		<div class=" card card-plain">
-			<paper-table type="hover" :getId="getId" :del="del"  :data="table.data" :columns="table.columns">
+			<paper-table type="hover" :getId="getId" :del="del"  :data="pastorais" :columns="pastoraisHeaders">
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -30,35 +30,24 @@
 import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
-const pastoraisHeaders = ["Id", "Name", "Dia e horário de encontro"];
+import axios from "axios";
+const pastoraisHeaders = ["id", "Nome", "Descricao"];
 const inputs = [
   {
     label: "Nome",
-    name: "name",
+    name: "nome",
     type: "text",
     value: "",
     placeholder: "",
     required: true
   },
   {
-    label: "Dia e horário de encontro",
-    name: "dia e horário de encontro",
+    label: "Descrição",
+    name: "descricao",
     type: "text",
     value: "",
     placeholder: "",
     required: false
-  }
-];
-const pastorais = [
-  {
-    id: 10,
-    name: "Pastoral da Juventude",
-    "dia e horário de encontro": "Quarta feira 12:00"
-  },
-  {
-    id: 21,
-    name: "Pastoral Teste",
-    "dia e horário de encontro": "Quarta feira 12:00"
   }
 ];
 
@@ -74,17 +63,28 @@ export default {
       showModalUpdate: false,
       inputs: inputs,
       inputsUpdate: [],
-      pastorais: pastorais,
+      pastorais: [],
       pastoraisHeaders: pastoraisHeaders,
       title: "Lista de Participantes",
-      subTitle: "Aqui você ira encontrar a lista de pastorais completa",
-      table: {
-        columns: [...pastoraisHeaders],
-        data: [...pastorais]
-      }
+      subTitle: "Aqui você ira encontrar a lista de pastorais completa"
     };
   },
+  created() {
+    this.get();
+  },
   methods: {
+    get() {
+      const vm = this;
+      axios
+        .get("http://localhost:8000/api/pastorais")
+        .then(function(response) {
+          console.log(response);
+          vm.pastorais = response.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     search(event) {
       const value = event.target.value;
 
@@ -111,8 +111,26 @@ export default {
       this.table.data = [...pastorais];
     },
     add(pastoral) {
-      this.pastorais.push(pastoral);
-      this.updateTable(this.pastorais);
+      pastoral.created_at = new Date();
+      pastoral.updated_at = new Date();
+      pastoral.comunidades_id = 1;
+      const vm = this;
+
+      console.log(JSON.stringify(pastoral));
+      axios
+        .post("http://localhost:8000/api/pastorais", JSON.stringify(pastoral), {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+          vm.get();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
       this.showModalAdd = false;
     },
     del(id) {

@@ -11,7 +11,7 @@
 		<h4 class="title">{{title}}</h4>
 		<p class="category">{{subTitle}}</p>
 		<div class=" card card-plain">
-			<paper-table type="hover" :getId="getId" :del="del"  :data="comunidades" :columns="table.columns">
+			<paper-table type="hover" :getId="getId" :del="del"  :data="comunidades" :columns="comunidadesHeaders">
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -57,21 +57,21 @@ const inputs = [
   },
   {
     label: "Telefone",
-    name: "Telefone",
+    name: "telefone",
     type: "text",
     value: "",
     required: false
   },
   {
     label: "Celular",
-    name: "Celular",
+    name: "celular",
     type: "text",
     value: "",
     required: false
   },
   {
     label: "Endereço",
-    name: "Endereco",
+    name: "endereco",
     type: "text",
     value: "",
     required: false
@@ -135,10 +135,7 @@ export default {
       comunidades: [],
       comunidadesHeaders: comunidadesHeaders,
       title: "Lista de Comunidades",
-      subTitle: "Aqui você ira encontrar a lista de comunidades completa",
-      table: {
-        columns: [...comunidadesHeaders]
-      }
+      subTitle: "Aqui você ira encontrar a lista de comunidades completa"
     };
   },
   created() {
@@ -180,8 +177,8 @@ export default {
         });
     },
     add(comunidade) {
-      comunidade.created_at = "2017-11-14 21:38:30";
-      comunidade.updated_at = "2017-11-14 21:38:30";
+      comunidade.created_at = new Date();
+      comunidade.updated_at = null;
       const vm = this;
 
       axios
@@ -245,23 +242,23 @@ export default {
         },
         {
           label: "Telefone",
-          name: "Telefone",
+          name: "telefone",
           type: "text",
-          value: comunidade.Telefone,
+          value: comunidade.telefone,
           required: false
         },
         {
           label: "Celular",
-          name: "Celular",
+          name: "celular",
           type: "text",
-          value: comunidade.Celular,
+          value: comunidade.celular,
           required: false
         },
         {
           label: "Endereço",
-          name: "Endereco",
+          name: "endereco",
           type: "text",
-          value: comunidade.Endereco,
+          value: comunidade.endereco,
           required: false
         },
         {
@@ -321,6 +318,8 @@ export default {
     update(comunidade) {
       const vm = this;
 
+      comunidade.updated_at = new Date();
+      console.log( JSON.stringify(comunidade));
       axios
         .put(
           "http://localhost:8000/api/comunidades/" + comunidade.id,
