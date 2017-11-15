@@ -155,21 +155,21 @@ export default {
       const inputs = [
         {
           label: "Nome",
-          name: "name",
+          name: "nome",
           type: "text",
-          value: pastoral.name,
+          value: pastoral.nome,
           placeholder: "",
           required: true
         },
         {
-          label: "Dia e horário de encontro",
-          name: "dia e horário de encontro",
+          label: "Descrição",
+          name: "descricao",
           type: "text",
-          value: pastoral["dia e horário de encontro"],
+          value: pastoral.descricao,
           placeholder: "",
           required: false
         },
-        {
+           {
           name: "id",
           type: "hidden",
           value: pastoral.id,
@@ -182,10 +182,26 @@ export default {
       this.showModalUpdate = true;
     },
     update(pastoral) {
-      const index = this.pastorais.findIndex(item => item.id == pastoral.id);
+     const vm = this;
 
-      this.$set(this.pastorais, index, pastoral);
-      this.updateTable(this.pastorais);
+      pastoral.updated_at = new Date();
+     
+     
+      axios
+        .put(this.urlApi + "/" + pastoral.id, JSON.stringify(pastoral), {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+          vm.get();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
+
       this.closeModalUpdate();
     }
   }
