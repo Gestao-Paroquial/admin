@@ -39,14 +39,70 @@ const inputs = [
     name: "nome",
     type: "text",
     value: "",
-    required: true
+    required: false
+  },
+  {
+    label: "E-mail",
+    name: "email",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "CNPJ",
+    name: "cnpj",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Telefone",
+    name: "Telefone",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Celular",
+    name: "Celular",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Endereço",
+    name: "Endereco",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Número",
+    name: "nro",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Complemento",
+    name: "compl",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Bairro",
+    name: "bairro",
+    type: "text",
+    value: "",
+    required: false
   },
   {
     label: "Cidade",
     name: "cidade",
     type: "text",
     value: "",
-    required: true
+    required: false
   },
   {
     label: "UF",
@@ -55,7 +111,13 @@ const inputs = [
     value: "",
     required: false
   },
-
+  {
+    label: "CEP",
+    name: "cep",
+    type: "text",
+    value: "",
+    required: false
+  }
 ];
 
 export default {
@@ -80,16 +142,7 @@ export default {
     };
   },
   created() {
-    const vm = this;
-    axios
-      .get("http://localhost:8000/api/comunidades")
-      .then(function(response) {
-        console.log(response);
-        vm.comunidades = response.data;
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+    this.get();
   },
   methods: {
     search(event) {
@@ -114,19 +167,56 @@ export default {
     closeModalUpdate() {
       this.showModalUpdate = false;
     },
+    get() {
+      const vm = this;
+      axios
+        .get("http://localhost:8000/api/comunidades")
+        .then(function(response) {
+          console.log(response);
+          vm.comunidades = response.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     add(comunidade) {
-      console.log(comunidade)
-      this.comunidades.push(comunidade);
+      comunidade.created_at = "2017-11-14 21:38:30";
+      comunidade.updated_at = "2017-11-14 21:38:30";
+      const vm = this;
+
+      console.log(JSON.stringify(comunidade));
+      axios
+        .post(
+          "http://localhost:8000/api/comunidades",
+          JSON.stringify(comunidade),
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }
+        )
+        .then(function(response) {
+          console.log(response);
+          vm.get();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
       this.showModalAdd = false;
     },
     del(id) {
-      const index = this.comunidades.findIndex(
-        comunidade => comunidade.id == id
-      );
-
       if (confirm("Você tem certeza?")) {
-        this.comunidades.splice(index, 1);
-
+        const vm = this;
+        axios
+          .delete("http://localhost:8000/api/comunidades/" + id)
+          .then(function(response) {
+            console.log(response);
+            vm.get();
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
     },
     getId(id) {
@@ -175,8 +265,6 @@ export default {
       this.showModalUpdate = true;
     },
     update(comunidade) {
-      console.log(comunidade);
-
       const index = this.comunidades.findIndex(
         item => item.id == comunidade.id
       );

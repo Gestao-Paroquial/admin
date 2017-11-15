@@ -1,7 +1,7 @@
 <template>
 	<form slot="body" @submit="makeObj">
 		<div>
-			<fg-input v-for="input in inputs" :key="input.name" :label="input.label" :required="true" :name="input.name" :type="input.type" :value="input.value" :placeholder="input.placeholder"></fg-input>
+			<fg-input v-for="input in inputs" :key="input.name" :label="input.label" :required="input.required" :name="input.name" :type="input.type" :value="input.value" :placeholder="input.placeholder"></fg-input>
 		</div>
 		<div class="text-center">
 			<button type="submit" :class="btnClass" class="btn">{{btnMsg}}</button>
@@ -28,7 +28,7 @@ export default {
       const obj = {};
 
       //Criar Id Aleatorio
-      obj.id = Math.round(Math.random() * 10000);
+      // obj.id = Math.round(Math.random() * 10000);
 
       for (let index = 0; index < this.inputs.length; index++) {
         const input = this.$el[index];
