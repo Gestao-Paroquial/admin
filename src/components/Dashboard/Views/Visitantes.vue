@@ -32,7 +32,7 @@ import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
-const visitantesHeaders = ['nome', 'email','telefone','comunidades.nome'];
+const visitantesHeaders = ["nome", "email", "telefone", "comunidades.nome"];
 const inputs = [
   {
     label: "Nome",
@@ -43,8 +43,16 @@ const inputs = [
     required: true
   },
   {
-    label: "Descrição",
-    name: "descricao",
+    label: "email",
+    name: "email",
+    type: "text",
+    value: "",
+    placeholder: "",
+    required: false
+  },
+  {
+    label: "telefone",
+    name: "telefone",
     type: "text",
     value: "",
     placeholder: "",
@@ -89,7 +97,6 @@ export default {
       .get("http://localhost:8000/api/comunidades")
       .then(function(response) {
         console.log(response);
-        vm.comunidades = response.data;
 
         const options = response.data.map(comunidade => {
           return {
@@ -148,7 +155,6 @@ export default {
 
       const vm = this;
 
-      console.log(JSON.stringify(visitante));
       axios
         .post(this.urlApi, JSON.stringify(visitante), {
           headers: {
@@ -193,10 +199,18 @@ export default {
           required: true
         },
         {
-          label: "Descrição",
-          name: "descricao",
+          label: "email",
+          name: "email",
           type: "text",
-          value: visitante.descricao,
+          value: visitante.email,
+          placeholder: "",
+          required: false
+        },
+        {
+          label: "telefone",
+          name: "telefone",
+          type: "text",
+          value: visitante.telefone,
           placeholder: "",
           required: false
         },
@@ -209,8 +223,8 @@ export default {
       ];
 
       const options = {
-        value: visitante.comunidade.nome,
-        id: visitante.comunidade.id
+        value: visitante.comunidades.nome,
+        id: visitante.comunidades.id
       };
 
       this.selectListUpdate.options = [options, ...this.selectList.options];

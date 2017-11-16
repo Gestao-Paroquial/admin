@@ -32,7 +32,7 @@ import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
-const pastoraisHeaders = ["id", "Nome", "Descricao","Comunidade.Nome"];
+const pastoraisHeaders = ["id", "Nome", "Descricao", "Comunidade.Nome"];
 const inputs = [
   {
     label: "Nome",
@@ -89,7 +89,6 @@ export default {
       .get("http://localhost:8000/api/comunidades")
       .then(function(response) {
         console.log(response);
-        vm.comunidades = response.data;
 
         const options = response.data.map(comunidade => {
           return {
@@ -148,7 +147,6 @@ export default {
 
       const vm = this;
 
-      console.log(JSON.stringify(pastoral));
       axios
         .post(this.urlApi, JSON.stringify(pastoral), {
           headers: {
