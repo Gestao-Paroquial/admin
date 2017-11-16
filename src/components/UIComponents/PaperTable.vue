@@ -73,7 +73,7 @@ export default {
       default: ""
     },
     itemsPerPage: {
-      default: 5,
+      default: 10,
       type: Number
     }
   },
