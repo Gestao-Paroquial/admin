@@ -2,6 +2,8 @@
 	<form slot="body" @submit="makeObj">
 		<div>
 			<fg-input v-for="input in inputs" :key="input.name" :label="input.label" :required="input.required" :name="input.name" :type="input.type" :value="input.value" :placeholder="input.placeholder"></fg-input>
+
+      <select-list v-if="selectList" :selectList="selectList" ></select-list>        
 		</div>
 		<div class="text-center">
 			<button type="submit" :class="btnClass" class="btn">{{btnMsg}}</button>
@@ -10,16 +12,18 @@
 </template>
 <script>
 import fgInput from "components/UIComponents/Inputs/formGroupInput.vue";
-
+import SelectList from "./SelectList.vue";
 export default {
   components: {
-    fgInput
+    fgInput,
+    SelectList
   },
   props: {
     inputs: Array,
     action: Function,
     btnMsg: String,
-    btnClass: String
+    btnClass: String,
+    selectList: Object
   },
   methods: {
     makeObj: function(event) {
@@ -34,6 +38,14 @@ export default {
         const input = this.$el[index];
         obj[input.name] = input.value;
         input.value = "";
+      }
+
+      if (this.selectList) {
+        const selects = document.querySelectorAll("select");
+
+        selects.forEach(select => {
+          obj[select.name] = select.value;
+        });
       }
 
       this.action(obj);

@@ -14,7 +14,7 @@ import Participantes from 'src/components/Dashboard/Views/Participantes.vue';
 import Pastorais from 'src/components/Dashboard/Views/Pastorais.vue';
 import Comunidades from 'src/components/Dashboard/Views/Comunidades.vue';
 import Dizimistas from 'src/components/Dashboard/Views/Dizimistas.vue';
-
+import Visitantes from 'src/components/Dashboard/Views/Visitantes.vue';
 const routes = [
 	{
 		path: '/',
@@ -30,6 +30,11 @@ const routes = [
 				path: 'overview',
 				name: 'overview',
 				component: Overview
+			},
+			{
+				path: 'visitantes',
+				name: 'visitantes',
+				component: Visitantes
 			},
 			{
 				path: 'participantes',

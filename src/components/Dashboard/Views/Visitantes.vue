@@ -1,18 +1,18 @@
 <template>
 	<div class="col-md-12">
-		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Pastorais'">
+		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar visitantes'">
 			<simple-form slot="body" :inputs="inputs" :action="add" :btnMsg="'Adicionar'" :selectList="selectList"
       :btnClass="'btn-fill btn-info btn-wd'">
 			</simple-form>
 		</modal>
-		<modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar Pastorais'">
+		<modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar visitantes'">
 			<simple-form slot="body" :inputs="inputsUpdate" :selectList="selectListUpdate" :action="update" :btnClass="'btn-fill btn-warning  btn-wd'" :btnMsg="'Alterar'">
 			</simple-form>
 		</modal>
 		<h4 class="title">{{title}}</h4>
 		<p class="category">{{subTitle}}</p>
 		<div class=" card card-plain">
-			<paper-table type="hover" :getId="getId" :del="del"  :data="pastorais" :columns="pastoraisHeaders">
+			<paper-table type="hover" :getId="getId" :del="del"  :data="visitantes" :columns="visitantesHeaders">
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -32,7 +32,7 @@ import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
-const pastoraisHeaders = ["id", "Nome", "Descricao","Comunidade.Nome"];
+const visitantesHeaders = ['nome', 'email','telefone','comunidades.nome'];
 const inputs = [
   {
     label: "Nome",
@@ -64,7 +64,7 @@ export default {
       showModalUpdate: false,
       inputs: inputs,
       inputsUpdate: [],
-      pastorais: [],
+      visitantes: [],
       selectList: {
         label: "Comunidades",
         name: "comunidades_id",
@@ -75,10 +75,10 @@ export default {
         name: "comunidades_id",
         options: []
       },
-      pastoraisHeaders: pastoraisHeaders,
-      title: "Lista de Pastorais",
-      subTitle: "Aqui você ira encontrar a lista de pastorais completa",
-      urlApi: "http://localhost:8000/api/pastorais"
+      visitantesHeaders: visitantesHeaders,
+      title: "Lista de visitantes",
+      subTitle: "Aqui você ira encontrar a lista de visitantes completa",
+      urlApi: "http://localhost:8000/api/visitantes"
     };
   },
   created() {
@@ -111,7 +111,7 @@ export default {
         .get(this.urlApi)
         .then(function(response) {
           console.log(response);
-          vm.pastorais = response.data;
+          vm.visitantes = response.data;
         })
         .catch(function(error) {
           console.log(error);
@@ -120,7 +120,7 @@ export default {
     search(event) {
       const value = event.target.value;
 
-      const pastoraisFiltrados = this.pastorais.filter(function(obj) {
+      const visitantesFiltrados = this.visitantes.filter(function(obj) {
         return Object.keys(obj).some(function(key) {
           return (
             obj[key]
@@ -131,7 +131,7 @@ export default {
         });
       });
 
-      this.updateTable(pastoraisFiltrados);
+      this.updateTable(visitantesFiltrados);
     },
     closeModalAdd() {
       this.showModalAdd = false;
@@ -139,18 +139,18 @@ export default {
     closeModalUpdate() {
       this.showModalUpdate = false;
     },
-    updateTable(pastorais) {
-      this.table.data = [...pastorais];
+    updateTable(visitantes) {
+      this.table.data = [...visitantes];
     },
-    add(pastoral) {
-      pastoral.created_at = new Date();
-      pastoral.updated_at = null;
+    add(visitante) {
+      visitante.created_at = new Date();
+      visitante.updated_at = null;
 
       const vm = this;
 
-      console.log(JSON.stringify(pastoral));
+      console.log(JSON.stringify(visitante));
       axios
-        .post(this.urlApi, JSON.stringify(pastoral), {
+        .post(this.urlApi, JSON.stringify(visitante), {
           headers: {
             "Content-Type": "application/json"
           }
@@ -181,14 +181,14 @@ export default {
       }
     },
     getId(id) {
-      const pastoral = this.pastorais.find(item => item.id == id);
+      const visitante = this.visitantes.find(item => item.id == id);
 
       const inputs = [
         {
           label: "Nome",
           name: "nome",
           type: "text",
-          value: pastoral.nome,
+          value: visitante.nome,
           placeholder: "",
           required: true
         },
@@ -196,47 +196,36 @@ export default {
           label: "Descrição",
           name: "descricao",
           type: "text",
-          value: pastoral.descricao,
+          value: visitante.descricao,
           placeholder: "",
           required: false
         },
         {
           name: "id",
           type: "hidden",
-          value: pastoral.id,
+          value: visitante.id,
           required: true
         }
       ];
 
-      const vm = this;
-      axios
-        .get("http://localhost:8000/api/comunidades" + "/" + id)
-        .then(function(response) {
-          console.log(response);
-          const comunidade = response.data;
+      const options = {
+        value: visitante.comunidade.nome,
+        id: visitante.comunidade.id
+      };
 
-          const options = {
-            value: comunidade.nome,
-            id: comunidade.id
-          };
-
-          vm.selectListUpdate.options = [options, ...vm.selectList.options];
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      this.selectListUpdate.options = [options, ...this.selectList.options];
 
       this.inputsUpdate = inputs;
 
       this.showModalUpdate = true;
     },
-    update(pastoral) {
+    update(visitante) {
       const vm = this;
 
-      pastoral.updated_at = new Date();
+      visitante.updated_at = new Date();
 
       axios
-        .put(this.urlApi + "/" + pastoral.id, JSON.stringify(pastoral), {
+        .put(this.urlApi + "/" + visitante.id, JSON.stringify(visitante), {
           headers: {
             "Content-Type": "application/json"
           }
