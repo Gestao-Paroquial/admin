@@ -10,7 +10,7 @@
       <div class="col-sm-12">
         <table class="table " :class="tableClass">
           <thead>
-            <th v-for="column in columns" :key="column">{{column}}</th>
+            <th v-for="column in columns" :key="column">{{getColumn(column)}}</th>
             <th>Ações</th>
           </thead>
           <tbody>
@@ -105,7 +105,13 @@ export default {
       return item[column.toLowerCase()] !== "undefined";
     },
     itemValue(item, column) {
+      if (column.match(/\./g)) {
+        const splited = column.split(".");
+        return item[splited[0].toLowerCase()][splited[1].toLowerCase()];
+      }
       return item[column.toLowerCase()];
+    },getColumn(column){
+      return column.split('.')[0];
     }
   }
 };

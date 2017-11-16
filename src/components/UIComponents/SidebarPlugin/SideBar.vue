@@ -118,7 +118,7 @@ export default {
     this.findActiveLink()
   },
   watch: {
-    $route: function(newRoute, oldRoute) {
+    $route: function() {
       this.findActiveLink()
     }
   }

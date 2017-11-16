@@ -9,6 +9,11 @@ const SidebarStore = {
 			path: '/admin/overview'
 		},
 		{
+			name: 'Visitantes',
+			icon: 'fa fa-users',
+			path: '/admin/visitantes'
+		},
+		{
 			name: 'Participantes',
 			icon: 'fa fa-users',
 			path: '/admin/participantes'

@@ -11,7 +11,7 @@
 		<h4 class="title">{{title}}</h4>
 		<p class="category">{{subTitle}}</p>
 		<div class=" card card-plain">
-			<paper-table type="hover" :getId="getId" :del="del"  :data="table.data" :columns="table.columns">
+			<paper-table type="hover" :getId="getId" :del="del"  :data="comunidades" :columns="comunidadesHeaders">
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -30,61 +30,93 @@
 import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
-const comunidadesHeaders = ["Id", "Name", "Local", "Missas", "Foto"];
+import axios from "axios";
+const comunidadesHeaders = ["Id", "Nome", "Cidade", "UF"];
 
 const inputs = [
   {
     label: "Nome",
-    name: "name",
-    type: "text",
-    value: "",
-    required: true
-  },
-  {
-    label: "Localização",
-    name: "local",
-    type: "text",
-    value: "",
-    required: true
-  },
-  {
-    label: "Horários das Missas",
-    name: "missas",
+    name: "nome",
     type: "text",
     value: "",
     required: false
   },
   {
-    label: "Foto",
-    name: "foto",
+    label: "E-mail",
+    name: "email",
     type: "text",
     value: "",
-    accept: "image/x-png,image/gif,image/jpeg",
-    required: true
-  }
-];
-
-const comunidades = [
-  {
-    name: "Teste1",
-    foto: "teste1.jpg",
-    local: "Av. Um",
-    missas: "12.00",
-    id: 10
+    required: false
   },
   {
-    name: "Teste2",
-    foto: "teste2.jpg",
-    local: "Av. Dois",
-    missas: "12.00",
-    id: 101
+    label: "CNPJ",
+    name: "cnpj",
+    type: "text",
+    value: "",
+    required: false
   },
   {
-    name: "Teste3",
-    foto: "teste3.jpg",
-    local: "Av. Três",
-    missas: "12.00",
-    id: 102
+    label: "Telefone",
+    name: "telefone",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Celular",
+    name: "celular",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Endereço",
+    name: "endereco",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Número",
+    name: "nro",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Complemento",
+    name: "compl",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Bairro",
+    name: "bairro",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "Cidade",
+    name: "cidade",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "UF",
+    name: "uf",
+    type: "text",
+    value: "",
+    required: false
+  },
+  {
+    label: "CEP",
+    name: "cep",
+    type: "text",
+    value: "",
+    required: false
   }
 ];
 
@@ -99,16 +131,16 @@ export default {
       showModalAdd: false,
       showModalUpdate: false,
       inputs: inputs,
+      urlApi: "http://localhost:8000/api/comunidades",
       inputsUpdate: [],
-      comunidades: comunidades,
+      comunidades: [],
       comunidadesHeaders: comunidadesHeaders,
-      title: "Lista de Participantes",
-      subTitle: "Aqui você ira encontrar a lista de comunidades completa",
-      table: {
-        columns: [...comunidadesHeaders],
-        data: [...comunidades]
-      }
+      title: "Lista de Comunidades",
+      subTitle: "Aqui você ira encontrar a lista de comunidades completa"
     };
+  },
+  created() {
+    this.get();
   },
   methods: {
     search(event) {
@@ -133,22 +165,51 @@ export default {
     closeModalUpdate() {
       this.showModalUpdate = false;
     },
-    updateTable(comunidades) {
-      this.table.data = [...comunidades];
+    get() {
+      const vm = this;
+      axios
+        .get(this.urlApi)
+        .then(function(response) {
+          console.log(response);
+          vm.comunidades = response.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     add(comunidade) {
-      this.comunidades.push(comunidade);
-      this.updateTable(this.comunidades);
+      comunidade.created_at = new Date();
+      comunidade.updated_at = null;
+      const vm = this;
+
+      axios
+        .post(this.urlApi, JSON.stringify(comunidade), {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+          vm.get();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+
       this.showModalAdd = false;
     },
     del(id) {
-      const index = this.comunidades.findIndex(
-        comunidade => comunidade.id == id
-      );
-
       if (confirm("Você tem certeza?")) {
-        this.comunidades.splice(index, 1);
-        this.updateTable(this.comunidades);
+        const vm = this;
+        axios
+          .delete(this.urlApi + "/" + id)
+          .then(function(response) {
+            console.log(response);
+            vm.get();
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
     },
     getId(id) {
@@ -157,32 +218,87 @@ export default {
       const inputs = [
         {
           label: "Nome",
-          name: "name",
+          name: "nome",
           type: "text",
-          value: comunidade.name,
-          required: true
-        },
-        {
-          label: "Localização",
-          name: "local",
-          type: "text",
-          value: comunidade.local,
-          required: true
-        },
-        {
-          label: "Horários das Missas",
-          name: "missas",
-          type: "text",
-          value: comunidade.missas,
+          value: comunidade.nome,
           required: false
         },
         {
-          label: "Foto",
-          name: "foto",
+          label: "E-mail",
+          name: "email",
           type: "text",
-          value: comunidade.foto,
-          accept: "image/x-png,image/gif,image/jpeg",
-          required: true
+          value: comunidade.email,
+          required: false
+        },
+        {
+          label: "CNPJ",
+          name: "cnpj",
+          type: "text",
+          value: comunidade.cnpj,
+          required: false
+        },
+        {
+          label: "Telefone",
+          name: "telefone",
+          type: "text",
+          value: comunidade.telefone,
+          required: false
+        },
+        {
+          label: "Celular",
+          name: "celular",
+          type: "text",
+          value: comunidade.celular,
+          required: false
+        },
+        {
+          label: "Endereço",
+          name: "endereco",
+          type: "text",
+          value: comunidade.endereco,
+          required: false
+        },
+        {
+          label: "Número",
+          name: "nro",
+          type: "text",
+          value: comunidade.nro,
+          required: false
+        },
+        {
+          label: "Complemento",
+          name: "compl",
+          type: "text",
+          value: comunidade.compl,
+          required: false
+        },
+        {
+          label: "Bairro",
+          name: "bairro",
+          type: "text",
+          value: comunidade.bairro,
+          required: false
+        },
+        {
+          label: "Cidade",
+          name: "cidade",
+          type: "text",
+          value: comunidade.cidade,
+          required: false
+        },
+        {
+          label: "UF",
+          name: "uf",
+          type: "text",
+          value: comunidade.uf,
+          required: false
+        },
+        {
+          label: "CEP",
+          name: "cep",
+          type: "text",
+          value: comunidade.cep,
+          required: false
         },
         {
           name: "id",
@@ -197,13 +313,26 @@ export default {
       this.showModalUpdate = true;
     },
     update(comunidade) {
-      console.log(comunidade);
+      const vm = this;
 
-      const index = this.comunidades.findIndex(
-        item => item.id == comunidade.id
-      );
+      comunidade.updated_at = new Date();
+     
+     
+      axios
+        .put(this.urlApi + "/" + comunidade.id, JSON.stringify(comunidade), {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(function(response) {
+          console.log(response);
+          vm.get();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
 
-      this.$set(this.comunidades, index, comunidade);
+      // this.$set(this.comunidades, index, comunidade);
 
       this.closeModalUpdate();
     }
