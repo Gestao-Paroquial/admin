@@ -1,17 +1,25 @@
 <template>
 	<div class="col-md-12">
+
 		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar Comunidade'">
 			<simple-form slot="body" :inputs="inputs" :action="add" :btnMsg="'Adicionar'" :btnClass="'btn-fill btn-info btn-wd'">
 			</simple-form>
 		</modal>
+
 		<modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar Comunidade'">
+
 			<simple-form slot="body" :inputs="inputsUpdate" :action="update" :btnClass="'btn-fill btn-warning  btn-wd'" :btnMsg="'Alterar'">
 			</simple-form>
+
 		</modal>
+
 		<h4 class="title">{{title}}</h4>
+
 		<p class="category">{{subTitle}}</p>
+
 		<div class=" card card-plain">
-			<paper-table type="hover" :getId="getId" :del="del"  :data="comunidades" :columns="comunidadesHeaders">
+
+			<paper-table type="hover" :show="show" :getId="getId" :del="del"  :data="comunidades" :columns="comunidadesHeaders"  >
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -23,11 +31,18 @@
 					</div>
 				</div>
 			</paper-table>
+
+
+   
+      <view-item :item="selectedItem" :title="'Comunidade'"></view-item>
+   
+
 		</div>
 	</div>
 </template>
 <script>
 import PaperTable from "components/UIComponents/PaperTable.vue";
+import ViewItem from "components/UIComponents/ViewItem.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
@@ -123,6 +138,7 @@ const inputs = [
 export default {
   components: {
     PaperTable,
+    ViewItem,
     Modal,
     SimpleForm
   },
@@ -134,6 +150,7 @@ export default {
       urlApi: "http://localhost:8000/api/comunidades",
       inputsUpdate: [],
       comunidades: [],
+      selectedItem: null,
       comunidadesHeaders: comunidadesHeaders,
       title: "Lista de Comunidades",
       subTitle: "Aqui você ira encontrar a lista de comunidades completa"
@@ -176,6 +193,9 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    show(item) {
+      this.selectedItem = item;
     },
     add(comunidade) {
       comunidade.created_at = new Date();
@@ -316,8 +336,7 @@ export default {
       const vm = this;
 
       comunidade.updated_at = new Date();
-     
-     
+
       axios
         .put(this.urlApi + "/" + comunidade.id, JSON.stringify(comunidade), {
           headers: {

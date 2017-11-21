@@ -12,7 +12,7 @@
 		<h4 class="title">{{title}}</h4>
 		<p class="category">{{subTitle}}</p>
 		<div class=" card card-plain">
-			<paper-table type="hover" :getId="getId" :del="del"  :data="membrosPastorais" :columns="membrosPastoraisHeaders">
+			<paper-table type="hover" :getId="getId" :del="del"  :data="membrosPastorais" :show="show" :columns="membrosPastoraisHeaders">
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -25,6 +25,9 @@
 				</div>
 			</paper-table>
 		</div>
+
+  <view-item :item="selectedItem" :title="'Membro Pastoral'"></view-item>
+
 	</div>
 </template>
 <script>
@@ -32,6 +35,8 @@ import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
+import ViewItem from "components/UIComponents/ViewItem.vue"
+
 const membrosPastoraisHeaders = ["nome", "email", "telefone", "pastorais.nome"];
 const inputs = [
   {
@@ -120,7 +125,8 @@ export default {
   components: {
     PaperTable,
     Modal,
-    SimpleForm
+    SimpleForm,
+    ViewItem
   },
   data() {
     return {
@@ -129,6 +135,7 @@ export default {
       inputs: inputs,
       inputsUpdate: [],
       membrosPastorais: [],
+            selectedItem: null,
       selectList: {
         label: "Pastorais",
         name: "pastorais_id",
@@ -179,6 +186,9 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+      show(item) {
+      this.selectedItem = item;
     },
     search(event) {
       const value = event.target.value;

@@ -11,8 +11,9 @@
 		</modal>
 		<h4 class="title">{{title}}</h4>
 		<p class="category">{{subTitle}}</p>
+
 		<div class=" card card-plain">
-			<paper-table type="hover" :getId="getId" :del="del"  :data="visitantes" :columns="visitantesHeaders">
+			<paper-table type="hover" :show="show" :getId="getId" :del="del"  :data="visitantes" :columns="visitantesHeaders">
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -25,6 +26,8 @@
 				</div>
 			</paper-table>
 		</div>
+
+     <view-item :item="selectedItem" :title="'Visitante'"></view-item>
 	</div>
 </template>
 <script>
@@ -32,6 +35,8 @@ import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
+import ViewItem from "components/UIComponents/ViewItem.vue";
+
 const visitantesHeaders = ["nome", "email", "telefone", "comunidades.nome"];
 const inputs = [
   {
@@ -64,7 +69,8 @@ export default {
   components: {
     PaperTable,
     Modal,
-    SimpleForm
+    SimpleForm,
+    ViewItem
   },
   data() {
     return {
@@ -73,6 +79,7 @@ export default {
       inputs: inputs,
       inputsUpdate: [],
       visitantes: [],
+      selectedItem: null,
       selectList: {
         label: "Comunidades",
         name: "comunidades_id",
@@ -112,6 +119,9 @@ export default {
       });
   },
   methods: {
+    show(item) {
+      this.selectedItem = item;
+    },
     get() {
       const vm = this;
       axios
