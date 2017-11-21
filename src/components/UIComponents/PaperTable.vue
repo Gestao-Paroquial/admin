@@ -10,7 +10,7 @@
       <div class="col-sm-12">
         <table class="table " :class="tableClass">
           <thead>
-            <th v-for="column in columns" :key="column">{{column}}</th>
+            <th v-for="column in columns" :key="column">{{getColumn(column)}}</th>
             <th>Ações</th>
           </thead>
           <tbody>
@@ -18,6 +18,11 @@
               <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
               <td>
                 <div class="cell">
+                  
+                  <a class="btn btn-simple btn-xs btn-info btn-icon view" @click="show(item)">
+                    <i class="ti-eye"></i>
+                  </a>
+
                   <a class="btn btn-simple btn-xs btn-warning btn-icon edit" @click="getId(item.id)">
                     <i class="ti-pencil-alt"></i>
                   </a>
@@ -59,6 +64,7 @@ export default {
     columns: Array,
     data: Array,
     del: Function,
+    show: Function,
     getId: Function,
     type: {
       type: String, // striped | hover
@@ -73,7 +79,7 @@ export default {
       default: ""
     },
     itemsPerPage: {
-      default: 5,
+      default: 10,
       type: Number
     }
   },
@@ -105,7 +111,14 @@ export default {
       return item[column.toLowerCase()] !== "undefined";
     },
     itemValue(item, column) {
+      if (column.match(/\./g)) {
+        const splited = column.split(".");
+        return item[splited[0].toLowerCase()][splited[1].toLowerCase()];
+      }
       return item[column.toLowerCase()];
+    },
+    getColumn(column) {
+      return column.split(".")[0];
     }
   }
 };
