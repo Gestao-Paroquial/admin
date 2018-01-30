@@ -11,23 +11,20 @@
                       label="Company"
                       :disabled="true"
                       placeholder="Paper dashboard"
-                      v-model="user.company">
-            </fg-input>
+                      v-model="user.company"/>
           </div>
           <div class="col-md-3">
 
             <fg-input type="text"
                       label="Username"
                       placeholder="Username"
-                      v-model="user.username">
-            </fg-input>
+                      v-model="user.username"/>
           </div>
           <div class="col-md-4">
             <fg-input type="email"
                       label="Username"
                       placeholder="Email"
-                      v-model="user.email">
-            </fg-input>
+                      v-model="user.email"/>
           </div>
         </div>
 
@@ -36,15 +33,13 @@
             <fg-input type="text"
                       label="First Name"
                       placeholder="First Name"
-                      v-model="user.firstName">
-            </fg-input>
+                      v-model="user.firstName"/>
           </div>
           <div class="col-md-6">
             <fg-input type="text"
                       label="Last Name"
                       placeholder="Last Name"
-                      v-model="user.lastName">
-            </fg-input>
+                      v-model="user.lastName"/>
           </div>
         </div>
 
@@ -53,8 +48,7 @@
             <fg-input type="text"
                       label="Address"
                       placeholder="Home Address"
-                      v-model="user.address">
-            </fg-input>
+                      v-model="user.address"/>
           </div>
         </div>
 
@@ -63,22 +57,19 @@
             <fg-input type="text"
                       label="City"
                       placeholder="City"
-                      v-model="user.city">
-            </fg-input>
+                      v-model="user.city"/>
           </div>
           <div class="col-md-4">
             <fg-input type="text"
                       label="Country"
                       placeholder="Country"
-                      v-model="user.country">
-            </fg-input>
+                      v-model="user.country"/>
           </div>
           <div class="col-md-4">
             <fg-input type="number"
                       label="Postal Code"
                       placeholder="ZIP Code"
-                      v-model="user.postalCode">
-            </fg-input>
+                      v-model="user.postalCode"/>
           </div>
         </div>
 
@@ -88,9 +79,7 @@
               <label>About Me</label>
               <textarea rows="5" class="form-control border-input"
                         placeholder="Here can be your description"
-                        v-model="user.aboutMe">
-
-              </textarea>
+                        v-model="user.aboutMe"/>
             </div>
           </div>
         </div>
@@ -99,7 +88,7 @@
             Update Profile
           </button>
         </div>
-        <div class="clearfix"></div>
+        <div class="clearfix"/>
       </form>
     </div>
   </div>

@@ -14,23 +14,19 @@
           Gestão Paroquial
         </a>
       </div>
-      <slot>
-
-      </slot>
+      <slot/>
       <ul :class="navClasses">
         <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
-        <router-link v-for="(link,index)  in sidebarLinks" :to="link.path" tag="li" :ref="link.name" :key="index">
+        <router-link v-for="(link,index) in sidebarLinks" :to="link.path" tag="li" :ref="link.name" :key="index">
           <a>
-            <i :class="link.icon"></i>
+            <i :class="link.icon"/>
 
-            <p>{{link.name}}
+            <p>{{ link.name }}
             </p>
           </a>
         </router-link>
       </ul>
-      <moving-arrow :move-y="arrowMovePx">
-
-      </moving-arrow>
+      <moving-arrow :move-y="arrowMovePx"/>
     </div>
   </div>
 </template>

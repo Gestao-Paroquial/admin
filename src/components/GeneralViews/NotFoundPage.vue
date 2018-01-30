@@ -6,9 +6,9 @@
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
             <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
+            <span class="icon-bar"/>
+            <span class="icon-bar"/>
+            <span class="icon-bar"/>
           </button>
           <router-link :to="{path:'/'}" class="navbar-brand">Site title</router-link>
         </div>
@@ -51,7 +51,7 @@
         </nav>
         <div class="copyright pull-right">
           &copy; 2017, made with
-          <i class="fa fa-heart heart"></i> by Paper admin
+          <i class="fa fa-heart heart"/> by Paper admin
         </div>
       </div>
     </footer>

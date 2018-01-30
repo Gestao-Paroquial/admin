@@ -1,34 +1,32 @@
 <template>
-	<div class="col-md-12">
-		<modal :showModal="showModalAdd" :closeModal="closeModalAdd" :title="'Adicionar visitantes'">
-			<simple-form slot="body" :inputs="inputs" :action="add" :btnMsg="'Adicionar'" :selectList="selectList"
-      :btnClass="'btn-fill btn-info btn-wd'">
-			</simple-form>
-		</modal>
-		<modal :showModal="showModalUpdate" :closeModal="closeModalUpdate" :title="'Alterar visitantes'">
-			<simple-form slot="body" :inputs="inputsUpdate" :selectList="selectListUpdate" :action="update" :btnClass="'btn-fill btn-warning  btn-wd'" :btnMsg="'Alterar'">
-			</simple-form>
-		</modal>
-		<h4 class="title">{{title}}</h4>
-		<p class="category">{{subTitle}}</p>
+  <div class="col-md-12">
+    <modal :show-modal="showModalAdd" :close-modal="closeModalAdd" :title="'Adicionar visitantes'">
+      <simple-form slot="body" :inputs="inputs" :action="add" :btn-msg="'Adicionar'" :select-list="selectList"
+                   :btn-class="'btn-fill btn-info btn-wd'"/>
+    </modal>
+    <modal :show-modal="showModalUpdate" :close-modal="closeModalUpdate" :title="'Alterar visitantes'">
+      <simple-form slot="body" :inputs="inputsUpdate" :select-list="selectListUpdate" :action="update" :btn-class="'btn-fill btn-warning  btn-wd'" :btn-msg="'Alterar'"/>
+    </modal>
+    <h4 class="title">{{ title }}</h4>
+    <p class="category">{{ subTitle }}</p>
 
-		<div class=" card card-plain">
-			<paper-table type="hover" :show="show" :getId="getId" :del="del"  :data="table.data" :columns="visitantesHeaders">
-				<div slot="header">
-					<div class="col-sm-12">									
-							<label class="label-search">
-								<input type="search" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm" @keydown="search">
-							</label>
-								<button type="button" class="btn btn-success btn-fill pull-right" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">
-							<i class="fa fa-plus" aria-hidden="true"></i>
-						</button>
-					</div>
-				</div>
-			</paper-table>
-		</div>
+    <div class=" card card-plain">
+      <paper-table type="hover" :show="show" :get-id="getId" :del="del" :data="table.data" :columns="visitantesHeaders">
+        <div slot="header">
+          <div class="col-sm-12">									
+            <label class="label-search">
+              <input type="search" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm" @keydown="search">
+            </label>
+            <button type="button" class="btn btn-success btn-fill pull-right" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">
+              <i class="fa fa-plus" aria-hidden="true"/>
+            </button>
+          </div>
+        </div>
+      </paper-table>
+    </div>
 
-     <view-item :item="selectedItem" :title="'Visitante'"></view-item>
-	</div>
+    <view-item :item="selectedItem" :title="'Visitante'"/>
+  </div>
 </template>
 <script>
 import PaperTable from "components/UIComponents/PaperTable.vue";

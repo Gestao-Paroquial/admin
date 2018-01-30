@@ -1,23 +1,22 @@
 <template>
   <div class="card">
     <div class="header">
-      <slot name="title"></slot>
+      <slot name="title"/>
       <p class="category">
-        <slot name="subTitle"></slot>
+        <slot name="subTitle"/>
       </p>
     </div>
     <div class="content">
-      <div :id="chartId" class="ct-chart"></div>
+      <div :id="chartId" class="ct-chart"/>
       <div class="footer">
         <div class="chart-legend">
-          <slot name="legend"></slot>
+          <slot name="legend"/>
         </div>
         <hr>
         <div class="stats">
-          <slot name="footer"></slot>
+          <slot name="footer"/>
         </div>
-        <div class="pull-right">
-        </div>
+        <div class="pull-right"/>
       </div>
     </div>
 
@@ -25,7 +24,7 @@
 </template>
 <script>
   export default {
-    name: 'chart-card',
+    name: 'ChartCard',
     props: {
       footerText: {
         type: String,

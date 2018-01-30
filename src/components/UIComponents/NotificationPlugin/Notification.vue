@@ -3,10 +3,10 @@
     <button type="button" aria-hidden="true" class="close" data-notify="dismiss" style="position: absolute; right: 10px; top: 5px; z-index: 1033;" @click="close">×
     </button>
     <div class="row">
-      <span :class="icon" class="col-xs-1 alert-icon"></span>
+      <span :class="icon" class="col-xs-1 alert-icon"/>
       <div :class="hasIcon ? 'col-xs-8' : 'col-xs-12'">
         <slot name="message">
-          <div v-html="message"></div>
+          <div v-html="message"/>
         </slot>
       </div>
     </div>
@@ -15,7 +15,7 @@
 </template>
 <script>
   export default {
-    name: 'notification',
+    name: 'Notification',
     props: {
       message: String,
       icon: String,
