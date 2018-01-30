@@ -1,33 +1,33 @@
 <template>
-    <div class="modal-mask" v-if="showModal">
-        <div class="modal-wrapper">
-            <div class="modal-container">
+  <div class="modal-mask" v-if="showModal">
+    <div class="modal-wrapper">
+      <div class="modal-container">
 
-                <div class="modal-header">
-                    <slot name="header">
-                        <b>{{title}}</b>
-                    </slot>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-
-                <div class="modal-body">
-                    <slot name="body">
-                        default body
-                    </slot>
-                </div>
-
-                <div class="modal-footer">
-                    <slot name="footer">
-                        <button class="center-block btn btn-wd" @click="closeModal()">
-                            Fechar
-                        </button>
-                    </slot>
-                </div>
-            </div>
+        <div class="modal-header">
+          <slot name="header">
+            <b>{{ title }}</b>
+          </slot>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeModal()">
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
+
+        <div class="modal-body">
+          <slot name="body">
+            default body
+          </slot>
+        </div>
+
+        <div class="modal-footer">
+          <slot name="footer">
+            <button class="center-block btn btn-wd" @click="closeModal()">
+              Fechar
+            </button>
+          </slot>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 <script>
 export default {

@@ -2,32 +2,32 @@
   <div style="overflow: hidden;" class="paper-table">
     <div class="header">
       <slot name="header">
-        <h4 class="title">{{title}}</h4>
-        <p class="category">{{subTitle}}</p>
+        <h4 class="title">{{ title }}</h4>
+        <p class="category">{{ subTitle }}</p>
       </slot>
     </div>
     <div class="content table-responsive table-full-width">
       <div class="col-sm-12">
         <table class="table " :class="tableClass">
           <thead>
-            <th v-for="column in columns" :key="column">{{getColumn(column)}}</th>
+            <th v-for="column in columns" :key="column">{{ getColumn(column) }}</th>
             <th>Ações</th>
           </thead>
           <tbody>
             <tr v-for="(item, index) in data" :key="index" v-if="index >= start && index < (start + itemsPerPage) ">
-              <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">{{itemValue(item, column)}}</td>
+              <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">{{ itemValue(item, column) }}</td>
               <td>
                 <div class="cell">
-                  
+
                   <a class="btn btn-simple btn-xs btn-info btn-icon view" @click="show(item)">
-                    <i class="ti-eye"></i>
+                    <i class="ti-eye" />
                   </a>
 
                   <a class="btn btn-simple btn-xs btn-warning btn-icon edit" @click="getId(item.id)">
-                    <i class="ti-pencil-alt"></i>
+                    <i class="ti-pencil-alt" />
                   </a>
                   <a class="btn btn-simple btn-xs btn-danger btn-icon remove " @click="del(item.id)">
-                    <i class="ti-close"></i>
+                    <i class="ti-close" />
                   </a>
                 </div>
               </td>
@@ -36,21 +36,21 @@
         </table>
       </div>
       <div class="col-sm-6 pagination-info">
-        <p class="category">Mostrando {{start + 1}} até {{start+itemsPerPage >= data.length? data.length :start+itemsPerPage}} de {{data.length}} registros</p>
+        <p class="category">Mostrando {{ start + 1 }} até {{ start+itemsPerPage >= data.length? data.length :start+itemsPerPage }} de {{ data.length }} registros</p>
       </div>
       <div class="col-sm-12">
         <ul class="pagination pull-right pagination-default">
           <li class="page-item" :class="{'disabled': start == 0}" @click="previous">
             <a href="javascript:void(0)" aria-label="Previous" class="page-link">
-              <i aria-hidden="true" class="fa fa-angle-double-left"></i>
+              <i aria-hidden="true" class="fa fa-angle-double-left" />
             </a>
           </li>
-          <li class="page-item" :class="{'active':  page == index}" v-for="(item, index) in data" :key="index" v-if="index < data.length/itemsPerPage">
-            <a href="javascript:void(0)" class="page-link" @click="start = itemsPerPage * index; page = index ">{{index+1}}</a>
+          <li class="page-item" :class="{'active': page == index}" v-for="(item, index) in data" :key="index" v-if="index < data.length/itemsPerPage">
+            <a href="javascript:void(0)" class="page-link" @click="start = itemsPerPage * index; page = index ">{{ index+1 }}</a>
           </li>
-          <li class="page-pre" :class="{'disabled':   data.length-start < itemsPerPage  }" @click="next">
+          <li class="page-pre" :class="{'disabled': data.length-start < itemsPerPage }" @click="next">
             <a href="javascript:void(0)" aria-label="Next" class="page-link">
-              <i aria-hidden="true" class="fa fa-angle-double-right"></i>
+              <i aria-hidden="true" class="fa fa-angle-double-right" />
             </a>
           </li>
         </ul>

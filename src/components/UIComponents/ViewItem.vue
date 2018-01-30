@@ -7,22 +7,22 @@
     </div>
     <div class="content">
       <p v-for="key in Object.keys(item)" :key="key">
-        {{key}}: {{ item[key] }}
+        {{ key }}: {{ item[key] }}
       </p>
     </div>
   </div>
 </template>
 
 <script>
-  export default {
-    props: {
-      item: Object,
-      title: String
-    },
-    data() {
-      return {};
-    }
-  };
+export default {
+  props: {
+    item: Object,
+    title: String
+  },
+  data() {
+    return {};
+  }
+};
 </script>
 
 <style lang="scss" scoped>

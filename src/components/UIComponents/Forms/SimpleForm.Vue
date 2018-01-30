@@ -1,14 +1,14 @@
 <template>
-	<form slot="body" @submit="makeObj">
-		<div>
-			<fg-input v-for="input in inputs" :key="input.name" :label="input.label" :required="input.required" :name="input.name" :type="input.type" :value="input.value" :placeholder="input.placeholder"></fg-input>
+  <form slot="body" @submit="makeObj">
+    <div>
+      <fg-input v-for="input in inputs" :key="input.name" :label="input.label" :required="input.required" :name="input.name" :type="input.type" :value="input.value" :placeholder="input.placeholder" />
 
-      <select-list v-if="selectList" :selectList="selectList" ></select-list>        
-		</div>
-		<div class="text-center">
-			<button type="submit" :class="btnClass" class="btn">{{btnMsg}}</button>
-		</div>
-	</form>
+      <select-list v-if="selectList" :select-list="selectList" />
+    </div>
+    <div class="text-center">
+      <button type="submit" :class="btnClass" class="btn">{{ btnMsg }}</button>
+    </div>
+  </form>
 </template>
 <script>
 import fgInput from "components/UIComponents/Inputs/formGroupInput.vue";

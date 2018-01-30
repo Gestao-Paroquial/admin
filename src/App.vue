@@ -1,12 +1,12 @@
 <template>
   <div :class="{'nav-open': $sidebar.showSidebar}">
-    <router-view></router-view>
+    <router-view/>
     <!--This sidebar appears only for screens smaller than 992px-->
     <side-bar type="navbar" :sidebar-links="$sidebar.sidebarLinks">
       <ul class="nav navbar-nav">
         <li>
           <a class="dropdown-toggle" data-toggle="dropdown">
-            <i class="ti-panel"></i>
+            <i class="ti-panel"/>
             <p>Stats</p>
           </a>
         </li>
@@ -21,11 +21,11 @@
         </drop-down>
         <li>
           <a>
-            <i class="ti-settings"></i>
+            <i class="ti-settings"/>
             <p>Settings</p>
           </a>
         </li>
-        <li class="divider"></li>
+        <li class="divider"/>
       </ul>
     </side-bar>
   </div>
