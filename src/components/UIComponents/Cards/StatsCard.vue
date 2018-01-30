@@ -3,26 +3,25 @@
     <div class="content">
       <div class="row">
         <div class="col-xs-5">
-          <slot name="header"/>
+          <slot name="header" />
         </div>
         <div class="col-xs-7">
-          <slot name="content"/>
+          <slot name="content" />
         </div>
       </div>
       <div class="footer">
         <hr>
-        <slot name="footer"/>
+        <slot name="footer" />
       </div>
     </div>
-  
+
   </div>
 </template>
 <script>
-  export default {
-    name: 'StatsCard'
-  }
-
+export default {
+  name: "StatsCard"
+};
 </script>
 <style>
-  
+
 </style>

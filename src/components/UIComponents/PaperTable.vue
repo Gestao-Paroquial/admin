@@ -18,16 +18,16 @@
               <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">{{ itemValue(item, column) }}</td>
               <td>
                 <div class="cell">
-                  
+
                   <a class="btn btn-simple btn-xs btn-info btn-icon view" @click="show(item)">
-                    <i class="ti-eye"/>
+                    <i class="ti-eye" />
                   </a>
 
                   <a class="btn btn-simple btn-xs btn-warning btn-icon edit" @click="getId(item.id)">
-                    <i class="ti-pencil-alt"/>
+                    <i class="ti-pencil-alt" />
                   </a>
                   <a class="btn btn-simple btn-xs btn-danger btn-icon remove " @click="del(item.id)">
-                    <i class="ti-close"/>
+                    <i class="ti-close" />
                   </a>
                 </div>
               </td>
@@ -42,7 +42,7 @@
         <ul class="pagination pull-right pagination-default">
           <li class="page-item" :class="{'disabled': start == 0}" @click="previous">
             <a href="javascript:void(0)" aria-label="Previous" class="page-link">
-              <i aria-hidden="true" class="fa fa-angle-double-left"/>
+              <i aria-hidden="true" class="fa fa-angle-double-left" />
             </a>
           </li>
           <li class="page-item" :class="{'active': page == index}" v-for="(item, index) in data" :key="index" v-if="index < data.length/itemsPerPage">
@@ -50,7 +50,7 @@
           </li>
           <li class="page-pre" :class="{'disabled': data.length-start < itemsPerPage }" @click="next">
             <a href="javascript:void(0)" aria-label="Next" class="page-link">
-              <i aria-hidden="true" class="fa fa-angle-double-right"/>
+              <i aria-hidden="true" class="fa fa-angle-double-right" />
             </a>
           </li>
         </ul>

@@ -2,12 +2,12 @@
   <div class="col-md-12">
 
     <modal :show-modal="showModalAdd" :close-modal="closeModalAdd" :title="'Adicionar Comunidade'">
-      <simple-form slot="body" :inputs="inputs" :action="add" :btn-msg="'Adicionar'" :btn-class="'btn-fill btn-info btn-wd'"/>
+      <simple-form slot="body" :inputs="inputs" :action="add" :btn-msg="'Adicionar'" :btn-class="'btn-fill btn-info btn-wd'" />
     </modal>
 
     <modal :show-modal="showModalUpdate" :close-modal="closeModalUpdate" :title="'Alterar Comunidade'">
 
-      <simple-form slot="body" :inputs="inputsUpdate" :action="update" :btn-class="'btn-fill btn-warning  btn-wd'" :btn-msg="'Alterar'"/>
+      <simple-form slot="body" :inputs="inputsUpdate" :action="update" :btn-class="'btn-fill btn-warning  btn-wd'" :btn-msg="'Alterar'" />
 
     </modal>
 
@@ -17,23 +17,20 @@
 
     <div class=" card card-plain">
 
-      <paper-table type="hover" :show="show" :get-id="getId" :del="del" :data="table.data" :columns="comunidadesHeaders" >
+      <paper-table type="hover" :show="show" :get-id="getId" :del="del" :data="table.data" :columns="comunidadesHeaders">
         <div slot="header">
-          <div class="col-sm-12">									
+          <div class="col-sm-12">
             <label class="label-search">
               <input type="search" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm" @keydown="search">
             </label>
             <button type="button" class="btn btn-success btn-fill pull-right" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">
-              <i class="fa fa-plus" aria-hidden="true"/>
+              <i class="fa fa-plus" aria-hidden="true" />
             </button>
           </div>
         </div>
       </paper-table>
 
-
-   
-      <view-item :item="selectedItem" :title="'Comunidade'"/>
-   
+      <view-item :item="selectedItem" :title="'Comunidade'" />
 
     </div>
   </div>
@@ -149,7 +146,7 @@ export default {
       inputsUpdate: [],
       comunidades: [],
       selectedItem: null,
-      table:{data:[]},
+      table: { data: [] },
       comunidadesHeaders: comunidadesHeaders,
       title: "Lista de Comunidades",
       subTitle: "Aqui você ira encontrar a lista de comunidades completa"
@@ -173,7 +170,7 @@ export default {
         });
       });
 
-    this.table.data = comunidadesFiltrados;
+      this.table.data = comunidadesFiltrados;
     },
     closeModalAdd() {
       this.showModalAdd = false;

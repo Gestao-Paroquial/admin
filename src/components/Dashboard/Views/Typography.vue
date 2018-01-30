@@ -5,32 +5,32 @@
         <div class="header">
           <h4 class="title">Paper Dashboard Headings</h4>
           <p class="category">Created using
-          <a href="https://www.google.com/fonts/specimen/Muli">Muli</a> Font Family</p>
+            <a href="https://www.google.com/fonts/specimen/Muli">Muli</a> Font Family</p>
         </div>
         <div class="content">
           <div class="typo-line">
             <h1>
-            <p class="category">Header 1</p>Paper Dashboard Heading </h1>
+              <p class="category">Header 1</p>Paper Dashboard Heading </h1>
           </div>
           <div class="typo-line">
             <h2>
-            <p class="category">Header 2</p>Paper Dashboard Heading </h2>
+              <p class="category">Header 2</p>Paper Dashboard Heading </h2>
           </div>
           <div class="typo-line">
             <h3>
-            <p class="category">Header 3</p>Paper Dashboard Heading </h3>
+              <p class="category">Header 3</p>Paper Dashboard Heading </h3>
           </div>
           <div class="typo-line">
             <h4>
-            <p class="category">Header 4</p>Paper Dashboard Heading </h4>
+              <p class="category">Header 4</p>Paper Dashboard Heading </h4>
           </div>
           <div class="typo-line">
             <h5>
-            <p class="category">Header 5</p>Paper Dashboard Heading </h5>
+              <p class="category">Header 5</p>Paper Dashboard Heading </h5>
           </div>
           <div class="typo-line">
             <h6>
-            <p class="category">Header 6</p>Paper Dashboard Heading </h6>
+              <p class="category">Header 6</p>Paper Dashboard Heading </h6>
           </div>
           <div class="typo-line">
             <p>
@@ -152,7 +152,7 @@
               This is
               <code>.css-class-as-code</code>, an example of an inline code element. Wrap inline code within a
               <code>
-            &lt;code&gt;...&lt;/code&gt;</code>tag.</p>
+                &lt;code&gt;...&lt;/code&gt;</code>tag.</p>
             <pre>1. #This is an example of preformatted text. 2. #Here is another line of code</pre>
           </div>
         </div>
@@ -161,8 +161,7 @@
   </div>
 </template>
 <script>
-  export default {}
-
+export default {};
 </script>
 <style>
 

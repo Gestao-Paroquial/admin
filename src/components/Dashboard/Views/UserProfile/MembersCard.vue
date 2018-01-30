@@ -19,10 +19,10 @@
                 <small>{{ member.status }}</small>
               </span>
             </div>
-  
+
             <div class="col-xs-3 text-right">
               <button class="btn btn-sm btn-success btn-icon">
-                <i class="fa fa-envelope"/>
+                <i class="fa fa-envelope" />
               </button>
             </div>
           </div>

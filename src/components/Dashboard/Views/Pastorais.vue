@@ -1,11 +1,10 @@
 <template>
   <div class="col-md-12">
     <modal :show-modal="showModalAdd" :close-modal="closeModalAdd" :title="'Adicionar Pastorais'">
-      <simple-form slot="body" :inputs="inputs" :action="add" :btn-msg="'Adicionar'" :select-list="selectList"
-                   :btn-class="'btn-fill btn-info btn-wd'"/>
+      <simple-form slot="body" :inputs="inputs" :action="add" :btn-msg="'Adicionar'" :select-list="selectList" :btn-class="'btn-fill btn-info btn-wd'" />
     </modal>
     <modal :show-modal="showModalUpdate" :close-modal="closeModalUpdate" :title="'Alterar Pastorais'">
-      <simple-form slot="body" :inputs="inputsUpdate" :select-list="selectListUpdate" :action="update" :btn-class="'btn-fill btn-warning  btn-wd'" :btn-msg="'Alterar'"/>
+      <simple-form slot="body" :inputs="inputsUpdate" :select-list="selectListUpdate" :action="update" :btn-class="'btn-fill btn-warning  btn-wd'" :btn-msg="'Alterar'" />
     </modal>
 
     <h4 class="title">{{ title }}</h4>
@@ -15,12 +14,12 @@
 
       <paper-table type="hover" :get-id="getId" :del="del" :data="table.data" :columns="pastoraisHeaders" :show="show">
         <div slot="header">
-          <div class="col-sm-12">									
+          <div class="col-sm-12">
             <label class="label-search">
               <input type="search" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm" @keydown="search">
             </label>
             <button type="button" class="btn btn-success btn-fill pull-right" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">
-              <i class="fa fa-plus" aria-hidden="true"/>
+              <i class="fa fa-plus" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -28,8 +27,7 @@
 
     </div>
 
-
-    <view-item :item="selectedItem" :title="'Pastoral'"/>
+    <view-item :item="selectedItem" :title="'Pastoral'" />
   </div>
 </template>
 <script>
