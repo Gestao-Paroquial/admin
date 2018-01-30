@@ -21,12 +21,9 @@
         "valid-typeof": "warn",
         "no-console": 0
     },
-    // https://github.com/feross/standard/blob/master/RULES.md#javascript-standard-style
     "extends": "eslint:recommended",
     "plugin": "vue/recommended",
-    // required to lint *.vue files
     "plugins": [
         "html"
     ]
 }
-// http://eslint.org/docs/user-guide/configuring

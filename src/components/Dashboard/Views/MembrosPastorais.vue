@@ -12,7 +12,7 @@
 		<h4 class="title">{{title}}</h4>
 		<p class="category">{{subTitle}}</p>
 		<div class=" card card-plain">
-			<paper-table type="hover" :getId="getId" :del="del"  :data="membrosPastorais" :show="show" :columns="membrosPastoraisHeaders">
+			<paper-table type="hover" :getId="getId" :del="del"  :data="table.data" :show="show" :columns="membrosPastoraisHeaders">
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -35,7 +35,7 @@ import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
-import ViewItem from "components/UIComponents/ViewItem.vue"
+import ViewItem from "components/UIComponents/ViewItem.vue";
 
 const membrosPastoraisHeaders = ["nome", "email", "telefone", "pastorais.nome"];
 const inputs = [
@@ -135,7 +135,7 @@ export default {
       inputs: inputs,
       inputsUpdate: [],
       membrosPastorais: [],
-            selectedItem: null,
+      selectedItem: null,
       selectList: {
         label: "Pastorais",
         name: "pastorais_id",
@@ -146,6 +146,7 @@ export default {
         name: "pastorais_id",
         options: []
       },
+      table: { data: [] },
       membrosPastoraisHeaders: membrosPastoraisHeaders,
       title: "Lista de membrosPastorais",
       subTitle: "Aqui você ira encontrar a lista de membrosPastorais completa",
@@ -182,12 +183,13 @@ export default {
         .then(function(response) {
           console.log(response);
           vm.membrosPastorais = response.data;
+          vm.table.data = response.data;
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-      show(item) {
+    show(item) {
       this.selectedItem = item;
     },
     search(event) {
@@ -218,6 +220,8 @@ export default {
       this.table.data = [...membrosPastorais];
     },
     add(membroPastoral) {
+
+      console.log(membroPastoral)
       membroPastoral.created_at = new Date();
       membroPastoral.updated_at = null;
 

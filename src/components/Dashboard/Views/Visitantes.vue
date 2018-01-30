@@ -13,7 +13,7 @@
 		<p class="category">{{subTitle}}</p>
 
 		<div class=" card card-plain">
-			<paper-table type="hover" :show="show" :getId="getId" :del="del"  :data="visitantes" :columns="visitantesHeaders">
+			<paper-table type="hover" :show="show" :getId="getId" :del="del"  :data="table.data" :columns="visitantesHeaders">
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -79,6 +79,7 @@ export default {
       inputs: inputs,
       inputsUpdate: [],
       visitantes: [],
+      table: { data: [] },
       selectedItem: null,
       selectList: {
         label: "Comunidades",
@@ -129,6 +130,7 @@ export default {
         .then(function(response) {
           console.log(response);
           vm.visitantes = response.data;
+          vm.table.data = response.data;
         })
         .catch(function(error) {
           console.log(error);
