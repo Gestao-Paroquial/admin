@@ -38,7 +38,7 @@
       <div class="col-sm-6 pagination-info">
         <p class="category">Mostrando {{start + 1}} até {{start+itemsPerPage >= data.length? data.length :start+itemsPerPage}} de {{data.length}} registros</p>
       </div>
-      <div class="col-sm-6">
+      <div class="col-sm-12">
         <ul class="pagination pull-right pagination-default">
           <li class="page-item" :class="{'disabled': start == 0}" @click="previous">
             <a href="javascript:void(0)" aria-label="Previous" class="page-link">

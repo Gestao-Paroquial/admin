@@ -15,7 +15,7 @@
 
 		<div class=" card card-plain">
 
-			<paper-table type="hover" :getId="getId" :del="del"  :data="pastorais" :columns="pastoraisHeaders" :show="show">
+			<paper-table type="hover" :getId="getId" :del="del"  :data="table.data" :columns="pastoraisHeaders" :show="show">
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -76,6 +76,9 @@ export default {
       inputs: inputs,
       inputsUpdate: [],
       pastorais: [],
+      table: {
+        data: []
+      },
       selectList: {
         label: "Comunidades",
         name: "comunidades_id",
@@ -125,6 +128,7 @@ export default {
         .then(function(response) {
           console.log(response);
           vm.pastorais = response.data;
+          vm.table.data = vm.pastorais;
         })
         .catch(function(error) {
           console.log(error);

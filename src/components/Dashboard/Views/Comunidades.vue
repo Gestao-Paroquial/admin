@@ -19,7 +19,7 @@
 
 		<div class=" card card-plain">
 
-			<paper-table type="hover" :show="show" :getId="getId" :del="del"  :data="comunidades" :columns="comunidadesHeaders"  >
+			<paper-table type="hover" :show="show" :getId="getId" :del="del"  :data="table.data" :columns="comunidadesHeaders"  >
 				<div slot="header">
 					<div class="col-sm-12">									
 							<label class="label-search">
@@ -151,6 +151,7 @@ export default {
       inputsUpdate: [],
       comunidades: [],
       selectedItem: null,
+      table:{data:[]},
       comunidadesHeaders: comunidadesHeaders,
       title: "Lista de Comunidades",
       subTitle: "Aqui você ira encontrar a lista de comunidades completa"
@@ -174,7 +175,7 @@ export default {
         });
       });
 
-      this.updateTable(comunidadesFiltrados);
+    this.table.data = comunidadesFiltrados;
     },
     closeModalAdd() {
       this.showModalAdd = false;
@@ -189,6 +190,7 @@ export default {
         .then(function(response) {
           console.log(response);
           vm.comunidades = response.data;
+          vm.table.data = response.data;
         })
         .catch(function(error) {
           console.log(error);
