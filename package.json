@@ -1,5 +1,5 @@
 {
-  "name": "gestao-paroquial",
+  "name": "admin-vue",
   "version": "1.0.0",
   "description": "",
   "author": "Leonardo Cardoso",
@@ -91,5 +91,8 @@
   "engines": {
     "node": ">= 4.0.0",
     "npm": ">= 3.0.0"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/Leocardoso94/admin-vue.git",
+  "license": "MIT"
 }
