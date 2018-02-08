@@ -4,22 +4,22 @@
       <h4 class="title">Edit Profile</h4>
     </div>
     <div class="content">
-      <form>
+      <form @submit="update">
         <div class="row">
           <div class="col-md-2">
-            <fg-input type="text" label="ID" :disabled="true" placeholder="id" v-model="visitante.id" />
+            <fg-input :required="true" type="text" label="ID" :disabled="true" placeholder="id" v-model="visitante.id" />
           </div>
           <div class="col-md-5">
-            <fg-input type="text" label="Nome" placeholder="Paper dashboard" v-model="visitante.nome" />
+            <fg-input :required="true" type="text" label="Nome" placeholder="Paper dashboard" v-model="visitante.nome" />
           </div>
           <div class="col-md-4">
-            <fg-input type="email" label="Email" placeholder="Email" v-model="visitante.email" />
+            <fg-input :required="true" type="email" label="Email" placeholder="Email" v-model="visitante.email" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input type="text" label="Telefone" placeholder="Telefone" v-model="visitante.telefone" />
+            <fg-input :required="true" type="text" label="Telefone" placeholder="Telefone" v-model="visitante.telefone" />
           </div>
         </div>
         <div class="row">
@@ -29,11 +29,11 @@
         </div>
 
         <div class="text-center">
-          <button type="submit" class="btn btn-info btn-fill btn-wd" @click.prevent="update">
+          <button class="btn btn-info btn-fill btn-wd">
             Update Profile
           </button>
           <hr>
-          <button type="submit" class="btn btn-danger btn-fill btn-wd" @click.prevent="del">
+          <button class="btn btn-danger btn-fill btn-wd" @click.prevent="del">
             Deletar
           </button>
         </div>
