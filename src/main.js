@@ -24,6 +24,14 @@ Vue.use(vClickOutside);
 Vue.use(Notifications);
 Vue.use(SideBar);
 
+//Mixins
+Vue.mixin({
+  methods: {
+    capitalize: str => str.replace(/\b\w/g, l => l.toUpperCase())
+  }
+})
+
+
 // configure router
 const router = new VueRouter({
 	routes, // short for routes: routes

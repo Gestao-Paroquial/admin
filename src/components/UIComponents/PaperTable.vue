@@ -119,7 +119,7 @@ export default {
       return item[column.toLowerCase()];
     },
     getColumn(column) {
-      return column.split(".")[0];
+      return this.capitalize(column.split(".")[0]);
     }
   }
 };
