@@ -5,7 +5,7 @@
     <p class="category">{{ subTitle }}</p>
 
     <div class=" card card-plain">
-      <paper-table type="hover" :show="show" :data="table.data" :columns="visitantesHeaders">
+      <paper-table type="hover" :data="table.data" :columns="visitantesHeaders">
         <div slot="header">
           <div class="col-sm-12">
             <label class="label-search">
@@ -30,32 +30,6 @@ import Loader from "./../../../UIComponents/Loader.vue";
 import { visitantesApiUrl, comunidadesApiUrl } from "./../../../../api-url";
 
 const visitantesHeaders = ["nome", "email", "telefone", "comunidades.nome"];
-const inputs = [
-  {
-    label: "Nome",
-    name: "nome",
-    type: "text",
-    value: "",
-    placeholder: "",
-    required: true
-  },
-  {
-    label: "email",
-    name: "email",
-    type: "text",
-    value: "",
-    placeholder: "",
-    required: false
-  },
-  {
-    label: "telefone",
-    name: "telefone",
-    type: "text",
-    value: "",
-    placeholder: "",
-    required: false
-  }
-];
 
 export default {
   components: {
@@ -68,26 +42,12 @@ export default {
     return {
       showModalAdd: false,
       showModalUpdate: false,
-      inputs: inputs,
-      inputsUpdate: [],
       visitantes: [],
       table: { data: [] },
-      selectedItem: null,
       showLoader: true,
-      selectList: {
-        label: "Comunidades",
-        name: "comunidades_id",
-        options: []
-      },
-      selectListUpdate: {
-        label: "Comunidades",
-        name: "comunidades_id",
-        options: []
-      },
       visitantesHeaders: visitantesHeaders,
       title: "Lista de visitantes",
-      subTitle: "Aqui você ira encontrar a lista de visitantes completa",
-      urlApi: "http://localhost:8000/api/visitantes"
+      subTitle: "Aqui você ira encontrar a lista de visitantes completa"
     };
   },
   created() {
@@ -96,15 +56,6 @@ export default {
       .get(comunidadesApiUrl)
       .then(response => {
         console.log(response);
-
-        const options = response.data.map(comunidade => {
-          return {
-            value: comunidade.nome,
-            id: comunidade.id
-          };
-        });
-
-        this.selectList.options = options;
         this.showLoader = false;
       })
       .catch(error => {
@@ -112,9 +63,6 @@ export default {
       });
   },
   methods: {
-    show(item) {
-      this.selectedItem = item;
-    },
     get() {
       axios
         .get(visitantesApiUrl)
@@ -130,20 +78,18 @@ export default {
     search(event) {
       const value = event.target.value;
 
-      const visitantesFiltrados = this.visitantes.filter(function(obj) {
-        return Object.keys(obj).some(function(key) {
-          return (
+      const visitantesFiltrados = this.visitantes.filter(obj => {
+        return Object.keys(obj).some(
+          key =>
             obj[key]
               .toString()
               .toLowerCase()
               .indexOf(value) != -1
-          );
-        });
+        );
       });
 
       this.updateTable(visitantesFiltrados);
     },
-
     updateTable(visitantes) {
       this.table.data = [...visitantes];
     }
