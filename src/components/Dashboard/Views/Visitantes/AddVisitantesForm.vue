@@ -18,9 +18,7 @@
           <div class="col-md-6">
             <fg-input type="text" :required="true" label="Telefone" placeholder="Telefone" v-model="visitante.telefone" />
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
+          <div class="col-md-6">
             <select-list :selectList="selectList" :required="true"></select-list>
           </div>
         </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="header">
-      <h4 class="title">Edit Profile</h4>
+      <h4 class="title">Informações do Visitante</h4>
     </div>
     <div class="content">
       <form @submit="update">
