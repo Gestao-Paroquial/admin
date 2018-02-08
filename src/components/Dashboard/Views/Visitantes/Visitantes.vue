@@ -7,15 +7,20 @@
     <p class="category">{{ subTitle }}</p>
 
     <div class=" card card-plain">
-      <paper-table type="hover" :show="show" :get-id="getId"  :data="table.data" :columns="visitantesHeaders">
+      <paper-table type="hover" :show="show" :get-id="getId" :data="table.data" :columns="visitantesHeaders">
         <div slot="header">
           <div class="col-sm-12">
             <label class="label-search">
               <input type="search" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm" @keydown="search">
             </label>
-            <button type="button" class="btn btn-success btn-fill pull-right" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">
+
+            <router-link v-bind:to="{ path: 'add'}" type="button" class="btn btn-success btn-fill pull-right"  append>
               <i class="fa fa-plus" aria-hidden="true" />
-            </button>
+            </router-link>
+
+            <!-- <button type="button" class="btn btn-success btn-fill pull-right" data-toggle="modal" data-target="#myModal" @click="showModalAdd = true">
+              <i class="fa fa-plus" aria-hidden="true" />
+            </button> -->
           </div>
         </div>
       </paper-table>
@@ -60,7 +65,7 @@ export default {
   components: {
     PaperTable,
     Modal,
-    SimpleForm,
+    SimpleForm
   },
   data() {
     return {

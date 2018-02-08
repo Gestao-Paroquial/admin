@@ -16,6 +16,7 @@ import Comunidades from 'src/components/Dashboard/Views/Comunidades.vue';
 import Dizimistas from 'src/components/Dashboard/Views/Dizimistas.vue';
 import Visitantes from 'src/components/Dashboard/Views/Visitantes/Visitantes.vue';
 import VisitanteProfile from 'src/components/Dashboard/Views/Visitantes/VisitanteProfile.vue';
+import AddVisitantes from 'src/components/Dashboard/Views/Visitantes/AddVisitante.vue';
 import MembrosPastorais from 'src/components/Dashboard/Views/MembrosPastorais.vue';
 const routes = [
   {
@@ -32,6 +33,11 @@ const routes = [
         path: 'overview',
         name: 'overview',
         component: Overview
+      },
+      {
+        path: 'visitantes/add',
+        name: 'visitanteProfile',
+        component: AddVisitantes,
       },
       {
         path: 'visitantes/:id',
