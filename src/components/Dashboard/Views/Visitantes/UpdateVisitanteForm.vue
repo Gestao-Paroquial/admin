@@ -22,12 +22,11 @@
           <div class="col-md-6">
             <fg-input :required="true" type="text" label="Telefone" placeholder="Telefone" v-model="visitante.telefone" />
           </div>
-           <div class="col-md-6">
+          <div class="col-md-6">
             <select-list :selectList="selectList" :required="true"></select-list>
           </div>
         </div>
-
-
+        <hr>
         <div class="text-center">
           <button class="btn btn-info btn-fill btn-wd">
             Update Profile
@@ -46,7 +45,6 @@
 import axios from "axios";
 import SelectList from "components/UIComponents/Forms/SelectList.vue";
 import { visitantesApiUrl } from "../../../../api-url/index";
-import Loader from "./../../../UIComponents/Loader.vue";
 
 export default {
   props: {
@@ -54,8 +52,7 @@ export default {
     selectList: Object
   },
   components: {
-    SelectList,
-    Loader
+    SelectList
   },
   data() {
     return {
@@ -81,6 +78,13 @@ export default {
         )
         .then(response => {
           this.showLoader = false;
+          this.$notify({
+            group: "top-right",
+            title: "Sucesso!",
+            text: "Visitante alterado com sucesso",
+            type: "success",
+            speed: 1000
+          });
           console.log(response);
         })
         .catch(error => {
@@ -95,6 +99,13 @@ export default {
           .then(response => {
             console.log(response);
             this.showLoader = false;
+            this.$notify({
+              group: "top-right",
+              title: "Sucesso!",
+              text: "Visitante excluído com sucesso",
+              type: "success",
+              speed: 1000
+            });
             this.$router.push({ path: "/admin/visitantes" });
           })
           .catch(err => console.log(err));

@@ -1,17 +1,17 @@
 <template>
   <div class="row">
     <div class="col-lg-12 ">
-      <edit-profile-form :visitante="visitante" :select-list="selectList" />
+      <update-visitante-form :visitante="visitante" :select-list="selectList" />
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
-import EditProfileForm from "./EditProfileForm.vue";
+import UpdateVisitanteForm from "./UpdateVisitanteForm";
 import { visitantesApiUrl, comunidadesApiUrl } from "./../../../../api-url";
 export default {
   components: {
-    EditProfileForm
+    UpdateVisitanteForm
   },
   data() {
     return {

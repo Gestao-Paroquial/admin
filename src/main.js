@@ -4,7 +4,7 @@ import vClickOutside from 'v-click-outside';
 
 // Plugins
 import GlobalComponents from './globalComponents';
-import Notifications from './components/UIComponents/NotificationPlugin';
+import Notifications from 'vue-notification';
 import SideBar from './components/UIComponents/SidebarPlugin';
 import App from './App';
 

@@ -26,7 +26,6 @@ import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
-import Loader from "./../../../UIComponents/Loader.vue";
 import { visitantesApiUrl, comunidadesApiUrl } from "./../../../../api-url";
 
 const visitantesHeaders = ["nome", "email", "telefone", "comunidades.nome"];
@@ -35,8 +34,7 @@ export default {
   components: {
     PaperTable,
     Modal,
-    SimpleForm,
-    Loader
+    SimpleForm
   },
   data() {
     return {
