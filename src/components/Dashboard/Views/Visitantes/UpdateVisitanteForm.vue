@@ -81,7 +81,7 @@ export default {
           this.$notify({
             group: "top-right",
             title: "Sucesso!",
-            text: "Visitante alterado com sucesso",
+            text: "Visitante alterado",
             type: "success",
             speed: 1000
           });
@@ -102,7 +102,7 @@ export default {
             this.$notify({
               group: "top-right",
               title: "Sucesso!",
-              text: "Visitante excluído com sucesso",
+              text: "Visitante excluído",
               type: "success",
               speed: 1000
             });
