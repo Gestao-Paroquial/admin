@@ -36,7 +36,7 @@ const routes = [
       },
       {
         path: 'visitantes/add',
-        name: 'visitanteProfile',
+        name: 'novo Visitante',
         component: AddVisitantes,
       },
       {

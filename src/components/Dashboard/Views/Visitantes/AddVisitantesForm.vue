@@ -4,29 +4,29 @@
       <h4 class="title">Adicionar Novo Visitante</h4>
     </div>
     <div class="content">
-      <form>
+      <form @submit="add">
         <div class="row">
           <div class="col-md-5">
             <fg-input type="text" :required="true" label="Nome" placeholder="nome" v-model="visitante.nome" />
           </div>
           <div class="col-md-4">
-            <fg-input type="email" label="Email" placeholder="Email" v-model="visitante.email" />
+            <fg-input :type="'email'" :required="true" label="Email" placeholder="Email" v-model="visitante.email" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input type="text" label="Telefone" placeholder="Telefone" v-model="visitante.telefone" />
+            <fg-input type="text" :required="true" label="Telefone" placeholder="Telefone" v-model="visitante.telefone" />
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <select-list :selectList="selectList"></select-list>
+            <select-list :selectList="selectList" :required="true"></select-list>
           </div>
         </div>
 
         <div class="text-center">
-          <button type="submit" class="btn btn-info btn-fill btn-wd" @click.prevent="add">
+          <button class="btn btn-info btn-fill btn-wd">
             Adicionar
           </button>
         </div>
@@ -52,8 +52,6 @@ export default {
       this.visitante.comunidades_id = document.querySelector(
         '[name="comunidades_id"]'
       ).value;
-
-      if (this.visitante.comunidades_id === "") return;
 
       axios
         .post(visitantesApiUrl, JSON.stringify(this.visitante), {
