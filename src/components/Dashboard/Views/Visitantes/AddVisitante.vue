@@ -8,10 +8,14 @@
 <script>
 import axios from "axios";
 import EditProfileForm from "./EditProfileForm.vue";
+import UserCard from "./UserCard.vue";
+import MembersCard from "./MembersCard.vue";
 import { visitantesApiUrl, comunidadesApiUrl } from "./../../../../api-url";
 export default {
   components: {
-    EditProfileForm
+    EditProfileForm,
+    UserCard,
+    MembersCard
   },
   data() {
     return {
