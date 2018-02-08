@@ -8,10 +8,14 @@
       <paper-table type="hover" :data="table.data" :columns="visitantesHeaders">
         <div slot="header">
           <div class="col-sm-12">
-            <label class="label-search">
-              <input type="search" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm" @keydown="search">
+            <label class="label-search form-group">
+              <input type="search" v-model="termToSearch" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm">
             </label>
-
+            <label for="" class="form-group">
+              <select name="" id="" class=" form-group" v-model="filterProperty">
+                <option v-for="header in visitantesHeaders.filter(obj => obj.match(/^[^.]+$/))" :key="header">{{header}}</option>
+              </select>
+            </label>
             <router-link v-bind:to="{ path: 'add'}" type="button" class="btn btn-success btn-fill pull-right" append>
               <i class="fa fa-plus" aria-hidden="true" />
             </router-link>
@@ -26,9 +30,16 @@ import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
+import debounce from "lodash.debounce";
 import { visitantesApiUrl, comunidadesApiUrl } from "./../../../../api-url";
 
-const visitantesHeaders = ["nome", "email", "telefone", "comunidades.nome"];
+const visitantesHeaders = [
+  "id",
+  "nome",
+  "email",
+  "telefone",
+  "comunidades.nome"
+];
 
 export default {
   components: {
@@ -43,51 +54,44 @@ export default {
       visitantes: [],
       table: { data: [] },
       showLoader: true,
+      filterProperty: "id",
+      termToSearch: "",
       visitantesHeaders: visitantesHeaders,
       title: "Lista de visitantes",
       subTitle: "Aqui você ira encontrar a lista de visitantes completa"
     };
   },
   created() {
-    this.get();
     axios
-      .get(comunidadesApiUrl)
+      .get(visitantesApiUrl)
       .then(response => {
         console.log(response);
+        this.visitantes = response.data;
+        this.table.data = response.data;
         this.showLoader = false;
       })
       .catch(error => {
         console.log(error);
       });
   },
-  methods: {
-    get() {
-      axios
-        .get(visitantesApiUrl)
-        .then(response => {
-          console.log(response);
-          this.visitantes = response.data;
-          this.table.data = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    },
-    search(event) {
-      const value = event.target.value;
-
-      const visitantesFiltrados = this.visitantes.filter(obj => {
-        return Object.keys(obj).some(
-          key =>
-            obj[key]
-              .toString()
-              .toLowerCase()
-              .indexOf(value) != -1
+  watch: {
+    termToSearch: debounce(
+      function() {
+        console.log(this);
+        const visitantesFiltrados = this.visitantes.filter(obj =>
+          obj[this.filterProperty]
+            .toString()
+            .toLowerCase()
+            .match(this.termToSearch.toLowerCase())
         );
-      });
-
-      this.updateTable(visitantesFiltrados);
-    },
+        this.updateTable(visitantesFiltrados);
+      },
+      // Este é o número de milissegundos que aguardamos para
+      // que o usuário pare de digitar
+      300
+    )
+  },
+  methods: {
     updateTable(visitantes) {
       this.table.data = [...visitantes];
     }
