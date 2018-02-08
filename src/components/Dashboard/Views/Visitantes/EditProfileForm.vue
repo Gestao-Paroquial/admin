@@ -22,12 +22,11 @@
           <div class="col-md-6">
             <fg-input :required="true" type="text" label="Telefone" placeholder="Telefone" v-model="visitante.telefone" />
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <select-list :selectList="selectList"></select-list>
+           <div class="col-md-6">
+            <select-list :selectList="selectList" :required="true"></select-list>
           </div>
         </div>
+
 
         <div class="text-center">
           <button class="btn btn-info btn-fill btn-wd">
