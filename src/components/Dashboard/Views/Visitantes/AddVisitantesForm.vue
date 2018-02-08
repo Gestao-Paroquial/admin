@@ -71,7 +71,7 @@ export default {
           this.$notify({
             group: "top-right",
             title: "Sucesso!",
-            text: "Visitante Inserido com sucesso",
+            text: "Visitante inserido com sucesso",
             type: "success",
             speed: 1000
           });
