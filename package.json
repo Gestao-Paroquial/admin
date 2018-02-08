@@ -11,9 +11,9 @@
     "unit:watch": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --watch",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-	"start": "node server.js",
-	"lint": "eslint src/**/*.{vue,js}",
-	"fix:lint": "eslint --fix src/**/*.{vue,js}"
+    "start": "node server.js",
+    "lint": "eslint src/**/*.{vue,js}",
+    "fix:lint": "eslint --fix src/**/*.{vue,js}"
   },
   "dependencies": {
     "axios": "^0.17.0",
@@ -21,7 +21,8 @@
     "chartist": "^0.10.1",
     "v-click-outside": "0.0.8",
     "vue": "^2.3.0",
-    "vue-router": "^2.2.0"
+    "vue-router": "^2.2.0",
+    "vue-spinner": "^1.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

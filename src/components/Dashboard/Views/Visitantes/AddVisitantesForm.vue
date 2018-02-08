@@ -1,10 +1,11 @@
 <template>
   <div class="card">
+    <loader v-if="showLoader" />
     <div class="header">
       <h4 class="title">Adicionar Novo Visitante</h4>
     </div>
     <div class="content">
-      <form @submit="add">
+      <form @submit.prevent="add">
         <div class="row">
           <div class="col-md-5">
             <fg-input type="text" :required="true" label="Nome" placeholder="nome" v-model="visitante.nome" />
@@ -37,13 +38,21 @@
 import axios from "axios";
 import SelectList from "components/UIComponents/Forms/SelectList.vue";
 import { visitantesApiUrl } from "../../../../api-url/index";
+import Loader from "./../../../UIComponents/Loader.vue";
+
 export default {
   props: {
     visitante: Object,
     selectList: Object
   },
   components: {
-    SelectList
+    SelectList,
+    Loader
+  },
+  data() {
+    return {
+      showLoader: false
+    };
   },
   methods: {
     add() {
@@ -51,13 +60,18 @@ export default {
         '[name="comunidades_id"]'
       ).value;
 
+      this.showLoader = true;
       axios
         .post(visitantesApiUrl, JSON.stringify(this.visitante), {
           headers: {
             "Content-Type": "application/json"
           }
         })
-        .then(response => this.$router.push({ path: "/admin/visitantes" }))
+        .then(response => {
+          console.log(response);
+          this.showLoader = false;
+          this.$router.push({ path: "/admin/visitantes" });
+        })
         .catch(error => console.log(error));
     }
   }

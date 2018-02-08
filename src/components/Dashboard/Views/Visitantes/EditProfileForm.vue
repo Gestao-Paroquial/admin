@@ -1,10 +1,11 @@
 <template>
   <div class="card">
+    <loader v-if="showLoader" />
     <div class="header">
       <h4 class="title">Informações do Visitante</h4>
     </div>
     <div class="content">
-      <form @submit="update">
+      <form @submit.prevent="update">
         <div class="row">
           <div class="col-md-2">
             <fg-input :required="true" type="text" label="ID" :disabled="true" placeholder="id" v-model="visitante.id" />
@@ -46,16 +47,25 @@
 import axios from "axios";
 import SelectList from "components/UIComponents/Forms/SelectList.vue";
 import { visitantesApiUrl } from "../../../../api-url/index";
+import Loader from "./../../../UIComponents/Loader.vue";
+
 export default {
   props: {
     visitante: Object,
     selectList: Object
   },
   components: {
-    SelectList
+    SelectList,
+    Loader
+  },
+  data() {
+    return {
+      showLoader: false
+    };
   },
   methods: {
     update() {
+      this.showLoader = true;
       this.visitante.comunidades_id = document.querySelector(
         '[name="comunidades_id"]'
       ).value;
@@ -70,19 +80,22 @@ export default {
             }
           }
         )
-        .then(function(response) {
+        .then(response => {
+          this.showLoader = false;
           console.log(response);
         })
-        .catch(function(error) {
+        .catch(error => {
           console.log(error);
         });
     },
     del() {
       if (confirm("Você tem certeza?!")) {
+        this.showLoader = true;
         axios
           .delete(`${visitantesApiUrl}/${this.visitante.id}`)
           .then(response => {
             console.log(response);
+            this.showLoader = false;
             this.$router.push({ path: "/admin/visitantes" });
           })
           .catch(err => console.log(err));
