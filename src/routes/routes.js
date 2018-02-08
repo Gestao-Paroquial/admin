@@ -14,87 +14,93 @@ import Participantes from 'src/components/Dashboard/Views/Participantes.vue';
 import Pastorais from 'src/components/Dashboard/Views/Pastorais.vue';
 import Comunidades from 'src/components/Dashboard/Views/Comunidades.vue';
 import Dizimistas from 'src/components/Dashboard/Views/Dizimistas.vue';
-import Visitantes from 'src/components/Dashboard/Views/Visitantes.vue';
+import Visitantes from 'src/components/Dashboard/Views/Visitantes/Visitantes.vue';
+import VisitanteProfile from 'src/components/Dashboard/Views/Visitantes/VisitanteProfile.vue';
 import MembrosPastorais from 'src/components/Dashboard/Views/MembrosPastorais.vue';
 const routes = [
-	{
-		path: '/',
-		component: DashboardLayout,
-		redirect: '/admin/overview'
-	},
-	{
-		path: '/admin',
-		component: DashboardLayout,
-		redirect: '/admin/stats',
-		children: [
-			{
-				path: 'overview',
-				name: 'overview',
-				component: Overview
-			},
-			{
-				path: 'visitantes',
-				name: 'visitantes',
-				component: Visitantes
-			},
-			{
-				path: 'participantes',
-				name: 'participantes',
-				component: Participantes
-			},
-			{
-				path: 'membros-pastorais',
-				name: 'membros-pastorais',
-				component: MembrosPastorais
-			},
-			{
-				path: 'dizimistas',
-				name: 'dizimistas',
-				component: Dizimistas
-			},
-			{
-				path: 'pastorais',
-				name: 'pastorais',
-				component: Pastorais
-			},
-			{
-				path: 'comunidades',
-				name: 'comunidades',
-				component: Comunidades
-			},
-			{
-				path: 'stats',
-				name: 'stats',
-				component: UserProfile
-			},
-			{
-				path: 'notifications',
-				name: 'notifications',
-				component: Notifications
-			},
-			{
-				path: 'icons',
-				name: 'icons',
-				component: Icons
-			},
-			{
-				path: 'maps',
-				name: 'maps',
-				component: Maps
-			},
-			{
-				path: 'typography',
-				name: 'typography',
-				component: Typography
-			},
-			{
-				path: 'table-list',
-				name: 'table-list',
-				component: TableList
-			}
-		]
-	},
-	{ path: '*', component: NotFound }
+  {
+    path: '/',
+    component: DashboardLayout,
+    redirect: '/admin/overview'
+  },
+  {
+    path: '/admin',
+    component: DashboardLayout,
+    redirect: '/admin/stats',
+    children: [
+      {
+        path: 'overview',
+        name: 'overview',
+        component: Overview
+      },
+      {
+        path: 'visitantes/:id',
+        name: 'visitanteProfile',
+        component: VisitanteProfile,
+      },
+      {
+        path: 'visitantes',
+        name: 'visitantes',
+        component: Visitantes,
+      },
+      {
+        path: 'participantes',
+        name: 'participantes',
+        component: Participantes
+      },
+      {
+        path: 'membros-pastorais',
+        name: 'membros-pastorais',
+        component: MembrosPastorais
+      },
+      {
+        path: 'dizimistas',
+        name: 'dizimistas',
+        component: Dizimistas
+      },
+      {
+        path: 'pastorais',
+        name: 'pastorais',
+        component: Pastorais
+      },
+      {
+        path: 'comunidades',
+        name: 'comunidades',
+        component: Comunidades
+      },
+      {
+        path: 'stats',
+        name: 'stats',
+        component: UserProfile
+      },
+      {
+        path: 'notifications',
+        name: 'notifications',
+        component: Notifications
+      },
+      {
+        path: 'icons',
+        name: 'icons',
+        component: Icons
+      },
+      {
+        path: 'maps',
+        name: 'maps',
+        component: Maps
+      },
+      {
+        path: 'typography',
+        name: 'typography',
+        component: Typography
+      },
+      {
+        path: 'table-list',
+        name: 'table-list',
+        component: TableList
+      }
+    ]
+  },
+  { path: '*', component: NotFound }
 ];
 
 /**

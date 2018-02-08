@@ -3,14 +3,11 @@
     <modal :show-modal="showModalAdd" :close-modal="closeModalAdd" :title="'Adicionar visitantes'">
       <simple-form slot="body" :inputs="inputs" :action="add" :btn-msg="'Adicionar'" :select-list="selectList" :btn-class="'btn-fill btn-info btn-wd'" />
     </modal>
-    <modal :show-modal="showModalUpdate" :close-modal="closeModalUpdate" :title="'Alterar visitantes'">
-      <simple-form slot="body" :inputs="inputsUpdate" :select-list="selectListUpdate" :action="update" :btn-class="'btn-fill btn-warning  btn-wd'" :btn-msg="'Alterar'" />
-    </modal>
     <h4 class="title">{{ title }}</h4>
     <p class="category">{{ subTitle }}</p>
 
     <div class=" card card-plain">
-      <paper-table type="hover" :show="show" :get-id="getId" :del="del" :data="table.data" :columns="visitantesHeaders">
+      <paper-table type="hover" :show="show" :get-id="getId"  :data="table.data" :columns="visitantesHeaders">
         <div slot="header">
           <div class="col-sm-12">
             <label class="label-search">
@@ -23,8 +20,6 @@
         </div>
       </paper-table>
     </div>
-
-    <view-item :item="selectedItem" :title="'Visitante'" />
   </div>
 </template>
 <script>
@@ -32,7 +27,6 @@ import PaperTable from "components/UIComponents/PaperTable.vue";
 import Modal from "components/UIComponents/Modal/Modal.vue";
 import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
 import axios from "axios";
-import ViewItem from "components/UIComponents/ViewItem.vue";
 
 const visitantesHeaders = ["nome", "email", "telefone", "comunidades.nome"];
 const inputs = [
@@ -67,7 +61,6 @@ export default {
     PaperTable,
     Modal,
     SimpleForm,
-    ViewItem
   },
   data() {
     return {
@@ -180,21 +173,6 @@ export default {
 
       this.showModalAdd = false;
     },
-    del(id) {
-      if (confirm("Você tem certeza?")) {
-        const vm = this;
-
-        axios
-          .delete(this.urlApi + "/" + id)
-          .then(function(response) {
-            console.log(response);
-            vm.get();
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
-    },
     getId(id) {
       const visitante = this.visitantes.find(item => item.id == id);
 
@@ -241,27 +219,6 @@ export default {
       this.inputsUpdate = inputs;
 
       this.showModalUpdate = true;
-    },
-    update(visitante) {
-      const vm = this;
-
-      visitante.updated_at = new Date();
-
-      axios
-        .put(this.urlApi + "/" + visitante.id, JSON.stringify(visitante), {
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-        .then(function(response) {
-          console.log(response);
-          vm.get();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-
-      this.closeModalUpdate();
     }
   }
 };
