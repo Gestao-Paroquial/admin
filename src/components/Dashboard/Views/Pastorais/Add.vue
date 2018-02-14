@@ -1,22 +1,23 @@
 <template>
   <div class="row">
+    <back-button/>
     <div class="col-lg-12 ">
-      <add-visitantes-form :visitante="visitante" :select-list="selectList" />
+      <add-form :pastoral="pastoral" :select-list="selectList" />
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
-import AddVisitantesForm from "./AddVisitantesForm";
-import { visitantesApiUrl, comunidadesApiUrl } from "./../../../../api-url";
+import AddForm from "./AddForm";
+import { pastoraisApiUrl, comunidadesApiUrl } from "./../../../../api-url";
 
 export default {
   components: {
-    AddVisitantesForm
+    AddForm
   },
   data() {
     return {
-      visitante: {},
+      pastoral: {},
       selectList: {
         label: "Comunidades",
         name: "comunidades_id",

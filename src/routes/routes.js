@@ -11,12 +11,14 @@ import Maps from 'src/components/Dashboard/Views/Maps.vue';
 import Typography from 'src/components/Dashboard/Views/Typography.vue';
 import TableList from 'src/components/Dashboard/Views/TableList.vue';
 import Participantes from 'src/components/Dashboard/Views/Participantes.vue';
-import Pastorais from 'src/components/Dashboard/Views/Pastorais.vue';
 import Comunidades from 'src/components/Dashboard/Views/Comunidades.vue';
 import Dizimistas from 'src/components/Dashboard/Views/Dizimistas.vue';
-import Visitantes from 'src/components/Dashboard/Views/Visitantes/Visitantes.vue';
-import VisitanteProfile from 'src/components/Dashboard/Views/Visitantes/VisitanteProfile.vue';
-import AddVisitantes from 'src/components/Dashboard/Views/Visitantes/AddVisitante.vue';
+import Visitantes from 'src/components/Dashboard/Views/Visitantes';
+import VisitanteProfile from 'src/components/Dashboard/Views/Visitantes/Profile.vue';
+import AddVisitantes from 'src/components/Dashboard/Views/Visitantes/Add.vue';
+import Pastorais from 'src/components/Dashboard/Views/Pastorais';
+import PastoralProfile from 'src/components/Dashboard/Views/Pastorais/Profile.vue';
+import AddPastoral from 'src/components/Dashboard/Views/Pastorais/Add.vue';
 import MembrosPastorais from 'src/components/Dashboard/Views/MembrosPastorais.vue';
 const routes = [
   {
@@ -63,6 +65,16 @@ const routes = [
         path: 'dizimistas',
         name: 'dizimistas',
         component: Dizimistas
+      },
+      {
+        path: 'pastorais/add',
+        name: 'nova Pastoral',
+        component: AddPastoral,
+      },
+      {
+        path: 'pastorais/:id',
+        name: 'Pastoral',
+        component: PastoralProfile,
       },
       {
         path: 'pastorais',

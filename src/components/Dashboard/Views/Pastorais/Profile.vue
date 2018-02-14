@@ -1,21 +1,22 @@
 <template>
   <div class="row">
+    <back-button/>
     <div class="col-lg-12 ">
-      <update-visitante-form :visitante="visitante" :select-list="selectList" />
+      <update-form :pastoral="pastoral" :select-list="selectList" />
     </div>
   </div>
 </template>
 <script>
 import axios from "axios";
-import UpdateVisitanteForm from "./UpdateVisitanteForm";
-import { visitantesApiUrl, comunidadesApiUrl } from "./../../../../api-url";
+import UpdateForm from "./UpdateForm";
+import { pastoraisApiUrl, comunidadesApiUrl } from "./../../../../api-url";
 export default {
   components: {
-    UpdateVisitanteForm
+    UpdateForm
   },
   data() {
     return {
-      visitante: {},
+      pastoral: {},
       selectList: {
         label: "Comunidades",
         name: "comunidades_id",
@@ -26,13 +27,13 @@ export default {
   created() {
     const self = this;
     axios
-      .get(`${visitantesApiUrl}/${self.$route.params.id}`)
+      .get(`${pastoraisApiUrl}/${self.$route.params.id}`)
       .then(({ data }) => {
-        this.visitante = data;
-        const comunidadeAtual = data.comunidades;
+        this.pastoral = data;
+        const comunidadeAtual = data.comunidade;
         this.selectList.options.push({
-          value: data.comunidades.nome,
-          id: data.comunidades.id
+          value: data.comunidade.nome,
+          id: data.comunidade.id
         });
 
         axios.get(comunidadesApiUrl).then(({ data }) => {

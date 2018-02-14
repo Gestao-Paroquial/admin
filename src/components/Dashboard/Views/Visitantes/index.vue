@@ -77,12 +77,14 @@ export default {
   watch: {
     termToSearch: debounce(
       function() {
-        console.log(this);
-        const visitantesFiltrados = this.visitantes.filter(obj =>
-          obj[this.filterProperty]
-            .toString()
-            .toLowerCase()
-            .match(this.termToSearch.toLowerCase())
+        const visitantesFiltrados = this.visitantes.filter(
+          obj =>
+            obj[this.filterProperty]
+              ? obj[this.filterProperty]
+                  .toString()
+                  .toLowerCase()
+                  .match(this.termToSearch.toLowerCase())
+              : undefined
         );
         this.updateTable(visitantesFiltrados);
       },
