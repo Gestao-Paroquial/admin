@@ -25,9 +25,8 @@ export default {
     };
   },
   created() {
-    const self = this;
     axios
-      .get(`${visitantesApiUrl}/${self.$route.params.id}`)
+      .get(`${visitantesApiUrl}/${this.$route.params.id}`)
       .then(({ data }) => {
         this.visitante = data;
         const comunidadeAtual = data.comunidades;

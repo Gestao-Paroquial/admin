@@ -25,7 +25,10 @@ import Comunidades from 'src/components/Dashboard/Views/Comunidades';
 import ComunidadeProfile from 'src/components/Dashboard/Views/Comunidades/Profile.vue';
 import AddComunidade from 'src/components/Dashboard/Views/Comunidades/Add.vue';
 
-import MembrosPastorais from 'src/components/Dashboard/Views/MembrosPastorais.vue';
+import MembrosPastorais from 'src/components/Dashboard/Views/MembrosPastorais';
+import MembroPastoralProfile from 'src/components/Dashboard/Views/MembrosPastorais/Profile.vue';
+import AddMembroPastoral from 'src/components/Dashboard/Views/MembrosPastorais/Add.vue';
+
 const routes = [
   {
     path: '/',
@@ -63,8 +66,18 @@ const routes = [
         component: Participantes
       },
       {
+        path: 'membros-pastorais/add',
+        name: 'novo Membro Pastoral',
+        component: AddMembroPastoral,
+      },
+      {
+        path: 'membros-pastorais/:id',
+        name: 'membro Pastoral',
+        component: MembroPastoralProfile,
+      },
+      {
         path: 'membros-pastorais',
-        name: 'membros-pastorais',
+        name: 'membros Pastorais',
         component: MembrosPastorais
       },
       {
