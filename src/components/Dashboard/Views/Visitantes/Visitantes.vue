@@ -12,7 +12,7 @@
               <input type="search" v-model="termToSearch" placeholder="Buscar registros" aria-controls="datatables" class="form-control input-sm">
             </label>
             <label for="" class="form-group">
-              <select name="" id="" class=" form-group" v-model="filterProperty">
+              <select name="" id="" class=" form-group filter-options border-input" v-model="filterProperty">
                 <option v-for="header in visitantesHeaders.filter(obj => obj.match(/^[^.]+$/))" :key="header">{{header}}</option>
               </select>
             </label>

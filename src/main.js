@@ -7,6 +7,7 @@ import GlobalComponents from './globalComponents';
 import Notifications from 'vue-notification';
 import SideBar from './components/UIComponents/SidebarPlugin';
 import App from './App';
+import VueTheMask from 'vue-the-mask'
 
 // router setup
 import routes from './routes/routes';
@@ -23,6 +24,7 @@ Vue.use(GlobalComponents);
 Vue.use(vClickOutside);
 Vue.use(Notifications);
 Vue.use(SideBar);
+Vue.use(VueTheMask)
 
 //Mixins
 Vue.mixin({
