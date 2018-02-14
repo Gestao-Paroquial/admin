@@ -11,14 +11,20 @@ import Maps from 'src/components/Dashboard/Views/Maps.vue';
 import Typography from 'src/components/Dashboard/Views/Typography.vue';
 import TableList from 'src/components/Dashboard/Views/TableList.vue';
 import Participantes from 'src/components/Dashboard/Views/Participantes.vue';
-import Comunidades from 'src/components/Dashboard/Views/Comunidades.vue';
 import Dizimistas from 'src/components/Dashboard/Views/Dizimistas.vue';
+
 import Visitantes from 'src/components/Dashboard/Views/Visitantes';
 import VisitanteProfile from 'src/components/Dashboard/Views/Visitantes/Profile.vue';
 import AddVisitantes from 'src/components/Dashboard/Views/Visitantes/Add.vue';
+
 import Pastorais from 'src/components/Dashboard/Views/Pastorais';
 import PastoralProfile from 'src/components/Dashboard/Views/Pastorais/Profile.vue';
 import AddPastoral from 'src/components/Dashboard/Views/Pastorais/Add.vue';
+
+import Comunidades from 'src/components/Dashboard/Views/Comunidades';
+import ComunidadeProfile from 'src/components/Dashboard/Views/Comunidades/Profile.vue';
+import AddComunidade from 'src/components/Dashboard/Views/Comunidades/Add.vue';
+
 import MembrosPastorais from 'src/components/Dashboard/Views/MembrosPastorais.vue';
 const routes = [
   {
@@ -80,6 +86,16 @@ const routes = [
         path: 'pastorais',
         name: 'pastorais',
         component: Pastorais
+      },
+      {
+        path: 'comunidades/add',
+        name: 'nova Comunidade',
+        component: AddComunidade,
+      },
+      {
+        path: 'comunidades/:id',
+        name: 'Comunidade',
+        component: ComunidadeProfile,
       },
       {
         path: 'comunidades',
