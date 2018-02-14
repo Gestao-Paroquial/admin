@@ -18,17 +18,18 @@
               <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">{{ itemValue(item, column) }}</td>
               <td>
                 <div class="cell">
-
-                  <a class="btn btn-simple btn-xs btn-info btn-icon view" @click="show(item)">
-                    <i class="ti-eye" />
-                  </a>
-
-                  <a class="btn btn-simple btn-xs btn-warning btn-icon edit" @click="getId(item.id)">
+                  <router-link v-bind:to="{ path: item.id.toString() }" class="btn btn-simple btn-xs btn-warning btn-icon view" append>
                     <i class="ti-pencil-alt" />
-                  </a>
-                  <a class="btn btn-simple btn-xs btn-danger btn-icon remove " @click="del(item.id)">
+                  </router-link>
+
+                  <router-link v-bind:to="{ path: item.id.toString() }" class="btn btn-simple btn-xs btn-info btn-icon edit" append>
+                    <i class="ti-eye" />
+                  </router-link>
+
+                  <router-link v-bind:to="{ path: item.id.toString() }" class="btn btn-simple btn-xs btn-danger btn-icon remove" append>
                     <i class="ti-close" />
-                  </a>
+                  </router-link>
+
                 </div>
               </td>
             </tr>
@@ -118,7 +119,7 @@ export default {
       return item[column.toLowerCase()];
     },
     getColumn(column) {
-      return column.split(".")[0];
+      return this.capitalize(column.split(".")[0]);
     }
   }
 };
@@ -158,5 +159,12 @@ export default {
 .pagination > li:last-child > a,
 .pagination > li:last-child > span {
   border-radius: 20px !important;
+}
+
+.filter-options{
+  background: #fff;
+  padding: 10px 15px;
+  border-radius: 4px;
+  border: 1px solid #dedede;
 }
 </style>

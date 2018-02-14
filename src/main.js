@@ -4,9 +4,10 @@ import vClickOutside from 'v-click-outside';
 
 // Plugins
 import GlobalComponents from './globalComponents';
-import Notifications from './components/UIComponents/NotificationPlugin';
+import Notifications from 'vue-notification';
 import SideBar from './components/UIComponents/SidebarPlugin';
 import App from './App';
+import VueTheMask from 'vue-the-mask'
 
 // router setup
 import routes from './routes/routes';
@@ -23,6 +24,15 @@ Vue.use(GlobalComponents);
 Vue.use(vClickOutside);
 Vue.use(Notifications);
 Vue.use(SideBar);
+Vue.use(VueTheMask)
+
+//Mixins
+Vue.mixin({
+  methods: {
+    capitalize: str => str.replace(/\b\w/g, l => l.toUpperCase())
+  }
+})
+
 
 // configure router
 const router = new VueRouter({
