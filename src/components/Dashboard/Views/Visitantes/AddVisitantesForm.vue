@@ -17,7 +17,7 @@
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input type="text" :required="true" label="Telefone" placeholder="Telefone" v-model="visitante.telefone" v-mask="['(##) ####-####', '(##) #####-####']"  :pattern="'.{0}|.{14,15}'" :title="'Número inválido'"/>
+            <fg-input type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="visitante.telefone" v-mask="['(##) ####-####', '(##) #####-####']"  :pattern="'.{0}|.{14,15}'" :title="'Número inválido'"/>
           </div>
           <div class="col-md-6">
             <select-list :selectList="selectList" :required="true"></select-list>
