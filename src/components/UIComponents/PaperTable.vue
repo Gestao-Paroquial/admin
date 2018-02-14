@@ -160,4 +160,11 @@ export default {
 .pagination > li:last-child > span {
   border-radius: 20px !important;
 }
+
+.filter-options{
+  background: #fff;
+  padding: 10px 15px;
+  border-radius: 4px;
+  border: 1px solid #dedede;
+}
 </style>
