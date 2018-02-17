@@ -36,23 +36,40 @@ Vue.mixin({
 
 // configure router
 const router = new VueRouter({
-	routes, // short for routes: routes
-	linkActiveClass: 'active'
+  routes, // short for routes: routes
+  linkActiveClass: 'active'
 });
 
+router.beforeEach((to, from, next) => {
+  console.log(to)
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!localStorage.getItem('login')) {
+      next({
+        path: '/login',
+        query: {
+          redirect: to.fullPath,
+        },
+      });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+})
 // global library setup
 Object.defineProperty(Vue.prototype, '$Chartist', {
-	get() {
-		return this.$root.Chartist;
-	}
+  get() {
+    return this.$root.Chartist;
+  }
 });
 
 /* eslint-disable no-new */
 new Vue({
-	el: '#app',
-	data: {
-		Chartist: Chartist
-	},
-	render: h => h(App),
-	router,
+  el: '#app',
+  data: {
+    Chartist: Chartist
+  },
+  render: h => h(App),
+  router,
 });
