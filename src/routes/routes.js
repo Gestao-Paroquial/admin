@@ -43,6 +43,10 @@ const routes = [
     component: Login,
   },
   {
+    path: '/logout',
+    component: Login,
+  },
+  {
     path: '/admin',
     component: DashboardLayout,
     redirect: '/admin/stats',

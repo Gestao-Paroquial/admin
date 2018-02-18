@@ -12,13 +12,14 @@
                   </div>
                   <div class="card-content">
                     <div class="form-group">
-                      <label>Email</label> <input type="text" placeholder="Enter email" class="form-control input-no-border"></div>
+                      <label>Email</label> <input type="text" placeholder="Email" class="form-control input-no-border"></div>
                     <div class="form-group">
-                      <label>Senha</label> <input type="password" placeholder="Password" class="form-control input-no-border"></div>
+                      <label>Senha</label> <input type="password" placeholder="Senha" class="form-control input-no-border"></div>
                   </div>
                   <div class="card-footer text-center">
                     <button type="submit" class="btn btn-fill btn-wd " @click="login">Login</button>
                     <div class="forgot">
+                      <br>
                       <a href="/register" class="">
                         Esqueceu sua senha?
                       </a>
@@ -35,7 +36,7 @@
           <div class="copyright">
             © Coded with
             <i class="fa fa-heart heart"></i> by
-            <a href="https://github.com/Leocardoso94" target="_blank">Leonardo Cardoso</a>
+            <a href="https://github.com/Leocardoso94" target="_blank">Gestão Paroquial</a>
           </div>
         </div>
       </footer>
@@ -50,6 +51,11 @@ export default {
     login() {
       localStorage.setItem("login", true);
       this.$router.push({ path: "/" });
+    }
+  },
+  created() {
+    if (this.$route.path.match("logout")) {
+      localStorage.setItem("login", false);
     }
   }
 };
