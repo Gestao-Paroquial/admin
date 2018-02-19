@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ValueRow v-if="tabList"/>
     <ul class="nav nav-tabs">
 
       <li :class="{'active': tabList}">
@@ -159,6 +160,7 @@
 </template>
 <script>
 import ValueBox from "components/UIComponents/ValueBox.vue";
+import ValueRow from "components/UIComponents/ValueRow.vue";
 import debounce from "lodash.debounce";
 import axios from "axios";
 import { billingCyclesApiUrl } from "./../../../../api-url";
@@ -173,7 +175,8 @@ const visitantesHeaders = [
 
 export default {
   components: {
-    ValueBox
+    ValueBox,
+    ValueRow
   },
   data() {
     return {

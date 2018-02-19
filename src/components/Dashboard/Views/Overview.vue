@@ -18,17 +18,9 @@
         </stats-card>
       </div>
     </div>
+
     <!-- Controle Financeiro -->
-    <div class="row">
-      <value-box grid="col-sm-12 col-md-4" color-class="bg-green" icon-class="fa fa-bank" :value="formatToPrice(billingSummary.credit)" text="Total de Créditos">
-      </value-box>
-
-      <value-box grid="col-sm-12 col-md-4" color-class="bg-red" icon-class="fa fa-credit-card" :value="formatToPrice(billingSummary.debt)" text="Total de Débitos">
-      </value-box>
-
-      <value-box grid="col-sm-12 col-md-4" color-class="bg-blue" icon-class="fa fa-money" :value="formatToPrice(billingSummary.total)" text="Valor Consolidado">
-      </value-box>
-    </div>
+    <value-row/>
 
     <!--Charts-->
     <div class="row">
@@ -81,14 +73,12 @@
 <script>
 import StatsCard from "components/UIComponents/Cards/StatsCard.vue";
 import ChartCard from "components/UIComponents/Cards/ChartCard.vue";
-import ValueBox from "components/UIComponents/ValueBox.vue";
-import axios from "axios";
-import { billingSummaryApiUrl } from "../../../api-url";
+import ValueRow from "components/UIComponents/ValueRow.vue";
 export default {
   components: {
     StatsCard,
     ChartCard,
-    ValueBox
+    ValueRow
   },
   /**
    * Chart data used to render stats, charts. Should be replaced with server data
@@ -197,27 +187,8 @@ export default {
           series: [62, 32, 6]
         },
         options: {}
-      },
-      billingSummary: {
-        credit: 0,
-        debt: 0,
-        total: 0
       }
     };
-  },
-  methods: {
-    formatToPrice(value) {
-      return `R$ ${value.toFixed(2)}`;
-    }
-  },
-  created() {
-    axios.get(billingSummaryApiUrl).then(({ data }) => {
-      this.billingSummary.credit = data.credit;
-      this.billingSummary.debt = data.debt;
-      this.billingSummary.total = data.credit - data.debt;
-    }).catch(response => {
-      console.log(response);
-    });
   }
 };
 </script>
