@@ -68,6 +68,7 @@ export default {
   margin-bottom: 20px;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   color: #fff;
+  border-radius: 5px;
 }
 .small-box>.inner {
     padding: 10px;

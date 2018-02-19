@@ -48,13 +48,13 @@
         </div>
 
         <div class="row">
-          <value-box grid="col-sm-12 col-md-4" color-class="bg-green" icon-class="fa fa-bank" :value="`R$ ${credit.toFixed(2)}`" text="Total de Créditos" >
+          <value-box grid="col-sm-12 col-md-4" color-class="bg-green" icon-class="fa fa-bank" :value="formatToPrice(credit)" text="Total de Créditos">
           </value-box>
 
-          <value-box grid="col-sm-12 col-md-4" color-class="bg-red" icon-class="fa fa-credit-card" :value="`R$ ${debt.toFixed(2)}`" text="Total de Débitos" >
+          <value-box grid="col-sm-12 col-md-4" color-class="bg-red" icon-class="fa fa-credit-card" :value="formatToPrice(debt)" text="Total de Débitos">
           </value-box>
 
-          <value-box grid="col-sm-12 col-md-4" color-class="bg-blue" icon-class="fa fa-money" :value="`R$ ${total.toFixed(2)}`" text="Valor Consolidado" >
+          <value-box grid="col-sm-12 col-md-4" color-class="bg-blue" icon-class="fa fa-money" :value="formatToPrice(total)" text="Valor Consolidado">
           </value-box>
         </div>
 
@@ -217,8 +217,6 @@ export default {
       this.credit = 0;
       this.debt = 0;
 
-      console.log(this);
-
       if (this.billingCycle) {
         this.billingCycle.credits.forEach(({ value }) => {
           this.credit += !value || isNaN(value) ? 0 : parseFloat(value);
@@ -230,6 +228,9 @@ export default {
       }
 
       this.total = this.credit - this.debt;
+    },
+    formatToPrice(value) {
+      return `R$ ${value.toFixed(2)}`;
     },
     showTabUpdate(billingCycle) {
       this.toggleTabs("tabUpdate");
