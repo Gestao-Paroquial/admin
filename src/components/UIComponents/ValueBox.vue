@@ -1,12 +1,12 @@
 <template>
-  <div :class="grid + colorClass">
-    <div class="small-box bg-red">
+  <div :class="`${grid} `">
+    <div class="small-box " :class="colorClass">
       <div class="inner">
         <h3 class="ng-binding">{{value}}</h3>
         <p class="ng-binding">{{text}}</p>
       </div>
       <div class="icon">
-        <i class="fa fa-credit-card"></i>
+        <i :class="iconClass"></i>
       </div>
     </div>
   </div>
@@ -17,7 +17,8 @@ export default {
     grid: String,
     text: String,
     value: String,
-    colorClass: String
+    colorClass: String,
+    iconClass: String
   }
 };
 </script>
@@ -42,6 +43,53 @@ export default {
 
 .bg-blue {
   background-color: #0073b7 !important;
+}
+
+.small-box p {
+    font-size: 15px;
+}
+
+.small-box h3 {
+    font-size: 38px;
+    font-weight: bold;
+    margin: 0 0 10px 0;
+    white-space: nowrap;
+    padding: 0;
+}
+
+.small-box h3,
+.small-box p {
+  z-index: 5;
+}
+.small-box {
+  border-radius: 2px;
+  position: relative;
+  display: block;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  color: #fff;
+}
+.small-box>.inner {
+    padding: 10px;
+}
+.small-box .icon {
+  -webkit-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  position: absolute;
+  top: -10px;
+  right: 90px;
+  z-index: 0;
+  font-size: 90px;
+  color: rgba(0, 0, 0, 0.15);
+}
+
+.small-box h3 {
+  font-size: 38px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  white-space: nowrap;
+  padding: 0;
 }
 </style>
 

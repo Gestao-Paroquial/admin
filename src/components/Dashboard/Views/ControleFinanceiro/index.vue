@@ -2,109 +2,158 @@
   <div>
     <ul class="nav nav-tabs">
 
-      <li v-if="tabList" ng-class="{active: tabList}" class="ng-scope">
-        <a href="" data-target="#tabList" data-toggle="tab" aria-expanded="false">
+      <li :class="{'active': tabList}">
+        <a href="" data-target="#tabList" data-toggle="tab" aria-expanded="false" @click.prevent="toggleTabs('tabList')">
           <i class="fa fa-bars"></i> Lista</a>
       </li>
 
-      <li v-if="tabCreate" class="ng-scope active">
-        <a data-target="#tabCreate" data-toggle="tab" aria-expanded="true">
+      <li :class="{'active': tabCreate}">
+        <a href="" data-target="#tabCreate" data-toggle="tab" aria-expanded="true" @click.prevent="showTabCreate()">
           <i class="fa fa-plus"></i> Incluir</a>
       </li>
     </ul>
     <div class="tab-content">
+      <table class="table" v-if="tabList">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Período</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="billingCycle in billingCycles" :key="billingCycle.id">
 
-      <div class="row">
-        <div class="col-md-6">
-          <fg-input type="text" :required="true" label="Nome" placeholder="Nome" v-model="billingCycle.name" />
-        </div>
-        <div class="col-md-6">
-          <fg-input type="month" :required="true" label="Mês e Ano" placeholder="Mês e Ano" v-model="billingCycle.date" />
-        </div>
-      </div>
-
-      <div class="col-xs-12 col-lg-6">
-        <fieldset>
-          <legend>Créditos</legend>
-          <div class="col-xs-12 ng-scope">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Valor</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(credit, index) in billingCycle.credits" :key="index">
-                  <td>
-                    <fg-input :required="true" v-model="credit.name" placeholder="Informe o Nome" ng-readonly="tabDelete" />
-                  </td>
-                  <td>
-                    <fg-input :required="true" v-model="credit.value" placeholder="Informe o Valor" ng-readonly="tabDelete" ng-change="calculateValues()" type="number" />
-                  </td>
-
-                  <td style="width:150px;" ng-if="!tabDelete" class="ng-scope">
-                    <button class="btn btn-success btn-simple btn-xs" @click="addCredit(index)">
-                      <i class="fa fa-plus"></i>
-                    </button>
-                    <button class="btn btn-warning btn-simple btn-xs" @click="cloneCredit(index,credit)">
-                      <i class="fa fa-clone"></i>
-                    </button>
-                    <button class="btn btn-danger btn-simple btn-xs" @click="deleteCredit(index)">
-                      <i class="fa fa-trash-o"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <td class="ng-binding">{{billingCycle.name}}</td>
+            <td class="ng-binding">{{new Date(billingCycle.date).toLocaleDateString('pt-BR',{ year: 'numeric', month: 'long'})}}</td>
+            <td style="width:100px;">
+              <button class="btn btn-warning btn-xs" @click="showTabUpdate(billingCycle)">
+                <i class="fa fa-pencil"></i>
+              </button>
+              <button class="btn btn-danger btn-xs" @click="showTabDelete(billingCycle)">
+                <i class="fa fa-trash-o"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <form @submit.prevent="createBillingCycle()" v-if="tabCreate || tabDelete || tabUpdate">
+        <div class=" row ">
+          <div class="col-md-6 ">
+            <fg-input type="text " :required="true " :disabled="tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name " />
           </div>
-        </fieldset>
-      </div>
-
-      <div class="col-xs-12 col-lg-6">
-        <fieldset>
-          <legend>Débitos</legend>
-          <div class="col-xs-12 ng-scope">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Valor</th>
-                  <th>Ações</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(debt, index) in billingCycle.debts" :key="index">
-                  <td>
-                    <fg-input :required="true" v-model="debt.name" placeholder="Informe o Nome" ng-readonly="tabDelete" />
-                  </td>
-                  <td>
-                    <fg-input :required="true" v-model="debt.value" placeholder="Informe o Valor" ng-readonly="tabDelete" ng-change="calculateValues()" type="number" />
-                  </td>
-
-                  <td style="width:150px;" ng-if="!tabDelete" class="ng-scope">
-                    <button class="btn btn-success btn-simple btn-xs" @click="addDebt(index)">
-                      <i class="fa fa-plus"></i>
-                    </button>
-                    <button class="btn btn-warning btn-simple btn-xs" @click="cloneDebt(index,debt)">
-                      <i class="fa fa-clone"></i>
-                    </button>
-                    <button class="btn btn-danger btn-simple btn-xs" @click="deleteDebt(index)">
-                      <i class="fa fa-trash-o"></i>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="col-md-6 ">
+            <fg-input type="month" :required="true " :disabled="tabDelete" label="Mês e Ano " placeholder="Mês e Ano " v-model="billingCycle.date " />
           </div>
-        </fieldset>
-      </div>
+        </div>
 
-      <div class="box-footer">
-        <button class="btn btn-primary ng-scope" @click="createBillingCycle()" v-if="tabCreate">Incluir</button>
-        <button class="btn btn-default" ng-click="cancel()">Cancelar</button>
-      </div>
+        <div class="row">
+          <value-box grid="col-sm-12 col-md-4" color-class="bg-green" icon-class="fa fa-bank" :value="`R$ ${credit.toFixed(2)}`" text="Total de Créditos" >
+          </value-box>
+
+          <value-box grid="col-sm-12 col-md-4" color-class="bg-red" icon-class="fa fa-credit-card" :value="`R$ ${debt.toFixed(2)}`" text="Total de Débitos" >
+          </value-box>
+
+          <value-box grid="col-sm-12 col-md-4" color-class="bg-blue" icon-class="fa fa-money" :value="`R$ ${total.toFixed(2)}`" text="Valor Consolidado" >
+          </value-box>
+        </div>
+
+        <div class="col-xs-12 col-lg-6 ">
+          <fieldset>
+            <legend>Créditos</legend>
+            <div class="col-xs-12  ">
+              <table class="table ">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Valor</th>
+                    <th v-if="!tabDelete">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(credit, index) in billingCycle.credits " :key="index ">
+                    <td>
+                      <fg-input :required="true " v-model="credit.name " placeholder="Informe o Nome " :disabled="tabDelete" />
+                    </td>
+                    <td>
+                      <fg-input :required="true " v-model="credit.value " placeholder="Informe o Valor " :disabled="tabDelete" ng-change="calculateValues() " type="number " />
+                    </td>
+
+                    <td style="width:150px; " v-if="!tabDelete " class=" ">
+                      <button class="btn btn-success btn-simple btn-xs " type="button" @click="addDebtOrCredit(index, 'credits') ">
+                        <i class="fa fa-plus "></i>
+                      </button>
+                      <button class="btn btn-warning btn-simple btn-xs " type="button" @click="cloneDebtOrCredit(index,credit, 'credits') ">
+                        <i class="fa fa-clone "></i>
+                      </button>
+                      <button class="btn btn-danger btn-simple btn-xs " type="button" @click="deleteDebtOrCredit(index, 'credits') ">
+                        <i class="fa fa-trash-o "></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="col-xs-12 col-lg-6 ">
+          <fieldset>
+            <legend>Débitos</legend>
+            <div class="col-xs-12  ">
+              <table class="table ">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Valor</th>
+                    <th>Status</th>
+                    <th v-if="!tabDelete">Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(debt, index) in billingCycle.debts " :key="index ">
+                    <td>
+                      <fg-input :required="true " v-model="debt.name " placeholder="Informe o Nome " :disabled="tabDelete" @change="alert()" />
+                    </td>
+                    <td>
+                      <fg-input :required="true " v-model="debt.value" placeholder="Informe o Valor " :disabled="tabDelete" ng-change="calculateValues() " type="number " />
+                    </td>
+                    <td>
+                      <div class="form-group">
+                        <select v-model="debt.status" class="form-control border-input">
+                          <option value="PAGO">PAGO</option>
+                          <option value="PENDENTE">PENDENTE</option>
+                          <option value="AGENDADO">AGENDADO</option>
+                        </select>
+                      </div>
+                    </td>
+
+                    <td style="width:150px; " v-if="!tabDelete " class=" ">
+                      <button class="btn btn-success btn-simple btn-xs " type="button" @click="addDebtOrCredit(index, 'debts') ">
+                        <i class="fa fa-plus "></i>
+                      </button>
+                      <button class="btn btn-warning btn-simple btn-xs " type="button" @click="cloneDebtOrCredit(index,debt, 'debts') ">
+                        <i class="fa fa-clone "></i>
+                      </button>
+                      <button class="btn btn-danger btn-simple btn-xs " type="button" @click="deleteDebtOrCredit(index, 'debts') ">
+                        <i class="fa fa-trash-o "></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="box-footer ">
+          <button class="btn btn-primary" type="submit" v-if="tabCreate">Incluir</button>
+          <button class="btn btn-warning" type="button" @click="updateBillingCycle()" v-if="tabUpdate">Alterar</button>
+          <button class="btn btn-danger" type="button" @click.prevent="deleteBillingCycle()" v-if="tabDelete">Excluir</button>
+          <button class="btn btn-default" type="button" @click="cancel() ">Cancelar</button>
+        </div>
+
+      </form>
     </div>
   </div>
 </template>
@@ -112,7 +161,7 @@
 import ValueBox from "components/UIComponents/ValueBox.vue";
 import debounce from "lodash.debounce";
 import axios from "axios";
-import { visitantesApiUrl, comunidadesApiUrl } from "./../../../../api-url";
+import { billingCyclesApiUrl } from "./../../../../api-url";
 
 const visitantesHeaders = [
   "id",
@@ -128,47 +177,153 @@ export default {
   },
   data() {
     return {
-      tabCreate: true,
+      tabCreate: false,
       tabList: true,
+      tabDelete: false,
+      tabUpdate: false,
+      billingCycles: [],
       billingCycle: {
-        credits: [],
-        debts: []
-      }
+        credits: [{ value: null }],
+        debts: [{ value: null }]
+      },
+      credit: 0,
+      total: 0,
+      debt: 0
     };
   },
   created() {
-    this.initCreditsAndDebts();
+    this.getBillingCycles();
+  },
+  watch: {
+    billingCycle: {
+      handler: function(val, oldVal) {
+        this.calculateValues();
+      },
+      deep: true
+    }
   },
   methods: {
+    toggleTabs(tab) {
+      this.tabCreate = false;
+      this.tabList = false;
+      this.tabDelete = false;
+      this.tabUpdate = false;
+      this[tab] = true;
+    },
+    cancel() {
+      this.toggleTabs("tabList");
+    },
+    calculateValues() {
+      this.credit = 0;
+      this.debt = 0;
+
+      console.log(this);
+
+      if (this.billingCycle) {
+        this.billingCycle.credits.forEach(({ value }) => {
+          this.credit += !value || isNaN(value) ? 0 : parseFloat(value);
+        });
+
+        this.billingCycle.debts.forEach(({ value }) => {
+          this.debt += !value || isNaN(value) ? 0 : parseFloat(value);
+        });
+      }
+
+      this.total = this.credit - this.debt;
+    },
+    showTabUpdate(billingCycle) {
+      this.toggleTabs("tabUpdate");
+      billingCycle.date = billingCycle.date.substring(0, 7);
+      this.billingCycle = billingCycle;
+    },
+    showTabDelete(billingCycle) {
+      this.toggleTabs("tabDelete");
+      billingCycle.date = billingCycle.date.substring(0, 7);
+      this.billingCycle = billingCycle;
+    },
+    showTabCreate() {
+      this.toggleTabs("tabCreate");
+      this.billingCycle = {
+        credits: [{ value: null }],
+        debts: [{ value: null, status: "PAGO" }]
+      };
+    },
     createBillingCycle() {
-      console.log(this.billingCycle);
+      this.billingCycle.credits = this.billingCycle.credits.filter(
+        credit => (credit.name && credit.value ? credit : null)
+      );
+
+      this.billingCycle.debts = this.billingCycle.debts.filter(
+        credit => (credit.name && credit.value ? credit : null)
+      );
+
+      axios
+        .post(billingCyclesApiUrl, JSON.stringify(this.billingCycle), {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          console.log(response);
+          this.getBillingCycles();
+          this.toggleTabs("tabList");
+        })
+        .catch(response => {
+          console.log(response);
+        });
     },
-    addDebt(index) {
-      this.billingCycle.debts.splice(index + 1, 0, {
+    getBillingCycles() {
+      axios
+        .get(billingCyclesApiUrl)
+        .then(({ data }) => (this.billingCycles = data))
+        .catch(response => {
+          console.log(response);
+        });
+    },
+    deleteBillingCycle() {
+      const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
+
+      if (!confirm("Você tem certeza?")) return;
+
+      axios
+        .delete(url)
+        .then(response => {
+          console.log(response);
+          this.getBillingCycles();
+          this.toggleTabs("tabList");
+        })
+        .catch(response => console.log(response));
+    },
+    updateBillingCycle() {
+      const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
+      if (!confirm("Você tem certeza?")) return;
+
+      axios
+        .put(url, JSON.stringify(this.billingCycle), {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+        .then(response => {
+          console.log(response);
+          this.getBillingCycles();
+          this.toggleTabs("tabList");
+        })
+        .catch(response => console.log(response));
+    },
+    addDebtOrCredit(index, property) {
+      this.billingCycle[property].splice(index + 1, 0, {
         name: null,
-        value: null
+        value: null,
+        status: "PAGO"
       });
     },
-    cloneDebt(index, { name, value }) {
-      this.billingCycle.debts.splice(index + 1, 0, { name, value });
+    cloneDebtOrCredit(index, { name, value, status }, property) {
+      this.billingCycle[property].splice(index + 1, 0, { name, value, status });
       this.initCreditsAndDebts();
     },
-    deleteDebt(index) {
-      this.billingCycle.debts.splice(index, 1);
-      this.initCreditsAndDebts();
-    },
-    addCredit(index) {
-      this.billingCycle.credits.splice(index + 1, 0, {
-        name: null,
-        value: null
-      });
-    },
-    cloneCredit(index, { name, value }) {
-      this.billingCycle.credits.splice(index + 1, 0, { name, value });
-      this.initCreditsAndDebts();
-    },
-    deleteCredit(index) {
-      this.billingCycle.credits.splice(index, 1);
+    deleteDebtOrCredit(index, property) {
+      this.billingCycle[property].splice(index, 1);
       this.initCreditsAndDebts();
     },
     initCreditsAndDebts() {
@@ -185,6 +340,7 @@ export default {
   }
 };
 </script>
+
 <style lang="scss" >
 .box-footer {
   border-top-left-radius: 0;
@@ -194,6 +350,8 @@ export default {
   border-top: 1px solid #f4f4f4;
   padding: 10px;
   background-color: #fff;
+  float: left;
+  clear: both;
 }
 
 .tab-content {
