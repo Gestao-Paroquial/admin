@@ -30,6 +30,9 @@ import MembrosPastorais from 'src/components/Dashboard/Views/MembrosPastorais';
 import MembroPastoralProfile from 'src/components/Dashboard/Views/MembrosPastorais/Profile.vue';
 import AddMembroPastoral from 'src/components/Dashboard/Views/MembrosPastorais/Add.vue';
 
+
+import ControleFinanceiro from 'src/components/Dashboard/Views/ControleFinanceiro';
+
 const routes = [
   {
     path: '/',
@@ -56,6 +59,11 @@ const routes = [
         path: 'overview',
         name: 'overview',
         component: Overview
+      },
+      {
+        path: 'financeiro',
+        name: 'controle Financeiro',
+        component: ControleFinanceiro
       },
       {
         path: 'visitantes/add',
