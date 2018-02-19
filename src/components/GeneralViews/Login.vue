@@ -36,7 +36,7 @@
           <div class="copyright">
             © Coded with
             <i class="fa fa-heart heart"></i> by
-            <a href="https://github.com/Leocardoso94" target="_blank">Gestão Paroquial</a>
+            <a href="https://github.com/Gestao-Paroquial" target="_blank">Gestão Paroquial</a>
           </div>
         </div>
       </footer>
