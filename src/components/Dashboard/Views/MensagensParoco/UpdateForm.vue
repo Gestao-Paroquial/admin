@@ -21,10 +21,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            <div class="form-group">
-              <label>Mensagem</label>
-              <textarea required rows="5" class="form-control border-input" placeholder="Mensagem" v-model="mensagemParoco.mensagem" />
-            </div>
+            <vue-editor v-model="mensagemParoco.mensagem"></vue-editor>
           </div>
         </div>
 
@@ -47,8 +44,9 @@
 import axios from "axios";
 import SelectList from "components/UIComponents/Forms/SelectList.vue";
 import { mensagensParocoApiUrl } from "../../../../api-url/index";
-
+import { VueEditor } from "vue2-editor";
 export default {
+  components:{VueEditor},
   props: {
     mensagemParoco: Object
   },

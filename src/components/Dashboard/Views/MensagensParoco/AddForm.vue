@@ -20,10 +20,7 @@
 
         <div class="row">
           <div class="col-md-12">
-            <div class="form-group">
-              <label>Mensagem</label>
-              <textarea required rows="5" class="form-control border-input" placeholder="Mensagem" v-model="mensagemParoco.mensagem" />
-            </div>
+            <vue-editor v-model="mensagemParoco.mensagem"></vue-editor>
           </div>
         </div>
 
@@ -41,8 +38,12 @@
 <script>
 import axios from "axios";
 import { mensagensParocoApiUrl } from "../../../../api-url/index";
+import { VueEditor } from "vue2-editor";
 
 export default {
+  components: {
+    VueEditor
+  },
   props: {
     mensagemParoco: Object
   },
@@ -54,6 +55,7 @@ export default {
   },
   methods: {
     add() {
+      console.log(JSON.stringify(this.mensagemParoco))
       this.showLoader = true;
       axios
         .post(mensagensParocoApiUrl, JSON.stringify(this.mensagemParoco), {
