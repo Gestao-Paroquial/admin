@@ -9,29 +9,30 @@
 
         <div class="row">
           <div class="col-md-4">
-            <fg-input type="text" :required="true" label="Título" placeholder="Nome" v-model="mensagemParoco.titulo" />
+            <fg-input :disabled="$route.query.delete == 'true'" type="text" :required="true" label="Título" placeholder="Nome" v-model="mensagemParoco.titulo" />
           </div>
           <div class="col-md-4">
-            <fg-input :type="'text'" :required="true" label="Subtítulo" placeholder="Email" v-model="mensagemParoco.subtitulo" />
+            <fg-input :disabled="$route.query.delete == 'true'" :type="'text'" :required="true" label="Subtítulo" placeholder="Email" v-model="mensagemParoco.subtitulo" />
           </div>
           <div class="col-md-4">
-            <fg-input type="url" :required="false" label="Link" placeholder="Link" v-model="mensagemParoco.link" />
+            <fg-input :disabled="$route.query.delete == 'true'" type="url" :required="false" label="Link" placeholder="Link" v-model="mensagemParoco.link" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-12">
-            <vue-editor v-model="mensagemParoco.mensagem"></vue-editor>
+            <vue-editor v-model="mensagemParoco.mensagem" :disabled="$route.query.delete == 'true'"></vue-editor>
           </div>
         </div>
 
         <hr>
         <div class="text-center">
-          <button class="btn btn-info btn-fill btn-wd">
+
+          <button class="btn btn-info btn-fill btn-wd" v-if="$route.query.update">
             Update Profile
           </button>
-          <hr>
-          <button class="btn btn-danger btn-fill btn-wd" @click.prevent="del">
+
+          <button class="btn btn-danger btn-fill btn-wd" v-if="$route.query.delete" @click.prevent="del">
             Deletar
           </button>
         </div>
@@ -46,7 +47,7 @@ import SelectList from "components/UIComponents/Forms/SelectList.vue";
 import { mensagensParocoApiUrl } from "../../../../api-url/index";
 import { VueEditor } from "vue2-editor";
 export default {
-  components:{VueEditor},
+  components: { VueEditor },
   props: {
     mensagemParoco: Object
   },

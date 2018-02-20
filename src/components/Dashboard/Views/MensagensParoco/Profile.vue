@@ -20,9 +20,9 @@ export default {
     };
   },
   created() {
-    const self = this;
+    console.log(this.$route);
     axios
-      .get(`${mensagensParocoApiUrl}/${self.$route.params.id}`)
+      .get(`${mensagensParocoApiUrl}/${this.$route.params.id}`)
       .then(({ data }) => (this.mensagemParoco = data))
       .catch(err => console.log(err));
   }
