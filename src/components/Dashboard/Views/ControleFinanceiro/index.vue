@@ -1,6 +1,7 @@
 <template>
   <div>
-    <ValueRow v-if="tabList"/>
+    <loader v-if="showLoader" />
+    <ValueRow v-if="tabList" />
     <ul class="nav nav-tabs">
 
       <li :class="{'active': tabList}">
@@ -165,14 +166,6 @@ import debounce from "lodash.debounce";
 import axios from "axios";
 import { billingCyclesApiUrl } from "./../../../../api-url";
 
-const visitantesHeaders = [
-  "id",
-  "nome",
-  "email",
-  "telefone",
-  "comunidades.nome"
-];
-
 export default {
   components: {
     ValueBox,
@@ -182,6 +175,7 @@ export default {
     return {
       tabCreate: false,
       tabList: true,
+      showLoader: false,
       tabDelete: false,
       tabUpdate: false,
       billingCycles: [],
@@ -195,6 +189,7 @@ export default {
     };
   },
   created() {
+    this.showLoader = true;
     this.getBillingCycles();
   },
   watch: {
@@ -253,6 +248,7 @@ export default {
       };
     },
     createBillingCycle() {
+      this.showLoader = true;
       this.billingCycle.credits = this.billingCycle.credits.filter(
         credit => (credit.name && credit.value ? credit : null)
       );
@@ -271,6 +267,13 @@ export default {
           console.log(response);
           this.getBillingCycles();
           this.toggleTabs("tabList");
+          this.$notify({
+            group: "top-right",
+            title: "Sucesso!",
+            text: "Ciclo de pagamento inserido com sucesso",
+            type: "success",
+            speed: 2000
+          });
         })
         .catch(response => {
           console.log(response);
@@ -282,19 +285,28 @@ export default {
         .then(({ data }) => (this.billingCycles = data))
         .catch(response => {
           console.log(response);
-        });
+        })
+        .then(() => (this.showLoader = false));
     },
     deleteBillingCycle() {
       const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
 
       if (!confirm("Você tem certeza?")) return;
 
+      this.showLoader = true;
       axios
         .delete(url)
         .then(response => {
           console.log(response);
           this.getBillingCycles();
           this.toggleTabs("tabList");
+            this.$notify({
+            group: "top-right",
+            title: "Sucesso!",
+            text: "Ciclo de pagamento excluído com sucesso",
+            type: "success",
+            speed: 2000
+          });
         })
         .catch(response => console.log(response));
     },
@@ -302,6 +314,7 @@ export default {
       const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
       if (!confirm("Você tem certeza?")) return;
 
+      this.showLoader = true;
       axios
         .put(url, JSON.stringify(this.billingCycle), {
           headers: {
@@ -312,6 +325,13 @@ export default {
           console.log(response);
           this.getBillingCycles();
           this.toggleTabs("tabList");
+            this.$notify({
+            group: "top-right",
+            title: "Sucesso!",
+            text: "Ciclo de pagamento alterado com sucesso",
+            type: "success",
+            speed: 2000
+          });
         })
         .catch(response => console.log(response));
     },
