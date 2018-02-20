@@ -18,7 +18,7 @@
               <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">{{ itemValue(item, column) }}</td>
               <td>
                 <div class="cell">
-                  <router-link v-bind:to="{ path: item.id.toString() }" class="btn btn-simple btn-xs btn-warning btn-icon view" append>
+                  <router-link v-bind:to="{ path: item.id.toString() , query: { update: true }}" class="btn btn-simple btn-xs btn-warning btn-icon view" append>
                     <i class="ti-pencil-alt" />
                   </router-link>
 
@@ -26,7 +26,7 @@
                     <i class="ti-eye" />
                   </router-link>
 
-                  <router-link v-bind:to="{ path: item.id.toString() }" class="btn btn-simple btn-xs btn-danger btn-icon remove" append>
+                  <router-link v-bind:to="{ path: item.id.toString(), query: { delete: true }, meta: { delete: true }  }" class="btn btn-simple btn-xs btn-danger btn-icon remove" append>
                     <i class="ti-close" />
                   </router-link>
 
@@ -161,7 +161,7 @@ export default {
   border-radius: 20px !important;
 }
 
-.filter-options{
+.filter-options {
   background: #fff;
   padding: 10px 15px;
   border-radius: 4px;

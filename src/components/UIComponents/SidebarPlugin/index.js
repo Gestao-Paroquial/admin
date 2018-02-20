@@ -7,6 +7,16 @@ const SidebarStore = {
 			name: 'Dashboard',
 			icon: 'ti-panel',
 			path: '/admin/overview'
+    },
+    {
+			name: 'Controle Financeiro',
+			icon: 'fa fa-money',
+			path: '/admin/financeiro'
+    },
+    {
+			name: 'Mensagens Paroco',
+			icon: 'fa fa-envelope',
+			path: '/admin/mensagens-paroco'
 		},
 		{
 			name: 'Visitantes',
