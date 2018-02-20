@@ -30,6 +30,9 @@ import MembrosPastorais from 'src/components/Dashboard/Views/MembrosPastorais';
 import MembroPastoralProfile from 'src/components/Dashboard/Views/MembrosPastorais/Profile.vue';
 import AddMembroPastoral from 'src/components/Dashboard/Views/MembrosPastorais/Add.vue';
 
+import MensagensParoco from 'src/components/Dashboard/Views/MensagensParoco';
+import MensagensParocoProfile from 'src/components/Dashboard/Views/MensagensParoco/Profile.vue';
+import AddMensagensParoco from 'src/components/Dashboard/Views/MensagensParoco/Add.vue';
 
 import ControleFinanceiro from 'src/components/Dashboard/Views/ControleFinanceiro';
 
@@ -64,6 +67,21 @@ const routes = [
         path: 'financeiro',
         name: 'controle Financeiro',
         component: ControleFinanceiro
+      },
+      {
+        path: 'mensagens-paroco/add',
+        name: 'mensagens Paroco',
+        component: AddMensagensParoco,
+      },
+      {
+        path: 'mensagens-paroco/:id',
+        name: 'mensagens Paroco',
+        component: MensagensParocoProfile,
+      },
+      {
+        path: 'mensagens-paroco',
+        name: 'mensagens Paroco',
+        component: MensagensParoco,
       },
       {
         path: 'visitantes/add',

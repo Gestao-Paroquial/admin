@@ -12,6 +12,11 @@ const SidebarStore = {
 			name: 'Controle Financeiro',
 			icon: 'fa fa-money',
 			path: '/admin/financeiro'
+    },
+    {
+			name: 'Mensagens Paroco',
+			icon: 'fa fa-envelope',
+			path: '/admin/mensagens-paroco'
 		},
 		{
 			name: 'Visitantes',

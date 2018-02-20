@@ -8,25 +8,25 @@
       <form @submit.prevent="update">
         <div class="row">
           <div class="col-md-6">
-            <fg-input type="text" :required="true" label="Nome" placeholder="Nome" v-model="membroPastoral.nome" />
+            <fg-input :disabled="$route.query.delete == 'true'" type="text" :required="true" label="Nome" placeholder="Nome" v-model="membroPastoral.nome" />
           </div>
           <div class="col-md-6">
-            <fg-input :type="'email'" :required="true" label="Email" placeholder="Email" v-model="membroPastoral.email" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6">
-            <select-list :selectList="selectList" :required="true"></select-list>
+            <fg-input :disabled="$route.query.delete == 'true'" :type="'email'" :required="true" label="Email" placeholder="Email" v-model="membroPastoral.email" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="membroPastoral.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
+            <select-list  :disabled="$route.query.delete == 'true'" :selectList="selectList" :required="true"></select-list>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <fg-input :disabled="$route.query.delete == 'true'" type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="membroPastoral.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
           </div>
           <div class="col-md-6">
-            <fg-input type="text" :required="false" label="Celular" placeholder="Celular" v-model="membroPastoral.celular" v-mask="[ '(##) #####-####']" :pattern="'.{0}|.{15}'" :title="'Número inválido'" />
+            <fg-input :disabled="$route.query.delete == 'true'" type="text" :required="false" label="Celular" placeholder="Celular" v-model="membroPastoral.celular" v-mask="[ '(##) #####-####']" :pattern="'.{0}|.{15}'" :title="'Número inválido'" />
           </div>
         </div>
 
@@ -36,38 +36,37 @@
               <label>
                 CEP
               </label>
-              <input class="form-control border-input" placeholder="CEP" v-model="membroPastoral.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" @change="searchCEP" required="required" type="text">
+              <input class="form-control border-input" placeholder="CEP" v-model="membroPastoral.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'"  :disabled="$route.query.delete == 'true'" @change="searchCEP" required="required" type="text">
             </div>
           </div>
           <div class="col-md-5">
-            <fg-input type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="membroPastoral.endereco" />
+            <fg-input :disabled="$route.query.delete == 'true'" type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="membroPastoral.endereco" />
           </div>
           <div class="col-md-2">
-            <fg-input type="text" :required="true" label="Número" placeholder="Número" v-model="membroPastoral.nro" />
+            <fg-input :disabled="$route.query.delete == 'true'" type="text" :required="true" label="Número" placeholder="Número" v-model="membroPastoral.nro" />
           </div>
           <div class="col-md-3">
-            <fg-input type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="membroPastoral.compl" />
+            <fg-input :disabled="$route.query.delete == 'true'" type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="membroPastoral.compl" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-5">
-            <fg-input type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="membroPastoral.bairro" />
+            <fg-input :disabled="$route.query.delete == 'true'" type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="membroPastoral.bairro" />
           </div>
           <div class="col-md-5">
-            <fg-input type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="membroPastoral.cidade" />
+            <fg-input :disabled="$route.query.delete == 'true'" type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="membroPastoral.cidade" />
           </div>
           <div class="col-md-2">
-            <fg-input type="text" :required="true" label="UF" placeholder="UF" v-model="membroPastoral.uf" />
+            <fg-input :disabled="$route.query.delete == 'true'" type="text" :required="true" label="UF" placeholder="UF" v-model="membroPastoral.uf" />
           </div>
         </div>
         <hr>
         <div class="text-center">
-          <button class="btn btn-info btn-fill btn-wd">
+          <button class="btn btn-info btn-fill btn-wd" v-if="$route.query.update">
             Update Profile
           </button>
-          <hr>
-          <button class="btn btn-danger btn-fill btn-wd" @click.prevent="del">
+          <button class="btn btn-danger btn-fill btn-wd" @click.prevent="del"  v-if="$route.query.delete">
             Deletar
           </button>
         </div>
