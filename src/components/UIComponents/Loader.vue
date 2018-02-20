@@ -1,16 +1,16 @@
 <template>
   <div class="loader">
     <div class="loader-center">
-      <sync-loader></sync-loader>
+      <fingerprint-spinner :animation-duration="1500" :size="200" color="#41B883" />
     </div>
 
   </div>
 </template>
 <script>
-import SyncLoader from "vue-spinner/src/SyncLoader.vue";
+import { FingerprintSpinner } from "epic-spinners";
 export default {
   components: {
-    SyncLoader: SyncLoader
+    FingerprintSpinner
   }
 };
 </script>
@@ -28,7 +28,7 @@ export default {
     position: absolute;
     left: 50%;
     top: 50%;
-    // transform: translate(-50%, 50%);
+    transform: translate(-50%, -50%);
   }
 }
 </style>

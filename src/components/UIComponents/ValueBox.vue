@@ -1,12 +1,14 @@
 <template>
   <div :class="`${grid} `">
-    <div class="small-box " :class="colorClass">
-      <div class="inner">
-        <h3 class="ng-binding">{{value}}</h3>
-        <p class="ng-binding">{{text}}</p>
-      </div>
-      <div class="icon">
-        <i :class="iconClass"></i>
+    <div class="card">
+      <div class="small-box " :class="colorClass">
+        <div class="inner">
+          <h3 class="ng-binding">{{value}}</h3>
+          <p class="ng-binding">{{text}}</p>
+        </div>
+        <div class="icon">
+          <i :class="iconClass"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -46,15 +48,15 @@ export default {
 }
 
 .small-box p {
-    font-size: 15px;
+  font-size: 15px;
 }
 
 .small-box h3 {
-    font-size: 38px;
-    font-weight: bold;
-    margin: 0 0 10px 0;
-    white-space: nowrap;
-    padding: 0;
+  font-size: 38px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  white-space: nowrap;
+  padding: 0;
 }
 
 .small-box h3,
@@ -70,8 +72,8 @@ export default {
   color: #fff;
   border-radius: 5px;
 }
-.small-box>.inner {
-    padding: 10px;
+.small-box > .inner {
+  padding: 10px;
 }
 .small-box .icon {
   -webkit-transition: all 0.3s linear;

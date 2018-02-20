@@ -60,7 +60,7 @@ const routes = [
     children: [
       {
         path: 'overview',
-        name: 'overview',
+        name: 'Visão Geral',
         component: Overview
       },
       {

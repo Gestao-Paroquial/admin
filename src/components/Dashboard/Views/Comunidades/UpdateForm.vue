@@ -7,27 +7,27 @@
     <div class="content">
       <form @submit.prevent="update">
 
-          <div class="row">
+        <div class="row">
           <div class="col-md-6">
-            <fg-input type="text" :required="true" label="Nome" placeholder="Nome" v-model="comunidade.nome" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Nome" placeholder="Nome" v-model="comunidade.nome" />
           </div>
           <div class="col-md-6">
-            <fg-input :type="'email'" :required="true" label="Email" placeholder="Email" v-model="comunidade.email" />
+            <fg-input :disabled="$route.query.delete" :type="'email'" :required="true" label="Email" placeholder="Email" v-model="comunidade.email" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input type="text" :required="false" label="CNPJ" placeholder="CNPJ" v-model="comunidade.cnpj" v-mask="'##.###.###/####-##'" :pattern="'.{0}|.{18}'" :title="'Número inválido'" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="CNPJ" placeholder="CNPJ" v-model="comunidade.cnpj" v-mask="'##.###.###/####-##'" :pattern="'.{0}|.{18}'" :title="'Número inválido'" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="comunidade.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="comunidade.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
           </div>
           <div class="col-md-6">
-            <fg-input type="text" :required="false" label="Celular" placeholder="Celular" v-model="comunidade.celular" v-mask="[ '(##) #####-####']" :pattern="'.{0}|.{15}'" :title="'Número inválido'" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Celular" placeholder="Celular" v-model="comunidade.celular" v-mask="[ '(##) #####-####']" :pattern="'.{0}|.{15}'" :title="'Número inválido'" />
           </div>
         </div>
 
@@ -37,39 +37,38 @@
               <label>
                 CEP
               </label>
-              <input class="form-control border-input" placeholder="CEP" v-model="comunidade.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" @change="searchCEP" required="required" type="text">
+              <input :disabled="$route.query.delete" class="form-control border-input" placeholder="CEP" v-model="comunidade.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" @change="searchCEP" required="required" type="text">
             </div>
           </div>
           <div class="col-md-5">
-            <fg-input type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="comunidade.endereco" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="comunidade.endereco" />
           </div>
           <div class="col-md-2">
-            <fg-input type="text" :required="true" label="Número" placeholder="Número" v-model="comunidade.nro" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="comunidade.nro" />
           </div>
           <div class="col-md-3">
-            <fg-input type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="comunidade.compl" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="comunidade.compl" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-5">
-            <fg-input type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="comunidade.bairro" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="comunidade.bairro" />
           </div>
           <div class="col-md-5">
-            <fg-input type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="comunidade.cidade" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="comunidade.cidade" />
           </div>
           <div class="col-md-2">
-            <fg-input type="text" :required="true" label="UF" placeholder="UF" v-model="comunidade.uf" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="UF" placeholder="UF" v-model="comunidade.uf" />
           </div>
         </div>
 
         <hr>
         <div class="text-center">
-          <button class="btn btn-info btn-fill btn-wd">
-            Update Profile
+          <button class="btn btn-info btn-fill btn-wd" v-if="$route.query.update">
+            Alterar Comunidade
           </button>
-          <hr>
-          <button class="btn btn-danger btn-fill btn-wd" @click.prevent="del">
+          <button class="btn btn-danger btn-fill btn-wd" v-if="$route.query.delete" @click.prevent="del">
             Deletar
           </button>
         </div>
@@ -85,7 +84,7 @@ import { comunidadesApiUrl } from "../../../../api-url/index";
 
 export default {
   props: {
-    comunidade: Object,
+    comunidade: Object
   },
   data() {
     return {
@@ -94,50 +93,61 @@ export default {
   },
   methods: {
     update() {
-      axios
-        .put(
-          `${comunidadesApiUrl}/${this.comunidade.id}`,
-          JSON.stringify(this.comunidade),
-          {
-            headers: {
-              "Content-Type": "application/json"
-            }
-          }
-        )
-        .then(response => {
-          this.showLoader = false;
-          this.$notify({
-            group: "top-right",
-            title: "Sucesso!",
-            text: "comunidade alterado",
-            type: "success",
-            speed: 1000
-          });
-          console.log(response);
+      this.$dialog
+        .confirm()
+        .then(dialog => {
+          axios
+            .put(
+              `${comunidadesApiUrl}/${this.comunidade.id}`,
+              JSON.stringify(this.comunidade),
+              {
+                headers: {
+                  "Content-Type": "application/json"
+                }
+              }
+            )
+            .then(response => {
+              dialog.close();
+              this.$notify({
+                group: "top-right",
+                title: "Sucesso!",
+                text: "comunidade alterado",
+                type: "success",
+                speed: 1000
+              });
+              console.log(response);
+            })
+            .catch(error => {
+              console.log(error);
+            });
         })
-        .catch(error => {
-          console.log(error);
+        .catch(function() {
+          console.log("Clicked on cancel");
         });
     },
     del() {
-      if (confirm("Você tem certeza?!")) {
-        this.showLoader = true;
-        axios
-          .delete(`${comunidadesApiUrl}/${this.comunidade.id}`)
-          .then(response => {
-            console.log(response);
-            this.showLoader = false;
-            this.$notify({
-              group: "top-right",
-              title: "Sucesso!",
-              text: "comunidade excluído",
-              type: "success",
-              speed: 1000
-            });
-            this.$router.push({ path: "/admin/comunidades" });
-          })
-          .catch(err => console.log(err));
-      }
+      this.$dialog
+        .confirm()
+        .then(dialog => {
+          axios
+            .delete(`${comunidadesApiUrl}/${this.comunidade.id}`)
+            .then(response => {
+              console.log(response);
+              dialog.close();
+              this.$notify({
+                group: "top-right",
+                title: "Sucesso!",
+                text: "comunidade excluído",
+                type: "success",
+                speed: 1000
+              });
+              this.$router.push({ path: "/admin/comunidades" });
+            })
+            .catch(err => console.log(err));
+        })
+        .catch(function() {
+          console.log("Clicked on cancel");
+        });
     },
     searchCEP(event) {
       const cep = event.target.value.replace("-", "");
@@ -158,9 +168,11 @@ export default {
           console.log(error);
           alert("CEP INVÁLIDO");
         })
-        .then(() => (setTimeout(() => {
-          this.showLoader = false
-        }, 1000)));
+        .then(() =>
+          setTimeout(() => {
+            this.showLoader = false;
+          }, 1000)
+        );
     }
   }
 };
