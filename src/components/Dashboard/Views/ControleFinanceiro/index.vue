@@ -1,7 +1,9 @@
 <template>
   <div>
     <loader v-if="showLoader" />
-    <ValueRow v-if="tabList" />
+    <h3>Resumo de todas as movimentações:</h3>
+    <ValueRow />
+
     <ul class="nav nav-tabs">
 
       <li :class="{'active': tabList}">
@@ -50,6 +52,9 @@
         </div>
 
         <div class="row">
+
+          <h3 class="col-md-12">Resumo Deste Ciclo</h3>
+
           <value-box grid="col-sm-12 col-md-4" color-class="bg-green" icon-class="fa fa-bank" :value="formatToPrice(credit)" text="Total de Créditos">
           </value-box>
 
@@ -280,6 +285,7 @@ export default {
         });
     },
     getBillingCycles() {
+      this.showLoader = true;
       axios
         .get(billingCyclesApiUrl)
         .then(({ data }) => (this.billingCycles = data))
@@ -289,51 +295,63 @@ export default {
         .then(() => (this.showLoader = false));
     },
     deleteBillingCycle() {
-      const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
-
-      if (!confirm("Você tem certeza?")) return;
-
-      this.showLoader = true;
-      axios
-        .delete(url)
-        .then(response => {
-          console.log(response);
-          this.getBillingCycles();
-          this.toggleTabs("tabList");
-            this.$notify({
-            group: "top-right",
-            title: "Sucesso!",
-            text: "Ciclo de pagamento excluído com sucesso",
-            type: "success",
-            speed: 2000
-          });
+      this.$dialog
+        .confirm()
+        .then(dialog => {
+          const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
+          axios
+            .delete(url)
+            .then(response => {
+              console.log(response);
+              dialog.close();
+              this.getBillingCycles();
+              this.toggleTabs("tabList");
+              this.$notify({
+                group: "top-right",
+                title: "Sucesso!",
+                text: "Ciclo de pagamento excluído com sucesso",
+                type: "success",
+                speed: 2000
+              });
+            })
+            .catch(response => console.log(response));
         })
-        .catch(response => console.log(response));
+        .catch(function() {
+          console.log("Clicked on cancel");
+        });
     },
     updateBillingCycle() {
       const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
-      if (!confirm("Você tem certeza?")) return;
 
-      this.showLoader = true;
-      axios
-        .put(url, JSON.stringify(this.billingCycle), {
-          headers: {
-            "Content-Type": "application/json"
-          }
+      this.$dialog
+        .confirm()
+        .then(dialog => {
+          const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
+          axios
+            .put(url, JSON.stringify(this.billingCycle), {
+              headers: {
+                "Content-Type": "application/json"
+              }
+            })
+            .then(response => {
+              console.log(response);
+              dialog.close();
+              this.getBillingCycles();
+
+              this.toggleTabs("tabList");
+              this.$notify({
+                group: "top-right",
+                title: "Sucesso!",
+                text: "Ciclo de pagamento alterado com sucesso",
+                type: "success",
+                speed: 2000
+              });
+            })
+            .catch(response => console.log(response));
         })
-        .then(response => {
-          console.log(response);
-          this.getBillingCycles();
-          this.toggleTabs("tabList");
-            this.$notify({
-            group: "top-right",
-            title: "Sucesso!",
-            text: "Ciclo de pagamento alterado com sucesso",
-            type: "success",
-            speed: 2000
-          });
-        })
-        .catch(response => console.log(response));
+        .catch(function() {
+          console.log("Clicked on cancel");
+        });
     },
     addDebtOrCredit(index, property) {
       this.billingCycle[property].splice(index + 1, 0, {

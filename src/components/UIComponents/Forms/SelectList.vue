@@ -12,7 +12,7 @@ export default {
   props: {
     selectList: Object,
     required: Boolean,
-    disabled: Boolean
+    disabled: [Boolean, String],
   }
 };
 </script>

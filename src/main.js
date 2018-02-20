@@ -7,7 +7,9 @@ import GlobalComponents from './globalComponents';
 import Notifications from 'vue-notification';
 import SideBar from './components/UIComponents/SidebarPlugin';
 import App from './App';
-import VueTheMask from 'vue-the-mask'
+import VueTheMask from 'vue-the-mask';
+import VuejsDialog from "vuejs-dialog"
+
 
 // router setup
 import routes from './routes/routes';
@@ -24,7 +26,16 @@ Vue.use(GlobalComponents);
 Vue.use(vClickOutside);
 Vue.use(Notifications);
 Vue.use(SideBar);
-Vue.use(VueTheMask)
+Vue.use(VueTheMask);
+Vue.use(VuejsDialog, {
+  html: true,
+  loader: true,
+  reverse:true,
+  okText: 'Continuar',
+  cancelText: 'Cancelar',
+  message: 'Você tem certeza?',
+  animation: 'bounce',
+});
 
 //Mixins
 Vue.mixin({
