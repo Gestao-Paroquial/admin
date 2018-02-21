@@ -11,7 +11,7 @@
             <fg-input type="text" :required="true" label="Título" placeholder="Nome" v-model="mensagemParoco.titulo" />
           </div>
           <div class="col-md-4">
-            <fg-input :type="'text'" :required="true" label="Subtítulo" placeholder="Email" v-model="mensagemParoco.subtitulo" />
+            <fg-input :type="'text'" :required="true" label="Subtítulo" placeholder="Subtítulo" v-model="mensagemParoco.subtitulo" />
           </div>
           <div class="col-md-4">
             <fg-input type="url" :required="false" label="Link" placeholder="Link" v-model="mensagemParoco.link" />
