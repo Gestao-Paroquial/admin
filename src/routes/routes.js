@@ -34,6 +34,10 @@ import MensagensParoco from 'src/components/Dashboard/Views/MensagensParoco';
 import MensagensParocoProfile from 'src/components/Dashboard/Views/MensagensParoco/Profile.vue';
 import AddMensagensParoco from 'src/components/Dashboard/Views/MensagensParoco/Add.vue';
 
+import EventosHome from 'src/components/Dashboard/Views/EventosHome';
+import EventosHomeProfile from 'src/components/Dashboard/Views/EventosHome/Profile.vue';
+import AddEventosHome from 'src/components/Dashboard/Views/EventosHome/Add.vue';
+
 import ControleFinanceiro from 'src/components/Dashboard/Views/ControleFinanceiro';
 
 const routes = [
@@ -67,6 +71,21 @@ const routes = [
         path: 'financeiro',
         name: 'controle Financeiro',
         component: ControleFinanceiro
+      },
+      {
+        path: 'eventos-home/add',
+        name: 'Eventos Home',
+        component: AddEventosHome,
+      },
+      {
+        path: 'eventos-home/:id',
+        name: 'Eventos Home',
+        component: EventosHomeProfile,
+      },
+      {
+        path: 'eventos-home',
+        name: 'Eventos Home',
+        component: EventosHome,
       },
       {
         path: 'mensagens-paroco/add',

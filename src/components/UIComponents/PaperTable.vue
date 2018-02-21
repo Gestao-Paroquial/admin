@@ -15,7 +15,7 @@
           </thead>
           <tbody>
             <tr v-for="(item, index) in data" :key="index" v-if="index >= start && index < (start + itemsPerPage) ">
-              <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)">{{ itemValue(item, column) }}</td>
+              <td v-for="(column, index) in columns" :key="index" v-if="hasValue(item, column)" v-html=" itemValue(item, column)"></td>
               <td>
                 <div class="cell">
                   <router-link v-bind:to="{ path: item.id.toString() , query: { update: true }}" class="btn btn-simple btn-xs btn-warning btn-icon view" append>
@@ -60,6 +60,7 @@
   </div>
 </template>
 <script>
+import { backEndUrl } from "./../../api-url";
 export default {
   props: {
     columns: Array,
@@ -112,10 +113,16 @@ export default {
       return item[column.toLowerCase()] !== "undefined";
     },
     itemValue(item, column) {
+      //Verificar as colunas que tem pontos para buscar propriedades dentro de propriedades
       if (column.match(/\./g)) {
         const splited = column.split(".");
         return item[splited[0].toLowerCase()][splited[1].toLowerCase()];
       }
+
+      if (item[column.toLowerCase()].toString().match("/uploads/img/")) {
+        return `<img src=${backEndUrl + item[column.toLowerCase()]} style="max-width: 200px">`;
+      }
+
       return item[column.toLowerCase()];
     },
     getColumn(column) {
@@ -124,7 +131,7 @@ export default {
   }
 };
 </script>
-<style>
+<style scoped>
 .pagination > li > a:hover,
 .pagination > li > a:focus,
 .pagination > li > a:active,
@@ -166,5 +173,10 @@ export default {
   padding: 10px 15px;
   border-radius: 4px;
   border: 1px solid #dedede;
+}
+
+img {
+  max-width: 200px;
+  width: 100%;
 }
 </style>
