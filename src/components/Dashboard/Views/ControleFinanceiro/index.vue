@@ -28,8 +28,8 @@
         <tbody>
           <tr v-for="billingCycle in billingCycles" :key="billingCycle.id">
 
-            <td class="ng-binding">{{billingCycle.name}}</td>
-            <td class="ng-binding">{{new Date(billingCycle.date).toLocaleDateString('pt-BR',{ year: 'numeric', month: 'long'})}}</td>
+            <td>{{billingCycle.name}}</td>
+            <td>{{new Date(billingCycle.date).toLocaleDateString('pt-BR',{ year: 'numeric', month: 'long'})}}</td>
             <td style="width:100px;">
               <button class="btn btn-warning btn-xs" @click="showTabUpdate(billingCycle)">
                 <i class="fa fa-pencil"></i>
@@ -80,10 +80,10 @@
                 <tbody>
                   <tr v-for="(credit, index) in billingCycle.credits " :key="index ">
                     <td>
-                      <fg-input :required="true " v-model="credit.name " placeholder="Informe o Nome " :disabled="tabDelete" />
+                      <fg-input v-model="credit.name " placeholder="Informe o Nome " :disabled="tabDelete" />
                     </td>
                     <td>
-                      <fg-input :required="true " v-model="credit.value " placeholder="Informe o Valor " :disabled="tabDelete" ng-change="calculateValues() " type="number " />
+                      <fg-input v-model="credit.value " placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
                     </td>
 
                     <td style="width:150px; " v-if="!tabDelete " class=" ">
@@ -113,26 +113,16 @@
                   <tr>
                     <th>Nome</th>
                     <th>Valor</th>
-                    <th>Status</th>
                     <th v-if="!tabDelete">Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="(debt, index) in billingCycle.debts " :key="index ">
                     <td>
-                      <fg-input :required="true " v-model="debt.name " placeholder="Informe o Nome " :disabled="tabDelete" @change="alert()" />
+                      <fg-input v-model="debt.name " placeholder="Informe o Nome " :disabled="tabDelete" @change="alert()" />
                     </td>
                     <td>
-                      <fg-input :required="true " v-model="debt.value" placeholder="Informe o Valor " :disabled="tabDelete" ng-change="calculateValues() " type="number " />
-                    </td>
-                    <td>
-                      <div class="form-group">
-                        <select v-model="debt.status" class="form-control border-input">
-                          <option value="PAGO">PAGO</option>
-                          <option value="PENDENTE">PENDENTE</option>
-                          <option value="AGENDADO">AGENDADO</option>
-                        </select>
-                      </div>
+                      <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
                     </td>
 
                     <td style="width:150px; " v-if="!tabDelete " class=" ">
@@ -239,6 +229,7 @@ export default {
       this.toggleTabs("tabUpdate");
       billingCycle.date = billingCycle.date.substring(0, 7);
       this.billingCycle = billingCycle;
+      this.initCreditsAndDebts();
     },
     showTabDelete(billingCycle) {
       this.toggleTabs("tabDelete");
@@ -249,7 +240,7 @@ export default {
       this.toggleTabs("tabCreate");
       this.billingCycle = {
         credits: [{ value: null }],
-        debts: [{ value: null, status: "PAGO" }]
+        debts: [{ value: null }]
       };
     },
     createBillingCycle() {
@@ -356,12 +347,11 @@ export default {
     addDebtOrCredit(index, property) {
       this.billingCycle[property].splice(index + 1, 0, {
         name: null,
-        value: null,
-        status: "PAGO"
+        value: null
       });
     },
-    cloneDebtOrCredit(index, { name, value, status }, property) {
-      this.billingCycle[property].splice(index + 1, 0, { name, value, status });
+    cloneDebtOrCredit(index, { name, value }, property) {
+      this.billingCycle[property].splice(index + 1, 0, { name, value });
       this.initCreditsAndDebts();
     },
     deleteDebtOrCredit(index, property) {
