@@ -80,10 +80,10 @@
                 <tbody>
                   <tr v-for="(credit, index) in billingCycle.credits " :key="index ">
                     <td>
-                      <fg-input v-model="credit.name " placeholder="Informe o Nome " :disabled="tabDelete" />
+                      <fg-input v-model="credit.name" placeholder="Informe o Nome " :disabled="tabDelete" />
                     </td>
                     <td>
-                      <fg-input v-model="credit.value " placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
+                      <fg-input v-model="credit.value" placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
                     </td>
 
                     <td style="width:150px; " v-if="!tabDelete " class=" ">
