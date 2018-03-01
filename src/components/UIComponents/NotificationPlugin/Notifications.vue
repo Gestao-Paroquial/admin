@@ -7,21 +7,22 @@
   </div>
 </template>
 <script>
-import Notification from "./Notification.vue";
+import Notification from './Notification';
+
 export default {
   components: {
-    Notification
+    Notification,
   },
   data() {
     return {
-      notifications: this.$notifications.state
+      notifications: this.$notifications.state,
     };
   },
   methods: {
     removeNotification(index) {
       this.$notifications.removeNotification(index);
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss">

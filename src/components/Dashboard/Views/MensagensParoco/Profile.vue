@@ -7,25 +7,26 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import UpdateForm from "./UpdateForm";
-import { mensagensParocoApiUrl } from "./../../../../api-url";
+import axios from 'axios';
+import UpdateForm from './UpdateForm';
+import { mensagensParocoApiUrl } from './../../../../api-url';
+
 export default {
   components: {
-    UpdateForm
+    UpdateForm,
   },
   data() {
     return {
-      mensagemParoco: {}
+      mensagemParoco: {},
     };
   },
   created() {
     console.log(this.$route);
     axios
       .get(`${mensagensParocoApiUrl}/${this.$route.params.id}`)
-      .then(({ data }) => (this.mensagemParoco = data))
+      .then(({ data }) => { this.mensagemParoco = data; })
       .catch(err => console.log(err));
-  }
+  },
 };
 </script>
 

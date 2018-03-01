@@ -35,51 +35,51 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import SelectList from "components/UIComponents/Forms/SelectList.vue";
-import { visitantesApiUrl } from "../../../../api-url/index";
+import axios from 'axios';
+import SelectList from '../../../../components/UIComponents/Forms/SelectList';
+import { visitantesApiUrl } from '../../../../api-url/index';
 
 export default {
   props: {
     visitante: Object,
-    selectList: Object
+    selectList: Object,
   },
   components: {
-    SelectList
+    SelectList,
   },
   data() {
     return {
-      showLoader: false
+      showLoader: false,
     };
   },
   methods: {
     add() {
       this.visitante.comunidades_id = document.querySelector(
-        '[name="comunidades_id"]'
+        '[name="comunidades_id"]',
       ).value;
 
       this.showLoader = true;
       axios
         .post(visitantesApiUrl, JSON.stringify(this.visitante), {
           headers: {
-            "Content-Type": "application/json"
-          }
+            'Content-Type': 'application/json',
+          },
         })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.showLoader = false;
           this.$notify({
-            group: "top-right",
-            title: "Sucesso!",
-            text: "Visitante inserido com sucesso",
-            type: "success",
-            speed: 1000
+            group: 'top-right',
+            title: 'Sucesso!',
+            text: 'Visitante inserido com sucesso',
+            type: 'success',
+            speed: 1000,
           });
-          this.$router.push({ path: "/admin/visitantes" });
+          this.$router.push({ path: '/admin/visitantes' });
         })
         .catch(error => console.log(error));
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

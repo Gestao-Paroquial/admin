@@ -49,15 +49,15 @@
 export default {
   methods: {
     login() {
-      localStorage.setItem("login", true);
-      this.$router.push({ path: "/" });
-    }
+      localStorage.setItem('login', true);
+      this.$router.push({ path: '/' });
+    },
   },
   created() {
-    if (this.$route.path.match("logout")) {
-      localStorage.setItem("login", false);
+    if (this.$route.path.match('logout')) {
+      localStorage.setItem('login', false);
     }
-  }
+  },
 };
 </script>
 

@@ -74,17 +74,17 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import { comunidadesApiUrl } from "../../../../api-url/index";
+import axios from 'axios';
+import { comunidadesApiUrl } from '../../../../api-url/index';
 
 export default {
   props: {
-    comunidade: Object
+    comunidade: Object,
   },
   data() {
     return {
       showLoader: false,
-      firstName: ""
+      firstName: '',
     };
   },
   methods: {
@@ -93,25 +93,25 @@ export default {
       axios
         .post(comunidadesApiUrl, JSON.stringify(this.comunidade), {
           headers: {
-            "Content-Type": "application/json"
-          }
+            'Content-Type': 'application/json',
+          },
         })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.showLoader = false;
           this.$notify({
-            group: "top-right",
-            title: "Sucesso!",
-            text: "comunidade inserido com sucesso",
-            type: "success",
-            speed: 1000
+            group: 'top-right',
+            title: 'Sucesso!',
+            text: 'comunidade inserido com sucesso',
+            type: 'success',
+            speed: 1000,
           });
-          this.$router.push({ path: "/admin/comunidades" });
+          this.$router.push({ path: '/admin/comunidades' });
         })
         .catch(error => console.log(error));
     },
     searchCEP(event) {
-      const cep = event.target.value.replace("-", "");
+      const cep = event.target.value.replace('-', '');
 
       const uri = `https://viacep.com.br/ws/${cep}/json/`;
 
@@ -125,13 +125,13 @@ export default {
           this.comunidade.uf = data.uf;
           this.comunidade.bairro = data.bairro;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
-          alert("CEP INVÁLIDO");
+          alert('CEP INVÁLIDO');
         })
-        .then(() => (this.showLoader = false));
-    }
-  }
+        .then(() => { this.showLoader = false; });
+    },
+  },
 };
 </script>
 <style>

@@ -11,7 +11,7 @@ export default {
   props: {
     type: {
       type: String,
-      default: "text"
+      default: 'text',
     },
     label: String,
     name: String,
@@ -20,8 +20,8 @@ export default {
     disabled: [Boolean, String],
     placeholder: String,
     value: [String, Number],
-    required: Boolean
-  }
+    required: Boolean,
+  },
 };
 </script>
 <style>

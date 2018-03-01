@@ -19,7 +19,7 @@
 </template>
 <script>
 export default {
-  name: "StatsCard"
+  name: 'StatsCard',
 };
 </script>
 <style>

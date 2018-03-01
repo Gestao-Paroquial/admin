@@ -35,37 +35,36 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import SelectList from "components/UIComponents/Forms/SelectList.vue";
-import { eventosHomeApiUrl, backEndUrl, uploadImageApiUrl  } from "../../../../api-url/index";
-import PictureInput from "vue-picture-input";
+import axios from 'axios';
+import PictureInput from 'vue-picture-input';
+import { eventosHomeApiUrl, backEndUrl, uploadImageApiUrl } from '../../../../api-url/index';
 
 export default {
   components: { PictureInput },
   props: {
-    eventoHome: Object
+    eventoHome: Object,
   },
   data() {
     return {
       showLoader: false,
-      backEndUrl
+      backEndUrl,
     };
   },
   methods: {
     update() {
-      this.$dialog.confirm().then(dialog => {
+      this.$dialog.confirm().then((dialog) => {
         const data = {
           fileName: this.$refs.pictureInput.fileName,
-          image: this.image
+          image: this.image,
         };
 
         axios
           .post(uploadImageApiUrl, JSON.stringify(data), {
             headers: {
-              "Content-Type": "application/json"
-            }
+              'Content-Type': 'application/json',
+            },
           })
-          .then(response => {
+          .then((response) => {
             this.eventoHome.imagem = response.data.path;
 
             axios
@@ -74,60 +73,60 @@ export default {
                 JSON.stringify(this.eventoHome),
                 {
                   headers: {
-                    "Content-Type": "application/json"
-                  }
-                }
+                    'Content-Type': 'application/json',
+                  },
+                },
               )
-              .then(response => {
+              .then((response2) => {
                 dialog.close();
                 this.$notify({
-                  group: "top-right",
-                  title: "Sucesso!",
-                  text: "Mensagem do Paroco alterada",
-                  type: "success",
-                  speed: 1000
+                  group: 'top-right',
+                  title: 'Sucesso!',
+                  text: 'Mensagem do Paroco alterada',
+                  type: 'success',
+                  speed: 1000,
                 });
-                console.log(response);
+                console.log(response2);
               })
-              .catch(error => {
+              .catch((error) => {
                 console.log(error);
               });
           })
-          .catch(function() {
-            console.log("Clicked on cancel");
+          .catch(() => {
+            console.log('Clicked on cancel');
           });
       });
     },
     del() {
       this.$dialog
         .confirm()
-        .then(dialog => {
+        .then((dialog) => {
           axios
             .delete(`${eventosHomeApiUrl}/${this.eventoHome.id}`)
-            .then(response => {
+            .then((response) => {
               console.log(response);
               dialog.close();
               this.$notify({
-                group: "top-right",
-                title: "Sucesso!",
-                text: "Mensagem do Paroco excluída",
-                type: "success",
-                speed: 1000
+                group: 'top-right',
+                title: 'Sucesso!',
+                text: 'Mensagem do Paroco excluída',
+                type: 'success',
+                speed: 1000,
               });
-              this.$router.push({ path: "/admin/eventos-home" });
+              this.$router.push({ path: '/admin/eventos-home' });
             })
             .catch(err => console.log(err));
         })
-        .catch(function() {
-          console.log("Clicked on cancel");
+        .catch(() => {
+          console.log('Clicked on cancel');
         });
     },
     onChange(image) {
       if (image) {
         this.image = image;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

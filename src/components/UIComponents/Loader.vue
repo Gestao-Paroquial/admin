@@ -7,11 +7,12 @@
   </div>
 </template>
 <script>
-import { FingerprintSpinner } from "epic-spinners";
+import { FingerprintSpinner } from 'epic-spinners';
+
 export default {
   components: {
-    FingerprintSpinner
-  }
+    FingerprintSpinner,
+  },
 };
 </script>
 <style lang="scss" >
