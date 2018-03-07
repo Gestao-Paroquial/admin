@@ -1,7 +1,8 @@
 {
-  "env": { 
+  "env": {
     "jest": true
   },
-  "globals": { 
+  "globals": {
+    "mount": true
   }
 }
