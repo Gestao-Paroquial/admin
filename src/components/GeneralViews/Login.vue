@@ -1,28 +1,32 @@
 <template>
   <div class="wrapper wrapper-full-page">
+    <loader v-if="isLoading" />
     <div class="full-page login-page">
       <div class="content">
         <div class="container">
           <div class="row">
             <div class="col-md-4 col-sm-6 col-md-offset-4 col-sm-offset-3">
-              <form @submit.prevent="login">
+              <form @submit.prevent="login" :class="{'has-error':hasError}">
                 <div data-background="color" data-color="blue" class="card">
                   <div class="card-header">
                     <h3 class="card-title">Login</h3>
                   </div>
                   <div class="card-content">
                     <div class="form-group">
-                      <label>Email</label> <input type="text" v-model="user.email" placeholder="Email" class="form-control input-no-border"></div>
+                      <label>Email</label>
+                      <input required type="email" v-model="user.email" placeholder="Email" class="form-control input-no-border" @change="hasError = false">
+                    </div>
                     <div class="form-group">
-                      <label>Senha</label> <input type="password" v-model="user.password" placeholder="Senha" class="form-control input-no-border"></div>
+                      <label>Senha</label>
+                      <input @change="hasError = false" required type="password" v-model="user.password" placeholder="Senha" class="form-control input-no-border">
+                    </div>
+                    <p v-if="errorInLogin" class="error-message">Email e/ou senha inválidos</p>
                   </div>
                   <div class="card-footer text-center">
                     <button type="submit" class="btn btn-fill btn-wd ">Login</button>
                     <div class="forgot">
                       <br>
-                      <a href="/register" class="">
-                        Esqueceu sua senha?
-                      </a>
+                      <a href="/register" class=""> Esqueceu sua senha? </a>
                     </div>
                   </div>
                 </div>
@@ -34,8 +38,7 @@
       <footer class="footer footer-transparent">
         <div class="container">
           <div class="copyright">
-            © Coded with
-            <i class="fa fa-heart heart"></i> by
+            © Criado por
             <a href="https://github.com/Gestao-Paroquial" target="_blank">Gestão Paroquial</a>
           </div>
         </div>
@@ -56,10 +59,14 @@ export default {
         email: '',
         password: '',
       },
+      isLoading: false,
+      errorInLogin: false,
+      hasError: false,
     };
   },
   methods: {
     login() {
+      this.isLoading = true;
       const userAsJson = JSON.stringify(this.user);
       axios
         .post(loginApiUrl, userAsJson, {
@@ -68,16 +75,22 @@ export default {
           },
         })
         .then(({ data }) => {
-          localStorage.setItem('token', data.token);
-          this.$router.push({ path: '/' });
+          if (data.success) {
+            localStorage.setItem('token', data.token);
+            this.$router.push({ path: '/' });
+          }
         })
         .catch(() => {
-          alert('usuário e/ou senha inválidos');
+          this.errorInLogin = true;
+        })
+        .then(() => {
+          this.isLoading = false;
+          this.hasError = true;
         });
     },
   },
   created() {
-    if (this.$route.path.match('logout')) {
+    if (this.$route.path.match('logout') && localStorage.getItem('token')) {
       axios
         .get(`${logoutApiUrl}?token=${localStorage.getItem('token')}`)
         .then(() => {
@@ -89,6 +102,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.loader {
+  z-index: 50;
+}
+.error-message {
+  color: #eb5e28;
+}
 .wrapper.wrapper-full-page {
   height: auto;
   min-height: 100vh;
