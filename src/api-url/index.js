@@ -11,3 +11,4 @@ export const eventosHomeApiUrl = `${backEndUrl}/api/eventosHome`;
 export const uploadImageApiUrl = `${backEndUrl}/api/uploadImagem`;
 export const loginApiUrl = `${backEndUrl}/api/login`;
 export const logoutApiUrl = `${backEndUrl}/api/logout`;
+export const validateTokenUrl = `${backEndUrl}/api/validateToken`;
