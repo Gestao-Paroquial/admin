@@ -155,16 +155,15 @@
   </div>
 </template>
 <script>
-import ValueBox from "components/UIComponents/ValueBox.vue";
-import ValueRow from "components/UIComponents/ValueRow.vue";
-import debounce from "lodash.debounce";
-import axios from "axios";
-import { billingCyclesApiUrl } from "./../../../../api-url";
+import ValueBox from '@/components/UIComponents/ValueBox';
+import ValueRow from '@/components/UIComponents/ValueRow';
+import axios from 'axios';
+import { billingCyclesApiUrl } from './../../../../api-url';
 
 export default {
   components: {
     ValueBox,
-    ValueRow
+    ValueRow,
   },
   data() {
     return {
@@ -176,11 +175,11 @@ export default {
       billingCycles: [],
       billingCycle: {
         credits: [{ value: null }],
-        debts: [{ value: null }]
+        debts: [{ value: null }],
       },
       credit: 0,
       total: 0,
-      debt: 0
+      debt: 0,
     };
   },
   created() {
@@ -189,11 +188,11 @@ export default {
   },
   watch: {
     billingCycle: {
-      handler: function(val, oldVal) {
+      handler() {
         this.calculateValues();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     toggleTabs(tab) {
@@ -204,7 +203,7 @@ export default {
       this[tab] = true;
     },
     cancel() {
-      this.toggleTabs("tabList");
+      this.toggleTabs('tabList');
     },
     calculateValues() {
       this.credit = 0;
@@ -226,52 +225,54 @@ export default {
       return `R$ ${value.toFixed(2)}`;
     },
     showTabUpdate(billingCycle) {
-      this.toggleTabs("tabUpdate");
+      this.toggleTabs('tabUpdate');
+      /* eslint-disable no-param-reassign */
       billingCycle.date = billingCycle.date.substring(0, 7);
       this.billingCycle = billingCycle;
       this.initCreditsAndDebts();
     },
     showTabDelete(billingCycle) {
-      this.toggleTabs("tabDelete");
+      this.toggleTabs('tabDelete');
       billingCycle.date = billingCycle.date.substring(0, 7);
       this.billingCycle = billingCycle;
+      /* eslint-enable no-param-reassign */
     },
     showTabCreate() {
-      this.toggleTabs("tabCreate");
+      this.toggleTabs('tabCreate');
       this.billingCycle = {
         credits: [{ value: null }],
-        debts: [{ value: null }]
+        debts: [{ value: null }],
       };
     },
     createBillingCycle() {
       this.showLoader = true;
       this.billingCycle.credits = this.billingCycle.credits.filter(
-        credit => (credit.name && credit.value ? credit : null)
+        credit => (credit.name && credit.value ? credit : null),
       );
 
       this.billingCycle.debts = this.billingCycle.debts.filter(
-        credit => (credit.name && credit.value ? credit : null)
+        credit => (credit.name && credit.value ? credit : null),
       );
 
       axios
         .post(billingCyclesApiUrl, JSON.stringify(this.billingCycle), {
           headers: {
-            "Content-Type": "application/json"
-          }
+            'Content-Type': 'application/json',
+          },
         })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.getBillingCycles();
-          this.toggleTabs("tabList");
+          this.toggleTabs('tabList');
           this.$notify({
-            group: "top-right",
-            title: "Sucesso!",
-            text: "Ciclo de pagamento inserido com sucesso",
-            type: "success",
-            speed: 2000
+            group: 'top-right',
+            title: 'Sucesso!',
+            text: 'Ciclo de pagamento inserido com sucesso',
+            type: 'success',
+            speed: 2000,
           });
         })
-        .catch(response => {
+        .catch((response) => {
           console.log(response);
         });
     },
@@ -279,75 +280,78 @@ export default {
       this.showLoader = true;
       axios
         .get(billingCyclesApiUrl)
-        .then(({ data }) => (this.billingCycles = data))
-        .catch(response => {
+        .then(({ data }) => {
+          this.billingCycles = data;
+        })
+        .catch((response) => {
           console.log(response);
         })
-        .then(() => (this.showLoader = false));
+        .then(() => {
+          this.showLoader = false;
+        });
     },
     deleteBillingCycle() {
       this.$dialog
         .confirm()
-        .then(dialog => {
+        .then((dialog) => {
+          /* eslint-disable no-underscore-dangle */
           const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
           axios
             .delete(url)
-            .then(response => {
+            .then((response) => {
               console.log(response);
               dialog.close();
               this.getBillingCycles();
-              this.toggleTabs("tabList");
+              this.toggleTabs('tabList');
               this.$notify({
-                group: "top-right",
-                title: "Sucesso!",
-                text: "Ciclo de pagamento excluído com sucesso",
-                type: "success",
-                speed: 2000
+                group: 'top-right',
+                title: 'Sucesso!',
+                text: 'Ciclo de pagamento excluído com sucesso',
+                type: 'success',
+                speed: 2000,
               });
             })
             .catch(response => console.log(response));
         })
-        .catch(function() {
-          console.log("Clicked on cancel");
+        .catch(() => {
+          console.log('Clicked on cancel');
         });
     },
     updateBillingCycle() {
-      const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
-
       this.$dialog
         .confirm()
-        .then(dialog => {
+        .then((dialog) => {
           const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
           axios
             .put(url, JSON.stringify(this.billingCycle), {
               headers: {
-                "Content-Type": "application/json"
-              }
+                'Content-Type': 'application/json',
+              },
             })
-            .then(response => {
+            .then((response) => {
               console.log(response);
               dialog.close();
               this.getBillingCycles();
 
-              this.toggleTabs("tabList");
+              this.toggleTabs('tabList');
               this.$notify({
-                group: "top-right",
-                title: "Sucesso!",
-                text: "Ciclo de pagamento alterado com sucesso",
-                type: "success",
-                speed: 2000
+                group: 'top-right',
+                title: 'Sucesso!',
+                text: 'Ciclo de pagamento alterado com sucesso',
+                type: 'success',
+                speed: 2000,
               });
             })
             .catch(response => console.log(response));
         })
-        .catch(function() {
-          console.log("Clicked on cancel");
+        .catch(() => {
+          console.log('Clicked on cancel');
         });
     },
     addDebtOrCredit(index, property) {
       this.billingCycle[property].splice(index + 1, 0, {
         name: null,
-        value: null
+        value: null,
       });
     },
     cloneDebtOrCredit(index, { name, value }, property) {
@@ -368,8 +372,8 @@ export default {
         this.billingCycle.credits = [];
         this.billingCycle.credits.push({});
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

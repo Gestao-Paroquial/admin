@@ -7,21 +7,22 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import UpdateForm from "./UpdateForm";
-import { membrosPastoraisApiUrl, pastoraisApiUrl } from "./../../../../api-url";
+import axios from 'axios';
+import UpdateForm from './UpdateForm';
+import { membrosPastoraisApiUrl, pastoraisApiUrl } from './../../../../api-url';
+
 export default {
   components: {
-    UpdateForm
+    UpdateForm,
   },
   data() {
     return {
       membroPastoral: {},
       selectList: {
-        label: "Pastorais",
-        name: "pastorais_id",
-        options: []
-      }
+        label: 'Pastorais',
+        name: 'pastorais_id',
+        options: [],
+      },
     };
   },
   created() {
@@ -33,23 +34,23 @@ export default {
         const pastoralAtual = data.pastorais;
         this.selectList.options.push({
           value: pastoralAtual.nome,
-          id: pastoralAtual.id
+          id: pastoralAtual.id,
         });
-        axios.get(pastoraisApiUrl).then(({ data }) => {
-          const pastoraisToSelectList = data
+        axios.get(pastoraisApiUrl).then((response) => {
+          const pastoraisToSelectList = response.data
             .filter(
-              pastoral => (pastoralAtual.id !== pastoral.id ? pastoral : null)
+              pastoral => (pastoralAtual.id !== pastoral.id ? pastoral : null),
             )
             .map(pastoral => ({
               value: pastoral.nome,
-              id: pastoral.id
+              id: pastoral.id,
             }));
 
           this.selectList.options.push(...pastoraisToSelectList);
         });
       })
       .catch(err => console.log(err));
-  }
+  },
 };
 </script>
 

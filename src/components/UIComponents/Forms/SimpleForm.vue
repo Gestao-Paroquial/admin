@@ -11,46 +11,47 @@
   </form>
 </template>
 <script>
-import fgInput from "components/UIComponents/Inputs/formGroupInput.vue";
-import SelectList from "./SelectList.vue";
+import fgInput from '../Inputs/formGroupInput';
+import SelectList from './SelectList';
+
 export default {
   components: {
     fgInput,
-    SelectList
+    SelectList,
   },
   props: {
     inputs: Array,
     action: Function,
     btnMsg: String,
     btnClass: String,
-    selectList: Object
+    selectList: Object,
   },
   methods: {
-    makeObj: function(event) {
+    makeObj(event) {
       event.preventDefault();
 
       const obj = {};
 
-      //Criar Id Aleatorio
+      // Criar Id Aleatorio
       // obj.id = Math.round(Math.random() * 10000);
 
-      for (let index = 0; index < this.inputs.length; index++) {
+      for (let index = 0; index < this.inputs.length; index += 1) {
         const input = this.$el[index];
         obj[input.name] = input.value;
-        input.value = "";
+        input.value = '';
       }
 
       if (this.selectList) {
-        const selects = document.querySelectorAll("select");
+        const selects = document.querySelectorAll('select');
 
-        selects.forEach(select => {
+        selects.forEach((select) => {
           obj[select.name] = select.value;
         });
       }
 
       this.action(obj);
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

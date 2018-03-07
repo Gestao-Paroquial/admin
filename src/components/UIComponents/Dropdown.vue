@@ -17,11 +17,11 @@
 export default {
   props: {
     title: String,
-    icon: String
+    icon: String,
   },
   data() {
     return {
-      isOpen: false
+      isOpen: false,
     };
   },
   methods: {
@@ -30,7 +30,7 @@ export default {
     },
     closeDropDown() {
       this.isOpen = false;
-    }
-  }
+    },
+  },
 };
 </script>

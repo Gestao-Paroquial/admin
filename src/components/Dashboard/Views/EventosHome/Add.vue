@@ -7,18 +7,17 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import AddForm from "./AddForm";
+import AddForm from './AddForm';
 
 export default {
   components: {
-    AddForm
+    AddForm,
   },
   data() {
     return {
-      eventoHome: {}
+      eventoHome: {},
     };
-  }
+  },
 };
 </script>
 

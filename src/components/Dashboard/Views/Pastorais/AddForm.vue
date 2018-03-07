@@ -34,51 +34,51 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import SelectList from "components/UIComponents/Forms/SelectList.vue";
-import { pastoraisApiUrl } from "../../../../api-url/index";
+import axios from 'axios';
+import SelectList from '@/components/UIComponents/Forms/SelectList';
+import { pastoraisApiUrl } from '../../../../api-url/index';
 
 export default {
   props: {
     pastoral: Object,
-    selectList: Object
+    selectList: Object,
   },
   components: {
-    SelectList
+    SelectList,
   },
   data() {
     return {
-      showLoader: false
+      showLoader: false,
     };
   },
   methods: {
     add() {
       this.pastoral.comunidades_id = document.querySelector(
-        '[name="comunidades_id"]'
+        '[name="comunidades_id"]',
       ).value;
 
       this.showLoader = true;
       axios
         .post(pastoraisApiUrl, JSON.stringify(this.pastoral), {
           headers: {
-            "Content-Type": "application/json"
-          }
+            'Content-Type': 'application/json',
+          },
         })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.showLoader = false;
           this.$notify({
-            group: "top-right",
-            title: "Sucesso!",
-            text: "pastoral inserido com sucesso",
-            type: "success",
-            speed: 1000
+            group: 'top-right',
+            title: 'Sucesso!',
+            text: 'pastoral inserido com sucesso',
+            type: 'success',
+            speed: 1000,
           });
-          this.$router.push({ path: "/admin/pastorais" });
+          this.$router.push({ path: '/admin/pastorais' });
         })
         .catch(error => console.log(error));
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

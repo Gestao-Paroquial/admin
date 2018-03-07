@@ -39,30 +39,30 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import SelectList from "components/UIComponents/Forms/SelectList.vue";
-import { pastoraisApiUrl } from "../../../../api-url/index";
+import axios from 'axios';
+import SelectList from '@/components/UIComponents/Forms/SelectList';
+import { pastoraisApiUrl } from '../../../../api-url/index';
 
 export default {
   props: {
     pastoral: Object,
-    selectList: Object
+    selectList: Object,
   },
   components: {
-    SelectList
+    SelectList,
   },
   data() {
     return {
-      showLoader: false
+      showLoader: false,
     };
   },
   methods: {
     update() {
       this.$dialog
         .confirm()
-        .then(dialog => {
+        .then((dialog) => {
           this.pastoral.comunidades_id = document.querySelector(
-            '[name="comunidades_id"]'
+            '[name="comunidades_id"]',
           ).value;
 
           axios
@@ -71,54 +71,54 @@ export default {
               JSON.stringify(this.pastoral),
               {
                 headers: {
-                  "Content-Type": "application/json"
-                }
-              }
+                  'Content-Type': 'application/json',
+                },
+              },
             )
-            .then(response => {
+            .then((response) => {
               dialog.close();
               this.$notify({
-                group: "top-right",
-                title: "Sucesso!",
-                text: "pastoral alterado",
-                type: "success",
-                speed: 1000
+                group: 'top-right',
+                title: 'Sucesso!',
+                text: 'pastoral alterado',
+                type: 'success',
+                speed: 1000,
               });
               console.log(response);
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         })
-        .catch(function() {
-          console.log("Clicked on cancel");
+        .catch(() => {
+          console.log('Clicked on cancel');
         });
     },
     del() {
       this.$dialog
         .confirm()
-        .then(dialog => {
+        .then((dialog) => {
           axios
             .delete(`${pastoraisApiUrl}/${this.pastoral.id}`)
-            .then(response => {
+            .then((response) => {
               console.log(response);
               dialog.close();
               this.$notify({
-                group: "top-right",
-                title: "Sucesso!",
-                text: "pastoral excluído",
-                type: "success",
-                speed: 1000
+                group: 'top-right',
+                title: 'Sucesso!',
+                text: 'pastoral excluído',
+                type: 'success',
+                speed: 1000,
               });
-              this.$router.push({ path: "/admin/pastorais" });
+              this.$router.push({ path: '/admin/pastorais' });
             })
             .catch(err => console.log(err));
         })
-        .catch(function() {
-          console.log("Clicked on cancel");
+        .catch(() => {
+          console.log('Clicked on cancel');
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

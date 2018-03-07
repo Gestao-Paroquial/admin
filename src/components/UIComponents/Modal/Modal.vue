@@ -34,8 +34,8 @@ export default {
   props: {
     showModal: Boolean,
     closeModal: Function,
-    title: String
-  }
+    title: String,
+  },
 };
 </script>
 <style>

@@ -7,25 +7,26 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import UpdateForm from "./UpdateForm";
-import { comunidadesApiUrl } from "./../../../../api-url";
+import axios from 'axios';
+import UpdateForm from './UpdateForm';
+import { comunidadesApiUrl } from './../../../../api-url';
+
 export default {
   components: {
-    UpdateForm
+    UpdateForm,
   },
   data() {
     return {
-      comunidade: {}
+      comunidade: {},
     };
   },
   created() {
     const self = this;
     axios
       .get(`${comunidadesApiUrl}/${self.$route.params.id}`)
-      .then(({ data }) => (this.comunidade = data))
+      .then(({ data }) => { this.comunidade = data; })
       .catch(err => console.log(err));
-  }
+  },
 };
 </script>
 

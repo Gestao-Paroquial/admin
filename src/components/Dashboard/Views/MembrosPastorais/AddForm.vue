@@ -74,53 +74,53 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import { membrosPastoraisApiUrl } from "../../../../api-url/index";
-import SelectList from "components/UIComponents/Forms/SelectList.vue";
+import axios from 'axios';
+import SelectList from '@/components/UIComponents/Forms/SelectList';
+import { membrosPastoraisApiUrl } from '../../../../api-url/index';
 
 export default {
   props: {
     membroPastoral: Object,
-    selectList:Object
+    selectList: Object,
   },
-  components:{
-    SelectList
+  components: {
+    SelectList,
   },
   data() {
     return {
       showLoader: false,
-      firstName: ""
+      firstName: '',
     };
   },
   methods: {
     add() {
       this.showLoader = true;
       this.membroPastoral.pastorais_id = document.querySelector(
-        '[name="pastorais_id"]'
+        '[name="pastorais_id"]',
       ).value;
 
       axios
         .post(membrosPastoraisApiUrl, JSON.stringify(this.membroPastoral), {
           headers: {
-            "Content-Type": "application/json"
-          }
+            'Content-Type': 'application/json',
+          },
         })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.showLoader = false;
           this.$notify({
-            group: "top-right",
-            title: "Sucesso!",
-            text: "membroPastoral inserido com sucesso",
-            type: "success",
-            speed: 1000
+            group: 'top-right',
+            title: 'Sucesso!',
+            text: 'membroPastoral inserido com sucesso',
+            type: 'success',
+            speed: 1000,
           });
-          this.$router.push({ path: "/admin/membros-pastorais" });
+          this.$router.push({ path: '/admin/membros-pastorais' });
         })
         .catch(error => console.log(error));
     },
     searchCEP(event) {
-      const cep = event.target.value.replace("-", "");
+      const cep = event.target.value.replace('-', '');
 
       const uri = `https://viacep.com.br/ws/${cep}/json/`;
 
@@ -134,13 +134,15 @@ export default {
           this.membroPastoral.uf = data.uf;
           this.membroPastoral.bairro = data.bairro;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
-          alert("CEP INVÁLIDO");
+          alert('CEP INVÁLIDO');
         })
-        .then(() => (this.showLoader = false));
-    }
-  }
+        .then(() => {
+          this.showLoader = false;
+        });
+    },
+  },
 };
 </script>
 <style>

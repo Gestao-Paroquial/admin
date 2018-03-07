@@ -7,24 +7,25 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import UpdateForm from "./UpdateForm";
-import { eventosHomeApiUrl } from "./../../../../api-url";
+import axios from 'axios';
+import UpdateForm from './UpdateForm';
+import { eventosHomeApiUrl } from './../../../../api-url';
+
 export default {
   components: {
-    UpdateForm
+    UpdateForm,
   },
   data() {
     return {
-      eventoHome: {}
+      eventoHome: {},
     };
   },
   created() {
     axios
       .get(`${eventosHomeApiUrl}/${this.$route.params.id}`)
-      .then(({ data }) => (this.eventoHome = data))
+      .then(({ data }) => { this.eventoHome = data; })
       .catch(err => console.log(err));
-  }
+  },
 };
 </script>
 

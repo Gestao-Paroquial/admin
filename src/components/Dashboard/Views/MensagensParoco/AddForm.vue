@@ -36,48 +36,48 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import { mensagensParocoApiUrl } from "../../../../api-url/index";
-import { VueEditor } from "vue2-editor";
+import axios from 'axios';
+import { VueEditor } from 'vue2-editor';
+import { mensagensParocoApiUrl } from '../../../../api-url/index';
 
 export default {
   components: {
-    VueEditor
+    VueEditor,
   },
   props: {
-    mensagemParoco: Object
+    mensagemParoco: Object,
   },
   data() {
     return {
       showLoader: false,
-      firstName: ""
+      firstName: '',
     };
   },
   methods: {
     add() {
-      console.log(JSON.stringify(this.mensagemParoco))
+      console.log(JSON.stringify(this.mensagemParoco));
       this.showLoader = true;
       axios
         .post(mensagensParocoApiUrl, JSON.stringify(this.mensagemParoco), {
           headers: {
-            "Content-Type": "application/json"
-          }
+            'Content-Type': 'application/json',
+          },
         })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.showLoader = false;
           this.$notify({
-            group: "top-right",
-            title: "Sucesso!",
-            text: "mensagemParoco inserido com sucesso",
-            type: "success",
-            speed: 1000
+            group: 'top-right',
+            title: 'Sucesso!',
+            text: 'mensagemParoco inserido com sucesso',
+            type: 'success',
+            speed: 1000,
           });
-          this.$router.push({ path: "/admin/mensagens-paroco" });
+          this.$router.push({ path: '/admin/mensagens-paroco' });
         })
         .catch(error => console.log(error));
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

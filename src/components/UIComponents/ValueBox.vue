@@ -20,8 +20,8 @@ export default {
     text: String,
     value: String,
     colorClass: String,
-    iconClass: String
-  }
+    iconClass: String,
+  },
 };
 </script>
 

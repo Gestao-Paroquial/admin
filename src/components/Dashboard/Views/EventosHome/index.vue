@@ -26,20 +26,20 @@
   </div>
 </template>
 <script>
-import PaperTable from "components/UIComponents/PaperTable.vue";
-import Modal from "components/UIComponents/Modal/Modal.vue";
-import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
-import axios from "axios";
-import debounce from "lodash.debounce";
-import { eventosHomeApiUrl } from "./../../../../api-url";
+import PaperTable from '@/components/UIComponents/PaperTable';
+import Modal from '@/components/UIComponents/Modal/Modal';
+import SimpleForm from '@/components/UIComponents/Forms/SimpleForm';
+import axios from 'axios';
+import debounce from 'lodash.debounce';
+import { eventosHomeApiUrl } from './../../../../api-url';
 
-const eventosHomeHeaders = ["id", "imagem", "descricao", "destino"];
+const eventosHomeHeaders = ['id', 'imagem', 'descricao', 'destino'];
 
 export default {
   components: {
     PaperTable,
     Modal,
-    SimpleForm
+    SimpleForm,
   },
   data() {
     return {
@@ -48,51 +48,51 @@ export default {
       eventosHome: [],
       table: { data: [] },
       showLoader: true,
-      filterProperty: "id",
-      termToSearch: "",
-      eventosHomeHeaders: eventosHomeHeaders,
-      title: "Lista de Mensagens do Paroco",
+      filterProperty: 'id',
+      termToSearch: '',
+      eventosHomeHeaders,
+      title: 'Lista de Mensagens do Paroco',
       subTitle:
-        "Aqui você ira encontrar a lista de todas as Mensagens do Paroco"
+        'Aqui você ira encontrar a lista de todas as Mensagens do Paroco',
     };
   },
   created() {
     axios
       .get(eventosHomeApiUrl)
-      .then(response => {
+      .then((response) => {
         console.log(response);
         this.eventosHome = response.data;
         this.table.data = response.data;
         this.showLoader = false;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
   watch: {
     termToSearch: debounce(
-      function() {
+      function filter() {
         const comunidadesFiltrados = this.eventosHome.filter(
           obj =>
-            obj[this.filterProperty]
+            (obj[this.filterProperty]
               ? obj[this.filterProperty]
-                  .toString()
-                  .toLowerCase()
-                  .match(this.termToSearch.toLowerCase())
-              : undefined
+                .toString()
+                .toLowerCase()
+                .match(this.termToSearch.toLowerCase())
+              : undefined),
         );
         this.updateTable(comunidadesFiltrados);
       },
       // Este é o número de milissegundos que aguardamos para
       // que o usuário pare de digitar
-      300
-    )
+      300,
+    ),
   },
   methods: {
     updateTable(eventosHome) {
       this.table.data = [...eventosHome];
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

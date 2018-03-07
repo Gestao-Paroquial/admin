@@ -1,51 +1,49 @@
-import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue';
+import DashboardLayout from '@/components/Dashboard/Layout/DashboardLayout';
 // GeneralViews
-import NotFound from '../components/GeneralViews/NotFoundPage.vue';
-import Login from '../components/GeneralViews/Login.vue'
+import NotFound from '@/components/GeneralViews/NotFoundPage';
+import Login from '@/components/GeneralViews/Login';
 
 // Admin pages
-import Overview from 'src/components/Dashboard/Views/Overview.vue';
-import UserProfile from 'src/components/Dashboard/Views/UserProfile.vue';
-import Notifications from 'src/components/Dashboard/Views/Notifications.vue';
-import Icons from 'src/components/Dashboard/Views/Icons.vue';
-import Maps from 'src/components/Dashboard/Views/Maps.vue';
-import Typography from 'src/components/Dashboard/Views/Typography.vue';
-import TableList from 'src/components/Dashboard/Views/TableList.vue';
-import Participantes from 'src/components/Dashboard/Views/Participantes.vue';
-import Dizimistas from 'src/components/Dashboard/Views/Dizimistas.vue';
+import Overview from '@/components/Dashboard/Views/Overview';
+import UserProfile from '@/components/Dashboard/Views/UserProfile';
+import Notifications from '@/components/Dashboard/Views/Notifications';
+import Icons from '@/components/Dashboard/Views/Icons';
+import Maps from '@/components/Dashboard/Views/Maps';
+import Typography from '@/components/Dashboard/Views/Typography';
+import TableList from '@/components/Dashboard/Views/TableList';
 
-import Visitantes from 'src/components/Dashboard/Views/Visitantes';
-import VisitanteProfile from 'src/components/Dashboard/Views/Visitantes/Profile.vue';
-import AddVisitantes from 'src/components/Dashboard/Views/Visitantes/Add.vue';
+import Visitantes from '@/components/Dashboard/Views/Visitantes';
+import VisitanteProfile from '@/components/Dashboard/Views/Visitantes/Profile';
+import AddVisitantes from '@/components/Dashboard/Views/Visitantes/Add';
 
-import Pastorais from 'src/components/Dashboard/Views/Pastorais';
-import PastoralProfile from 'src/components/Dashboard/Views/Pastorais/Profile.vue';
-import AddPastoral from 'src/components/Dashboard/Views/Pastorais/Add.vue';
+import Pastorais from '@/components/Dashboard/Views/Pastorais';
+import PastoralProfile from '@/components/Dashboard/Views/Pastorais/Profile';
+import AddPastoral from '@/components/Dashboard/Views/Pastorais/Add';
 
-import Comunidades from 'src/components/Dashboard/Views/Comunidades';
-import ComunidadeProfile from 'src/components/Dashboard/Views/Comunidades/Profile.vue';
-import AddComunidade from 'src/components/Dashboard/Views/Comunidades/Add.vue';
+import Comunidades from '@/components/Dashboard/Views/Comunidades';
+import ComunidadeProfile from '@/components/Dashboard/Views/Comunidades/Profile';
+import AddComunidade from '@/components/Dashboard/Views/Comunidades/Add';
 
-import MembrosPastorais from 'src/components/Dashboard/Views/MembrosPastorais';
-import MembroPastoralProfile from 'src/components/Dashboard/Views/MembrosPastorais/Profile.vue';
-import AddMembroPastoral from 'src/components/Dashboard/Views/MembrosPastorais/Add.vue';
+import MembrosPastorais from '@/components/Dashboard/Views/MembrosPastorais';
+import MembroPastoralProfile from '@/components/Dashboard/Views/MembrosPastorais/Profile';
+import AddMembroPastoral from '@/components/Dashboard/Views/MembrosPastorais/Add';
 
-import MensagensParoco from 'src/components/Dashboard/Views/MensagensParoco';
-import MensagensParocoProfile from 'src/components/Dashboard/Views/MensagensParoco/Profile.vue';
-import AddMensagensParoco from 'src/components/Dashboard/Views/MensagensParoco/Add.vue';
+import MensagensParoco from '@/components/Dashboard/Views/MensagensParoco';
+import MensagensParocoProfile from '@/components/Dashboard/Views/MensagensParoco/Profile';
+import AddMensagensParoco from '@/components/Dashboard/Views/MensagensParoco/Add';
 
-import EventosHome from 'src/components/Dashboard/Views/EventosHome';
-import EventosHomeProfile from 'src/components/Dashboard/Views/EventosHome/Profile.vue';
-import AddEventosHome from 'src/components/Dashboard/Views/EventosHome/Add.vue';
+import EventosHome from '@/components/Dashboard/Views/EventosHome';
+import EventosHomeProfile from '@/components/Dashboard/Views/EventosHome/Profile';
+import AddEventosHome from '@/components/Dashboard/Views/EventosHome/Add';
 
-import ControleFinanceiro from 'src/components/Dashboard/Views/ControleFinanceiro';
+import ControleFinanceiro from '@/components/Dashboard/Views/ControleFinanceiro';
 
 const routes = [
   {
     path: '/',
     component: DashboardLayout,
     redirect: '/admin/overview',
-    meta: { requiresAuth: true }
+    meta: { requiresAuth: true },
 
   },
   {
@@ -65,12 +63,12 @@ const routes = [
       {
         path: 'overview',
         name: 'Visão Geral',
-        component: Overview
+        component: Overview,
       },
       {
         path: 'financeiro',
         name: 'controle Financeiro',
-        component: ControleFinanceiro
+        component: ControleFinanceiro,
       },
       {
         path: 'eventos-home/add',
@@ -118,11 +116,6 @@ const routes = [
         component: Visitantes,
       },
       {
-        path: 'participantes',
-        name: 'participantes',
-        component: Participantes
-      },
-      {
         path: 'membros-pastorais/add',
         name: 'novo Membro Pastoral',
         component: AddMembroPastoral,
@@ -135,12 +128,7 @@ const routes = [
       {
         path: 'membros-pastorais',
         name: 'membros Pastorais',
-        component: MembrosPastorais
-      },
-      {
-        path: 'dizimistas',
-        name: 'dizimistas',
-        component: Dizimistas
+        component: MembrosPastorais,
       },
       {
         path: 'pastorais/add',
@@ -155,7 +143,7 @@ const routes = [
       {
         path: 'pastorais',
         name: 'pastorais',
-        component: Pastorais
+        component: Pastorais,
       },
       {
         path: 'comunidades/add',
@@ -170,41 +158,41 @@ const routes = [
       {
         path: 'comunidades',
         name: 'comunidades',
-        component: Comunidades
+        component: Comunidades,
       },
       {
         path: 'stats',
         name: 'stats',
-        component: UserProfile
+        component: UserProfile,
       },
       {
         path: 'notifications',
         name: 'notifications',
-        component: Notifications
+        component: Notifications,
       },
       {
         path: 'icons',
         name: 'icons',
-        component: Icons
+        component: Icons,
       },
       {
         path: 'maps',
         name: 'maps',
-        component: Maps
+        component: Maps,
       },
       {
         path: 'typography',
         name: 'typography',
-        component: Typography
+        component: Typography,
       },
       {
         path: 'table-list',
         name: 'table-list',
-        component: TableList
-      }
-    ]
+        component: TableList,
+      },
+    ],
   },
-  { path: '*', component: NotFound }
+  { path: '*', component: NotFound },
 ];
 
 /**
@@ -212,8 +200,8 @@ const routes = [
  * The specified component must be inside the Views folder
  * @param  {string} name  the filename (basename) of the view to load.
 function view(name) {
-   var res= require('../components/Dashboard/Views/' + name + '.vue');
+   var res= require('@/components/Dashboard/Views/' + name + '');
    return res;
-};**/
+};* */
 
 export default routes;

@@ -7,21 +7,22 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import AddForm from "./AddForm";
-import { pastoraisApiUrl } from "./../../../../api-url";
+import axios from 'axios';
+import AddForm from './AddForm';
+import { pastoraisApiUrl } from './../../../../api-url';
+
 export default {
   components: {
-    AddForm
+    AddForm,
   },
   data() {
     return {
       membroPastoral: {},
       selectList: {
-        label: "Pastorais",
-        name: "pastorais_id",
-        options: [{}]
-      }
+        label: 'Pastorais',
+        name: 'pastorais_id',
+        options: [{}],
+      },
     };
   },
   created() {
@@ -30,13 +31,13 @@ export default {
       .then(({ data }) => {
         const pastoraisToSelectList = data.map(pastoral => ({
           value: pastoral.nome,
-          id: pastoral.id
+          id: pastoral.id,
         }));
 
         this.selectList.options.push(...pastoraisToSelectList);
       })
       .catch(err => console.log(err));
-  }
+  },
 };
 </script>
 
