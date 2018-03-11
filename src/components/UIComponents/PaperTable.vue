@@ -60,7 +60,8 @@
   </div>
 </template>
 <script>
-import { backEndUrl } from "./../../api-url";
+import { backEndUrl } from './../../api-url';
+
 export default {
   props: {
     columns: Array,
@@ -70,65 +71,66 @@ export default {
     getId: Function,
     type: {
       type: String, // striped | hover
-      default: "Striped"
+      default: 'Striped',
     },
     title: {
       type: String,
-      default: ""
+      default: '',
     },
     subTitle: {
       type: String,
-      default: ""
+      default: '',
     },
     itemsPerPage: {
       default: 10,
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
     return {
       page: 0,
-      start: 0
+      start: 0,
     };
   },
   computed: {
     tableClass() {
       return `table-${this.type}`;
-    }
+    },
   },
   methods: {
     next() {
       if (this.data.length - this.start > this.itemsPerPage) {
         this.start += this.itemsPerPage;
-        this.page++;
+        this.page += 1;
       }
     },
     previous() {
       if (this.start !== 0) {
         this.start -= this.itemsPerPage;
-        this.page--;
+        this.page -= 1;
       }
     },
     hasValue(item, column) {
-      return item[column.toLowerCase()] !== "undefined";
+      return item[column.toLowerCase()] !== 'undefined';
     },
     itemValue(item, column) {
-      //Verificar as colunas que tem pontos para buscar propriedades dentro de propriedades
+      // Verificar as colunas que tem pontos para buscar propriedades dentro de propriedades
       if (column.match(/\./g)) {
-        const splited = column.split(".");
+        const splited = column.split('.');
         return item[splited[0].toLowerCase()][splited[1].toLowerCase()];
       }
 
-      if (item[column.toLowerCase()].toString().match("/uploads/img/")) {
-        return `<img src=${backEndUrl + item[column.toLowerCase()]} style="max-width: 200px">`;
+      if (item[column.toLowerCase()].toString().match('/uploads/img/')) {
+        return `<img src=${backEndUrl +
+          item[column.toLowerCase()]} style="max-width: 200px">`;
       }
 
       return item[column.toLowerCase()];
     },
     getColumn(column) {
-      return this.capitalize(column.split(".")[0]);
-    }
-  }
+      return this.capitalize(column.split('.')[0]);
+    },
+  },
 };
 </script>
 <style scoped>

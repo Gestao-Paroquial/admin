@@ -1,24 +1,20 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import vClickOutside from 'v-click-outside';
+import axios from 'axios';
 
 // Plugins
-import GlobalComponents from './globalComponents';
-import Notifications from 'vue-notification';
-import SideBar from './components/UIComponents/SidebarPlugin';
-import App from './App';
 import VueTheMask from 'vue-the-mask';
-import VuejsDialog from "vuejs-dialog"
-
-
-// router setup
-import routes from './routes/routes';
-
-// library imports
+import Notifications from 'vue-notification';
+import VuejsDialog from 'vuejs-dialog';
 import Chartist from 'chartist';
 import 'bootstrap/dist/css/bootstrap.css';
+import GlobalComponents from './globalComponents';
+import SideBar from './components/UIComponents/SidebarPlugin';
+import App from './App';
+import routes from './routes/routes';
 import './assets/sass/paper-dashboard.scss';
-import 'es6-promise/auto';
+import { validateTokenUrl } from './api-url';
 
 // plugin setup
 Vue.use(VueRouter);
@@ -30,55 +26,61 @@ Vue.use(VueTheMask);
 Vue.use(VuejsDialog, {
   html: true,
   loader: true,
-  reverse:true,
+  reverse: true,
   okText: 'Continuar',
   cancelText: 'Cancelar',
   message: 'Você tem certeza?',
   animation: 'bounce',
 });
 
-//Mixins
+// Mixins
 Vue.mixin({
   methods: {
-    capitalize: str => str.replace(/\b\w/g, l => l.toUpperCase())
-  }
-})
+    capitalize: str => str.replace(/\b\w/g, l => l.toUpperCase()),
+  },
+});
 
 
 // configure router
 const router = new VueRouter({
   routes, // short for routes: routes
-  linkActiveClass: 'active'
+  linkActiveClass: 'active',
 });
 
 router.beforeEach((to, from, next) => {
+  const loginRedirect = {
+    path: '/login',
+    query: {
+      redirect: to.fullPath,
+    },
+  };
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (localStorage.getItem('login') !== 'true') {
-      next({
-        path: '/login',
-        query: {
-          redirect: to.fullPath,
-        },
-      });
+    if (!localStorage.getItem('token')) {
+      next(loginRedirect);
     } else {
-      next();
+      axios.get(`${validateTokenUrl}?token=${localStorage.getItem('token')}`)
+        .then(() => {
+          next();
+        })
+        .catch(() => next(loginRedirect));
     }
   } else {
     next();
   }
-})
+});
 // global library setup
 Object.defineProperty(Vue.prototype, '$Chartist', {
   get() {
     return this.$root.Chartist;
-  }
+  },
 });
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   data: {
-    Chartist: Chartist
+    Chartist,
   },
   render: h => h(App),
   router,

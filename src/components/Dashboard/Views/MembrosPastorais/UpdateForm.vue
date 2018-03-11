@@ -76,83 +76,83 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import SelectList from "components/UIComponents/Forms/SelectList.vue";
-import { membrosPastoraisApiUrl } from "../../../../api-url/index";
+import axios from 'axios';
+import SelectList from '@/components/UIComponents/Forms/SelectList';
+import { membrosPastoraisApiUrl } from '../../../../api-url/index';
 
 export default {
   props: {
     membroPastoral: Object,
-    selectList: Object
+    selectList: Object,
   },
   components: {
-    SelectList
+    SelectList,
   },
   data() {
     return {
-      showLoader: false
+      showLoader: false,
     };
   },
   methods: {
     update() {
       this.$dialog
         .confirm()
-        .then(dialog => {
+        .then((dialog) => {
           axios
             .put(
               `${membrosPastoraisApiUrl}/${this.membroPastoral.id}`,
               JSON.stringify(this.membroPastoral),
               {
                 headers: {
-                  "Content-Type": "application/json"
-                }
-              }
+                  'Content-Type': 'application/json',
+                },
+              },
             )
-            .then(response => {
+            .then((response) => {
               dialog.close();
               this.$notify({
-                group: "top-right",
-                title: "Sucesso!",
-                text: "Membro alterado",
-                type: "success",
-                speed: 1000
+                group: 'top-right',
+                title: 'Sucesso!',
+                text: 'Membro alterado',
+                type: 'success',
+                speed: 1000,
               });
               console.log(response);
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             });
         })
-        .catch(function() {
-          console.log("Clicked on cancel");
+        .catch(() => {
+          console.log('Clicked on cancel');
         });
     },
     del() {
       this.$dialog
         .confirm()
-        .then(dialog => {
+        .then((dialog) => {
           axios
             .delete(`${membrosPastoraisApiUrl}/${this.membroPastoral.id}`)
-            .then(response => {
+            .then((response) => {
               console.log(response);
               dialog.close();
               this.$notify({
-                group: "top-right",
-                title: "Sucesso!",
-                text: "Membro excluído",
-                type: "success",
-                speed: 1000
+                group: 'top-right',
+                title: 'Sucesso!',
+                text: 'Membro excluído',
+                type: 'success',
+                speed: 1000,
               });
-              this.$router.push({ path: "/admin/membros-pastorais" });
+              this.$router.push({ path: '/admin/membros-pastorais' });
             })
             .catch(err => console.log(err));
         })
-        .catch(function() {
-          console.log("Clicked on cancel");
+        .catch(() => {
+          console.log('Clicked on cancel');
         });
     },
     searchCEP(event) {
-      const cep = event.target.value.replace("-", "");
+      const cep = event.target.value.replace('-', '');
 
       const uri = `https://viacep.com.br/ws/${cep}/json/`;
 
@@ -166,17 +166,17 @@ export default {
           this.membroPastoral.uf = data.uf;
           this.membroPastoral.bairro = data.bairro;
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
-          alert("CEP INVÁLIDO");
+          alert('CEP INVÁLIDO');
         })
         .then(() =>
           setTimeout(() => {
             this.showLoader = false;
-          }, 1000)
+          }, 1000),
         );
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

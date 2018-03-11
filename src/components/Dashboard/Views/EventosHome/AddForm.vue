@@ -33,24 +33,24 @@
   </div>
 </template>
 <script>
-import axios from "axios";
+import axios from 'axios';
+import PictureInput from 'vue-picture-input';
 import {
   eventosHomeApiUrl,
-  uploadImageApiUrl
-} from "../../../../api-url/index";
-import PictureInput from "vue-picture-input";
+  uploadImageApiUrl,
+} from '../../../../api-url/index';
 
 export default {
   components: {
-    PictureInput
+    PictureInput,
   },
   props: {
-    eventoHome: Object
+    eventoHome: Object,
   },
   data() {
     return {
       showLoader: false,
-      imageSrc: null
+      imageSrc: null,
     };
   },
   methods: {
@@ -58,37 +58,37 @@ export default {
       this.showLoader = true;
       const data = {
         fileName: this.$refs.pictureInput.fileName,
-        image: this.image
+        image: this.image,
       };
 
       axios
         .post(uploadImageApiUrl, JSON.stringify(data), {
           headers: {
-            "Content-Type": "application/json"
-          }
+            'Content-Type': 'application/json',
+          },
         })
-        .then(response => {
+        .then((response) => {
           this.eventoHome.imagem = response.data.path;
           axios
             .post(eventosHomeApiUrl, JSON.stringify(this.eventoHome), {
               headers: {
-                "Content-Type": "application/json"
-              }
+                'Content-Type': 'application/json',
+              },
             })
-            .then(response => {
+            .then(() => {
               this.showLoader = false;
               this.$notify({
-                group: "top-right",
-                title: "Sucesso!",
-                text: "Evento inserido com sucesso",
-                type: "success",
-                speed: 1000
+                group: 'top-right',
+                title: 'Sucesso!',
+                text: 'Evento inserido com sucesso',
+                type: 'success',
+                speed: 1000,
               });
-              this.$router.push({ path: "/admin/eventos-home" });
+              this.$router.push({ path: '/admin/eventos-home' });
             })
             .catch(error => console.log(error));
         })
-        .catch(response => {
+        .catch((response) => {
           console.log(response);
         });
     },
@@ -96,8 +96,8 @@ export default {
       if (image) {
         this.image = image;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

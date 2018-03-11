@@ -28,8 +28,8 @@
         <tbody>
           <tr v-for="billingCycle in billingCycles" :key="billingCycle.id">
 
-            <td class="ng-binding">{{billingCycle.name}}</td>
-            <td class="ng-binding">{{new Date(billingCycle.date).toLocaleDateString('pt-BR',{ year: 'numeric', month: 'long'})}}</td>
+            <td>{{billingCycle.name}}</td>
+            <td>{{new Date(billingCycle.date).toLocaleDateString('pt-BR',{ year: 'numeric', month: 'long'})}}</td>
             <td style="width:100px;">
               <button class="btn btn-warning btn-xs" @click="showTabUpdate(billingCycle)">
                 <i class="fa fa-pencil"></i>
@@ -80,10 +80,10 @@
                 <tbody>
                   <tr v-for="(credit, index) in billingCycle.credits " :key="index ">
                     <td>
-                      <fg-input :required="true " v-model="credit.name " placeholder="Informe o Nome " :disabled="tabDelete" />
+                      <fg-input v-model="credit.name" placeholder="Informe o Nome " :disabled="tabDelete" />
                     </td>
                     <td>
-                      <fg-input :required="true " v-model="credit.value " placeholder="Informe o Valor " :disabled="tabDelete" ng-change="calculateValues() " type="number " />
+                      <fg-input v-model="credit.value" placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
                     </td>
 
                     <td style="width:150px; " v-if="!tabDelete " class=" ">
@@ -113,26 +113,16 @@
                   <tr>
                     <th>Nome</th>
                     <th>Valor</th>
-                    <th>Status</th>
                     <th v-if="!tabDelete">Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="(debt, index) in billingCycle.debts " :key="index ">
                     <td>
-                      <fg-input :required="true " v-model="debt.name " placeholder="Informe o Nome " :disabled="tabDelete" @change="alert()" />
+                      <fg-input v-model="debt.name " placeholder="Informe o Nome " :disabled="tabDelete" @change="alert()" />
                     </td>
                     <td>
-                      <fg-input :required="true " v-model="debt.value" placeholder="Informe o Valor " :disabled="tabDelete" ng-change="calculateValues() " type="number " />
-                    </td>
-                    <td>
-                      <div class="form-group">
-                        <select v-model="debt.status" class="form-control border-input">
-                          <option value="PAGO">PAGO</option>
-                          <option value="PENDENTE">PENDENTE</option>
-                          <option value="AGENDADO">AGENDADO</option>
-                        </select>
-                      </div>
+                      <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
                     </td>
 
                     <td style="width:150px; " v-if="!tabDelete " class=" ">
@@ -165,16 +155,15 @@
   </div>
 </template>
 <script>
-import ValueBox from "components/UIComponents/ValueBox.vue";
-import ValueRow from "components/UIComponents/ValueRow.vue";
-import debounce from "lodash.debounce";
-import axios from "axios";
-import { billingCyclesApiUrl } from "./../../../../api-url";
+import ValueBox from '@/components/UIComponents/ValueBox';
+import ValueRow from '@/components/UIComponents/ValueRow';
+import axios from 'axios';
+import { billingCyclesApiUrl } from './../../../../api-url';
 
 export default {
   components: {
     ValueBox,
-    ValueRow
+    ValueRow,
   },
   data() {
     return {
@@ -186,11 +175,11 @@ export default {
       billingCycles: [],
       billingCycle: {
         credits: [{ value: null }],
-        debts: [{ value: null }]
+        debts: [{ value: null }],
       },
       credit: 0,
       total: 0,
-      debt: 0
+      debt: 0,
     };
   },
   created() {
@@ -199,11 +188,11 @@ export default {
   },
   watch: {
     billingCycle: {
-      handler: function(val, oldVal) {
+      handler() {
         this.calculateValues();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     toggleTabs(tab) {
@@ -214,7 +203,7 @@ export default {
       this[tab] = true;
     },
     cancel() {
-      this.toggleTabs("tabList");
+      this.toggleTabs('tabList');
     },
     calculateValues() {
       this.credit = 0;
@@ -236,51 +225,54 @@ export default {
       return `R$ ${value.toFixed(2)}`;
     },
     showTabUpdate(billingCycle) {
-      this.toggleTabs("tabUpdate");
+      this.toggleTabs('tabUpdate');
+      /* eslint-disable no-param-reassign */
       billingCycle.date = billingCycle.date.substring(0, 7);
       this.billingCycle = billingCycle;
+      this.initCreditsAndDebts();
     },
     showTabDelete(billingCycle) {
-      this.toggleTabs("tabDelete");
+      this.toggleTabs('tabDelete');
       billingCycle.date = billingCycle.date.substring(0, 7);
       this.billingCycle = billingCycle;
+      /* eslint-enable no-param-reassign */
     },
     showTabCreate() {
-      this.toggleTabs("tabCreate");
+      this.toggleTabs('tabCreate');
       this.billingCycle = {
         credits: [{ value: null }],
-        debts: [{ value: null, status: "PAGO" }]
+        debts: [{ value: null }],
       };
     },
     createBillingCycle() {
       this.showLoader = true;
       this.billingCycle.credits = this.billingCycle.credits.filter(
-        credit => (credit.name && credit.value ? credit : null)
+        credit => (credit.name && credit.value ? credit : null),
       );
 
       this.billingCycle.debts = this.billingCycle.debts.filter(
-        credit => (credit.name && credit.value ? credit : null)
+        credit => (credit.name && credit.value ? credit : null),
       );
 
       axios
         .post(billingCyclesApiUrl, JSON.stringify(this.billingCycle), {
           headers: {
-            "Content-Type": "application/json"
-          }
+            'Content-Type': 'application/json',
+          },
         })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           this.getBillingCycles();
-          this.toggleTabs("tabList");
+          this.toggleTabs('tabList');
           this.$notify({
-            group: "top-right",
-            title: "Sucesso!",
-            text: "Ciclo de pagamento inserido com sucesso",
-            type: "success",
-            speed: 2000
+            group: 'top-right',
+            title: 'Sucesso!',
+            text: 'Ciclo de pagamento inserido com sucesso',
+            type: 'success',
+            speed: 2000,
           });
         })
-        .catch(response => {
+        .catch((response) => {
           console.log(response);
         });
     },
@@ -288,80 +280,82 @@ export default {
       this.showLoader = true;
       axios
         .get(billingCyclesApiUrl)
-        .then(({ data }) => (this.billingCycles = data))
-        .catch(response => {
+        .then(({ data }) => {
+          this.billingCycles = data;
+        })
+        .catch((response) => {
           console.log(response);
         })
-        .then(() => (this.showLoader = false));
+        .then(() => {
+          this.showLoader = false;
+        });
     },
     deleteBillingCycle() {
       this.$dialog
         .confirm()
-        .then(dialog => {
+        .then((dialog) => {
+          /* eslint-disable no-underscore-dangle */
           const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
           axios
             .delete(url)
-            .then(response => {
+            .then((response) => {
               console.log(response);
               dialog.close();
               this.getBillingCycles();
-              this.toggleTabs("tabList");
+              this.toggleTabs('tabList');
               this.$notify({
-                group: "top-right",
-                title: "Sucesso!",
-                text: "Ciclo de pagamento excluído com sucesso",
-                type: "success",
-                speed: 2000
+                group: 'top-right',
+                title: 'Sucesso!',
+                text: 'Ciclo de pagamento excluído com sucesso',
+                type: 'success',
+                speed: 2000,
               });
             })
             .catch(response => console.log(response));
         })
-        .catch(function() {
-          console.log("Clicked on cancel");
+        .catch(() => {
+          console.log('Clicked on cancel');
         });
     },
     updateBillingCycle() {
-      const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
-
       this.$dialog
         .confirm()
-        .then(dialog => {
+        .then((dialog) => {
           const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
           axios
             .put(url, JSON.stringify(this.billingCycle), {
               headers: {
-                "Content-Type": "application/json"
-              }
+                'Content-Type': 'application/json',
+              },
             })
-            .then(response => {
+            .then((response) => {
               console.log(response);
               dialog.close();
               this.getBillingCycles();
 
-              this.toggleTabs("tabList");
+              this.toggleTabs('tabList');
               this.$notify({
-                group: "top-right",
-                title: "Sucesso!",
-                text: "Ciclo de pagamento alterado com sucesso",
-                type: "success",
-                speed: 2000
+                group: 'top-right',
+                title: 'Sucesso!',
+                text: 'Ciclo de pagamento alterado com sucesso',
+                type: 'success',
+                speed: 2000,
               });
             })
             .catch(response => console.log(response));
         })
-        .catch(function() {
-          console.log("Clicked on cancel");
+        .catch(() => {
+          console.log('Clicked on cancel');
         });
     },
     addDebtOrCredit(index, property) {
       this.billingCycle[property].splice(index + 1, 0, {
         name: null,
         value: null,
-        status: "PAGO"
       });
     },
-    cloneDebtOrCredit(index, { name, value, status }, property) {
-      this.billingCycle[property].splice(index + 1, 0, { name, value, status });
+    cloneDebtOrCredit(index, { name, value }, property) {
+      this.billingCycle[property].splice(index + 1, 0, { name, value });
       this.initCreditsAndDebts();
     },
     deleteDebtOrCredit(index, property) {
@@ -378,8 +372,8 @@ export default {
         this.billingCycle.credits = [];
         this.billingCycle.credits.push({});
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

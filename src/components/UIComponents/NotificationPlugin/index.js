@@ -1,26 +1,26 @@
-import Notifications from './Notifications.vue'
+import Notifications from './Notifications';
 
 const NotificationStore = {
   state: [], // here the notifications will be added
 
-  removeNotification (index) {
-    this.state.splice(index, 1)
+  removeNotification(index) {
+    this.state.splice(index, 1);
   },
-  notify (notification) {
-    this.state.push(notification)
-  }
-}
+  notify(notification) {
+    this.state.push(notification);
+  },
+};
 
-var NotificationsPlugin = {
+const NotificationsPlugin = {
 
-  install (Vue) {
+  install(Vue) {
     Object.defineProperty(Vue.prototype, '$notifications', {
-      get () {
-        return NotificationStore
-      }
-    })
-    Vue.component('Notifications', Notifications)
-  }
-}
+      get() {
+        return NotificationStore;
+      },
+    });
+    Vue.component('Notifications', Notifications);
+  },
+};
 
-export default NotificationsPlugin
+export default NotificationsPlugin;

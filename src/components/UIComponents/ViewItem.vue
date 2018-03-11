@@ -17,11 +17,11 @@
 export default {
   props: {
     item: Object,
-    title: String
+    title: String,
   },
   data() {
     return {};
-  }
+  },
 };
 </script>
 

@@ -26,27 +26,27 @@
   </div>
 </template>
 <script>
-import PaperTable from "components/UIComponents/PaperTable.vue";
-import Modal from "components/UIComponents/Modal/Modal.vue";
-import SimpleForm from "components/UIComponents/Forms/SimpleForm.vue";
-import axios from "axios";
-import debounce from "lodash.debounce";
-import { membrosPastoraisApiUrl } from "./../../../../api-url";
+import PaperTable from '@/components/UIComponents/PaperTable';
+import Modal from '@/components/UIComponents/Modal/Modal';
+import SimpleForm from '@/components/UIComponents/Forms/SimpleForm';
+import axios from 'axios';
+import debounce from 'lodash.debounce';
+import { membrosPastoraisApiUrl } from './../../../../api-url';
 
 const membrosPastoraisHeaders = [
-  "id",
-  "nome",
-  "email",
-  "celular",
-  "cep",
-  "pastorais.nome"
+  'id',
+  'nome',
+  'email',
+  'celular',
+  'cep',
+  'pastorais.nome',
 ];
 
 export default {
   components: {
     PaperTable,
     Modal,
-    SimpleForm
+    SimpleForm,
   },
   data() {
     return {
@@ -55,50 +55,50 @@ export default {
       membrosPastorais: [],
       table: { data: [] },
       showLoader: true,
-      filterProperty: "id",
-      termToSearch: "",
-      membrosPastoraisHeaders: membrosPastoraisHeaders,
-      title: "Lista de membrosPastorais",
-      subTitle: "Aqui você ira encontrar a lista de membrosPastorais completa"
+      filterProperty: 'id',
+      termToSearch: '',
+      membrosPastoraisHeaders,
+      title: 'Lista de membrosPastorais',
+      subTitle: 'Aqui você ira encontrar a lista de membrosPastorais completa',
     };
   },
   created() {
     axios
       .get(membrosPastoraisApiUrl)
-      .then(response => {
+      .then((response) => {
         console.log(response);
         this.membrosPastorais = response.data;
         this.table.data = response.data;
         this.showLoader = false;
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   },
   watch: {
     termToSearch: debounce(
-      function() {
+      function filter() {
         const membrosPastoraisFiltrados = this.membrosPastorais.filter(
           obj =>
-            obj[this.filterProperty]
+            (obj[this.filterProperty]
               ? obj[this.filterProperty]
-                  .toString()
-                  .toLowerCase()
-                  .match(this.termToSearch.toLowerCase())
-              : undefined
+                .toString()
+                .toLowerCase()
+                .match(this.termToSearch.toLowerCase())
+              : undefined),
         );
         this.updateTable(membrosPastoraisFiltrados);
       },
       // Este é o número de milissegundos que aguardamos para
       // que o usuário pare de digitar
-      300
-    )
+      300,
+    ),
   },
   methods: {
     updateTable(membrosPastorais) {
       this.table.data = [...membrosPastorais];
-    }
-  }
+    },
+  },
 };
 </script>
 <style>

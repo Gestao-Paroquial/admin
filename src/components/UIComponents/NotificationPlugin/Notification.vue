@@ -15,26 +15,26 @@
 </template>
 <script>
 export default {
-  name: "Notification",
+  name: 'Notification',
   props: {
     message: String,
     icon: String,
     verticalAlign: {
       type: String,
-      default: "top"
+      default: 'top',
     },
     horizontalAlign: {
       type: String,
-      default: "center"
+      default: 'center',
     },
     type: {
       type: String,
-      default: "info"
+      default: 'info',
     },
     timeout: {
       type: Number,
-      default: 5000
-    }
+      default: 5000,
+    },
   },
   data() {
     return {};
@@ -47,34 +47,33 @@ export default {
       return `alert-${this.type}`;
     },
     customPosition() {
-      let initialMargin = 20;
-      let alertHeight = 90;
-      let sameAlertsCount = this.$notifications.state.filter(alert => {
-        return (
+      const initialMargin = 20;
+      const alertHeight = 90;
+      const sameAlertsCount = this.$notifications.state.filter(
+        alert =>
           alert.horizontalAlign === this.horizontalAlign &&
-          alert.verticalAlign === this.verticalAlign
-        );
-      }).length;
-      let pixels = (sameAlertsCount - 1) * alertHeight + initialMargin;
-      let styles = {};
-      if (this.verticalAlign === "top") {
+          alert.verticalAlign === this.verticalAlign,
+      ).length;
+      const pixels = (sameAlertsCount - 1) * alertHeight + initialMargin;
+      const styles = {};
+      if (this.verticalAlign === 'top') {
         styles.top = `${pixels}px`;
       } else {
         styles.bottom = `${pixels}px`;
       }
       return styles;
-    }
+    },
   },
   methods: {
     close() {
-      this.$emit("on-close");
-    }
+      this.$emit('on-close');
+    },
   },
   mounted() {
     if (this.timeout) {
       setTimeout(this.close, this.timeout);
     }
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

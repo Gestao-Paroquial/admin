@@ -13,7 +13,7 @@ export default {
     selectList: Object,
     required: Boolean,
     disabled: [Boolean, String],
-  }
+  },
 };
 </script>
 <style>

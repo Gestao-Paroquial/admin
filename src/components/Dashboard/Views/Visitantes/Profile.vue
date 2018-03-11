@@ -7,21 +7,22 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import UpdateVisitanteForm from "./UpdateForm";
-import { visitantesApiUrl, comunidadesApiUrl } from "./../../../../api-url";
+import axios from 'axios';
+import UpdateVisitanteForm from './UpdateForm';
+import { visitantesApiUrl, comunidadesApiUrl } from './../../../../api-url';
+
 export default {
   components: {
-    UpdateVisitanteForm
+    UpdateVisitanteForm,
   },
   data() {
     return {
       visitante: {},
       selectList: {
-        label: "Comunidades",
-        name: "comunidades_id",
-        options: []
-      }
+        label: 'Comunidades',
+        name: 'comunidades_id',
+        options: [],
+      },
     };
   },
   created() {
@@ -32,25 +33,25 @@ export default {
         const comunidadeAtual = data.comunidades;
         this.selectList.options.push({
           value: data.comunidades.nome,
-          id: data.comunidades.id
+          id: data.comunidades.id,
         });
 
-        axios.get(comunidadesApiUrl).then(({ data }) => {
-          const comunidadesToSelectList = data
+        axios.get(comunidadesApiUrl).then((response) => {
+          const comunidadesToSelectList = response.data
             .filter(
               comunidade =>
-                comunidadeAtual.id !== comunidade.id ? comunidade : null
+                (comunidadeAtual.id !== comunidade.id ? comunidade : null),
             )
             .map(comunidade => ({
               value: comunidade.nome,
-              id: comunidade.id
+              id: comunidade.id,
             }));
 
           this.selectList.options.push(...comunidadesToSelectList);
         });
       })
       .catch(err => console.log(err));
-  }
+  },
 };
 </script>
 

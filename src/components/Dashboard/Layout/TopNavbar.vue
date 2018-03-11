@@ -62,11 +62,11 @@ export default {
     routeName() {
       const { name } = this.$route;
       return this.capitalizeFirstLetter(name);
-    }
+    },
   },
   data() {
     return {
-      activeNotifications: false
+      activeNotifications: false,
     };
   },
   methods: {
@@ -84,8 +84,8 @@ export default {
     },
     hideSidebar() {
       this.$sidebar.displaySidebar(false);
-    }
-  }
+    },
+  },
 };
 </script>
 <style>
