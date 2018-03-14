@@ -17,7 +17,6 @@
       <div class="user">
         <p class="name">Olá, {{user.name}}</p>
       </div>
-      <slot/>
       <ul :class="navClasses">
         <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
         <router-link v-for="(link,index) in sidebarLinks" :to="link.path" tag="li" :ref="link.name" :key="index">
@@ -94,7 +93,7 @@ export default {
      * @returns {{transform: string}}
      */
     arrowMovePx() {
-      return this.linkHeight * this.activeLinkIndex;
+      return this.linkHeight * this.activeLinkIndex + this.linkHeight;
     },
   },
   data() {
@@ -131,13 +130,13 @@ export default {
 </script>
 <style scoped>
 .user {
-  padding: 13px 0;
+  padding: 0;
   margin: 0 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .user .name {
-  padding: 4px 0px;
+  padding: 11px 0px;
   display: block;
   font-size: 14px;
   text-align: center;
