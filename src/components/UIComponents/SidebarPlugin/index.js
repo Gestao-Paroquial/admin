@@ -14,6 +14,11 @@ const SidebarStore = {
       path: '/admin/financeiro',
     },
     {
+      name: 'Eventos',
+      icon: 'fa fa-calendar',
+      path: '/admin/eventos',
+    },
+    {
       name: 'Mensagens Paroco',
       icon: 'fa fa-envelope',
       path: '/admin/mensagens-paroco',
