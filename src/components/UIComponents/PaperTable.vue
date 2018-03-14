@@ -134,6 +134,11 @@ export default {
 };
 </script>
 <style scoped>
+th {
+      padding: 12px;
+    vertical-align: middle;
+    text-align: center;
+}
 .pagination > li > a:hover,
 .pagination > li > a:focus,
 .pagination > li > a:active,
