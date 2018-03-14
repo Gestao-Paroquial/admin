@@ -38,6 +38,9 @@ import AddEventosHome from '@/components/Dashboard/Views/EventosHome/Add';
 
 import ControleFinanceiro from '@/components/Dashboard/Views/ControleFinanceiro';
 
+import Eventos from '@/components/Dashboard/Views/Eventos';
+
+
 const routes = [
   {
     path: '/',
@@ -69,6 +72,11 @@ const routes = [
         path: 'financeiro',
         name: 'controle Financeiro',
         component: ControleFinanceiro,
+      },
+      {
+        path: 'eventos',
+        name: 'Eventos',
+        component: Eventos,
       },
       {
         path: 'eventos-home/add',
