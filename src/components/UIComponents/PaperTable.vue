@@ -26,7 +26,7 @@
                     <i class="ti-eye" />
                   </router-link>
 
-                  <router-link v-bind:to="{ path: item.id.toString(), query: { delete: true }, meta: { delete: true }  }" class="btn btn-simple btn-xs btn-danger btn-icon remove" append>
+                  <router-link v-bind:to="{ path: item.id.toString(), query: { delete: true }}" class="btn btn-simple btn-xs btn-danger btn-icon remove" append>
                     <i class="ti-close" />
                   </router-link>
 
@@ -135,9 +135,9 @@ export default {
 </script>
 <style scoped>
 th {
-      padding: 12px;
-    vertical-align: middle;
-    text-align: center;
+  padding: 12px;
+  vertical-align: middle;
+  text-align: center;
 }
 .pagination > li > a:hover,
 .pagination > li > a:focus,

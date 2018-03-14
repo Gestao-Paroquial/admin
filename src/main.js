@@ -7,6 +7,8 @@ import axios from 'axios';
 import VueTheMask from 'vue-the-mask';
 import Notifications from 'vue-notification';
 import VuejsDialog from 'vuejs-dialog';
+import 'vue-event-calendar/dist/style.css'; // ^1.1.10, CSS has been extracted as one file, so you can easily update it.
+import vueEventCalendar from 'vue-event-calendar';
 import Chartist from 'chartist';
 import 'bootstrap/dist/css/bootstrap.css';
 import GlobalComponents from './globalComponents';
@@ -32,7 +34,7 @@ Vue.use(VuejsDialog, {
   message: 'Você tem certeza?',
   animation: 'bounce',
 });
-
+Vue.use(vueEventCalendar, { locale: 'pt-br' });
 // Mixins
 Vue.mixin({
   methods: {
