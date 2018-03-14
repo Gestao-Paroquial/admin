@@ -44,10 +44,10 @@
       <form @submit.prevent="createBillingCycle()" v-if="tabCreate || tabDelete || tabUpdate">
         <div class=" row ">
           <div class="col-md-6 ">
-            <fg-input type="text " :required="true " :disabled="tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name " />
+            <fg-input type="text " :required="true " :disabled="tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name" />
           </div>
           <div class="col-md-6 ">
-            <fg-input type="month" :required="true " :disabled="tabDelete" label="Mês e Ano " placeholder="Mês e Ano " v-model="billingCycle.date " />
+            <fg-input type="month" :required="true " :disabled="tabDelete" label="Mês e Ano " placeholder="Mês e Ano " v-model="billingCycle.date" />
           </div>
         </div>
 
@@ -119,7 +119,7 @@
                 <tbody>
                   <tr v-for="(debt, index) in billingCycle.debts " :key="index ">
                     <td>
-                      <fg-input v-model="debt.name " placeholder="Informe o Nome " :disabled="tabDelete" @change="alert()" />
+                      <fg-input v-model="debt.name" placeholder="Informe o Nome " :disabled="tabDelete" @change="alert()" />
                     </td>
                     <td>
                       <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
