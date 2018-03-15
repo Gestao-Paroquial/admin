@@ -20,7 +20,7 @@
     </div>
 
     <!-- Controle Financeiro -->
-    <value-row/>
+    <value-row :credit="billingSummary.credit" :debt="billingSummary.debt" :total="billingSummary.total" />
 
     <!--Charts-->
     <div class="row">
@@ -71,9 +71,11 @@
   </div>
 </template>
 <script>
+import axios from 'axios';
 import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
+import { billingSummaryApiUrl } from './../../../api-url';
 
 export default {
   components: {
@@ -189,7 +191,29 @@ export default {
         },
         options: {},
       },
+      billingSummary: {
+        credit: 0,
+        debt: 0,
+        total: 0,
+      },
     };
+  },
+  mounted() {
+    this.getBillingSumary();
+  },
+  methods: {
+    getBillingSumary() {
+      axios
+        .get(billingSummaryApiUrl)
+        .then(({ data }) => {
+          this.billingSummary.credit = data.credit;
+          this.billingSummary.debt = data.debt;
+          this.billingSummary.total = data.credit - data.debt;
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    },
   },
 };
 </script>

@@ -1,177 +1,203 @@
 <template>
   <div>
     <loader v-if="showLoader" />
-    <h3>Resumo de todas as movimentações:</h3>
-    <ValueRow />
-
     <ul class="nav nav-tabs">
 
-      <li :class="{'active': tabList}">
+      <li :class="{'active': tabs.tabList}">
         <a href="" data-target="#tabList" data-toggle="tab" aria-expanded="false" @click.prevent="toggleTabs('tabList')">
           <i class="fa fa-bars"></i> Lista</a>
       </li>
 
-      <li :class="{'active': tabCreate}">
+      <li :class="{'active': tabs.tabCreate}">
         <a href="" data-target="#tabCreate" data-toggle="tab" aria-expanded="true" @click.prevent="showTabCreate()">
           <i class="fa fa-plus"></i> Incluir</a>
       </li>
+      <li :class="{'active': tabs.tabExtract}">
+        <a href="" data-target="#tabExtract" data-toggle="tab" aria-expanded="true" @click.prevent="showTabExtract()">
+          <i class="fa fa-get-pocket"></i> Extratos</a>
+      </li>
     </ul>
     <div class="tab-content">
-      <table class="table" v-if="tabList">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Período</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="billingCycle in billingCycles" :key="billingCycle.id">
+      <div v-if="tabs.tabList">
+        <h3>Resumo de todas as movimentações:</h3>
+        <ValueRow :credit="billingSummary.credit" :debt="billingSummary.debt" :total="billingSummary.total" />
+        <h3>Lista de movimentações:</h3>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Período</th>
+              <th>Créditos</th>
+              <th>Débitos</th>
+              <th>Total</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="billingCycle in billingCycles" :key="billingCycle.id">
 
-            <td>{{billingCycle.name}}</td>
-            <td>{{new Date(billingCycle.date).toLocaleDateString('pt-BR',{ year: 'numeric', month: 'long'})}}</td>
-            <td style="width:100px;">
-              <button class="btn btn-warning btn-xs" @click="showTabUpdate(billingCycle)">
-                <i class="fa fa-pencil"></i>
-              </button>
-              <button class="btn btn-danger btn-xs" @click="showTabDelete(billingCycle)">
-                <i class="fa fa-trash-o"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <form @submit.prevent="createBillingCycle()" v-if="tabCreate || tabDelete || tabUpdate">
-        <div class=" row ">
-          <div class="col-md-6 ">
-            <fg-input type="text " :required="true " :disabled="tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name" />
-          </div>
-          <div class="col-md-6 ">
-            <fg-input type="month" :required="true " :disabled="tabDelete" label="Mês e Ano " placeholder="Mês e Ano " v-model="billingCycle.date" />
-          </div>
-        </div>
-
-        <div class="row">
-
-          <h3 class="col-md-12">Resumo Deste Ciclo</h3>
-
-          <value-box grid="col-sm-12 col-md-4" color-class="bg-green" icon-class="fa fa-bank" :value="formatToPrice(credit)" text="Total de Créditos">
-          </value-box>
-
-          <value-box grid="col-sm-12 col-md-4" color-class="bg-red" icon-class="fa fa-credit-card" :value="formatToPrice(debt)" text="Total de Débitos">
-          </value-box>
-
-          <value-box grid="col-sm-12 col-md-4" color-class="bg-blue" icon-class="fa fa-money" :value="formatToPrice(total)" text="Valor Consolidado">
-          </value-box>
-        </div>
-
-        <div class="col-xs-12 col-lg-6 ">
-          <fieldset>
-            <legend>Créditos</legend>
-            <div class="col-xs-12  ">
-              <table class="table ">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Valor</th>
-                    <th v-if="!tabDelete">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(credit, index) in billingCycle.credits " :key="index ">
-                    <td>
-                      <fg-input v-model="credit.name" placeholder="Informe o Nome " :disabled="tabDelete" />
-                    </td>
-                    <td>
-                      <fg-input v-model="credit.value" placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
-                    </td>
-
-                    <td style="width:150px; " v-if="!tabDelete " class=" ">
-                      <button class="btn btn-success btn-simple btn-xs " type="button" @click="addDebtOrCredit(index, 'credits') ">
-                        <i class="fa fa-plus "></i>
-                      </button>
-                      <button class="btn btn-warning btn-simple btn-xs " type="button" @click="cloneDebtOrCredit(index,credit, 'credits') ">
-                        <i class="fa fa-clone "></i>
-                      </button>
-                      <button class="btn btn-danger btn-simple btn-xs " type="button" @click="deleteDebtOrCredit(index, 'credits') ">
-                        <i class="fa fa-trash-o "></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <td>{{billingCycle.name}}</td>
+              <td>{{new Date(billingCycle.date).toLocaleDateString('pt-BR',{ year: 'numeric', month: 'long'})}}</td>
+              <td>{{formatToPrice(sumProperty(billingCycle.credits))}}</td>
+              <td>{{formatToPrice(sumProperty(billingCycle.debts))}}</td>
+              <td>{{formatToPrice(sumProperty(billingCycle.credits) - sumProperty(billingCycle.debts))}}</td>
+              <td style="width:100px;">
+                <button class="btn btn-warning btn-xs" @click="showTabUpdate(billingCycle)">
+                  <i class="fa fa-pencil"></i>
+                </button>
+                <button class="btn btn-danger btn-xs" @click="showTabDelete(billingCycle)">
+                  <i class="fa fa-trash-o"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <transition name="fade">
+        <form @submit.prevent="createBillingCycle()" v-if="tabs.tabCreate || tabs.tabDelete || tabs.tabUpdate">
+          <div class=" row ">
+            <div class="col-md-6 ">
+              <fg-input type="text " :required="true " :disabled="tabs.tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name" />
             </div>
-          </fieldset>
-        </div>
-
-        <div class="col-xs-12 col-lg-6 ">
-          <fieldset>
-            <legend>Débitos</legend>
-            <div class="col-xs-12  ">
-              <table class="table ">
-                <thead>
-                  <tr>
-                    <th>Nome</th>
-                    <th>Valor</th>
-                    <th v-if="!tabDelete">Ações</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(debt, index) in billingCycle.debts " :key="index ">
-                    <td>
-                      <fg-input v-model="debt.name" placeholder="Informe o Nome " :disabled="tabDelete" @change="alert()" />
-                    </td>
-                    <td>
-                      <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
-                    </td>
-
-                    <td style="width:150px; " v-if="!tabDelete " class=" ">
-                      <button class="btn btn-success btn-simple btn-xs " type="button" @click="addDebtOrCredit(index, 'debts') ">
-                        <i class="fa fa-plus "></i>
-                      </button>
-                      <button class="btn btn-warning btn-simple btn-xs " type="button" @click="cloneDebtOrCredit(index,debt, 'debts') ">
-                        <i class="fa fa-clone "></i>
-                      </button>
-                      <button class="btn btn-danger btn-simple btn-xs " type="button" @click="deleteDebtOrCredit(index, 'debts') ">
-                        <i class="fa fa-trash-o "></i>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="col-md-6 ">
+              <fg-input type="month" :required="true " :disabled="tabs.tabDelete" label="Mês e Ano " placeholder="Mês e Ano " v-model="billingCycle.date" />
             </div>
-          </fieldset>
-        </div>
+          </div>
 
-        <div class="box-footer ">
-          <button class="btn btn-primary" type="submit" v-if="tabCreate">Incluir</button>
-          <button class="btn btn-warning" type="button" @click="updateBillingCycle()" v-if="tabUpdate">Alterar</button>
-          <button class="btn btn-danger" type="button" @click.prevent="deleteBillingCycle()" v-if="tabDelete">Excluir</button>
-          <button class="btn btn-default" type="button" @click="cancel() ">Cancelar</button>
-        </div>
+          <div class="row">
 
-      </form>
+            <h3 class="col-md-12">Resumo Deste Ciclo</h3>
+
+            <value-box grid="col-sm-12 col-md-4" color-class="bg-green" icon-class="fa fa-bank" :value="formatToPrice(credit)" text="Total de Créditos">
+            </value-box>
+
+            <value-box grid="col-sm-12 col-md-4" color-class="bg-red" icon-class="fa fa-credit-card" :value="formatToPrice(debt)" text="Total de Débitos">
+            </value-box>
+
+            <value-box grid="col-sm-12 col-md-4" color-class="bg-blue" icon-class="fa fa-money" :value="formatToPrice(total)" text="Valor Consolidado">
+            </value-box>
+          </div>
+
+          <div class="col-xs-12 col-lg-6 ">
+            <fieldset>
+              <legend>Créditos</legend>
+              <div class="col-xs-12  ">
+                <table class="table ">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Valor</th>
+                      <th v-if="!tabs.tabDelete">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(credit, index) in billingCycle.credits " :key="index ">
+                      <td>
+                        <fg-input v-model="credit.name" placeholder="Informe o Nome " :disabled="tabs.tabDelete" />
+                      </td>
+                      <td>
+                        <fg-input v-model="credit.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number " />
+                      </td>
+
+                      <td style="width:150px; " v-if="!tabs.tabDelete " class=" ">
+                        <button class="btn btn-success btn-simple btn-xs " type="button" @click="addDebtOrCredit(index, 'credits') ">
+                          <i class="fa fa-plus "></i>
+                        </button>
+                        <button class="btn btn-warning btn-simple btn-xs " type="button" @click="cloneDebtOrCredit(index,credit, 'credits') ">
+                          <i class="fa fa-clone "></i>
+                        </button>
+                        <button class="btn btn-danger btn-simple btn-xs " type="button" @click="deleteDebtOrCredit(index, 'credits') ">
+                          <i class="fa fa-trash-o "></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="col-xs-12 col-lg-6 ">
+            <fieldset>
+              <legend>Débitos</legend>
+              <div class="col-xs-12  ">
+                <table class="table ">
+                  <thead>
+                    <tr>
+                      <th>Nome</th>
+                      <th>Valor</th>
+                      <th v-if="!tabs.tabDelete">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(debt, index) in billingCycle.debts " :key="index ">
+                      <td>
+                        <fg-input v-model="debt.name" placeholder="Informe o Nome " :disabled="tabs.tabDelete" @change="alert()" />
+                      </td>
+                      <td>
+                        <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number " />
+                      </td>
+
+                      <td style="width:150px; " v-if="!tabs.tabDelete " class=" ">
+                        <button class="btn btn-success btn-simple btn-xs " type="button" @click="addDebtOrCredit(index, 'debts') ">
+                          <i class="fa fa-plus "></i>
+                        </button>
+                        <button class="btn btn-warning btn-simple btn-xs " type="button" @click="cloneDebtOrCredit(index,debt, 'debts') ">
+                          <i class="fa fa-clone "></i>
+                        </button>
+                        <button class="btn btn-danger btn-simple btn-xs " type="button" @click="deleteDebtOrCredit(index, 'debts') ">
+                          <i class="fa fa-trash-o "></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="box-footer ">
+            <button class="btn btn-primary" type="submit" v-if="tabs.tabCreate">Incluir</button>
+            <button class="btn btn-warning" type="button" @click="updateBillingCycle()" v-if="tabs.tabUpdate">Alterar</button>
+            <button class="btn btn-danger" type="button" @click.prevent="deleteBillingCycle()" v-if="tabs.tabDelete">Excluir</button>
+            <button class="btn btn-default" type="button" @click="cancel() ">Cancelar</button>
+          </div>
+
+        </form>
+      </transition>
+      <transition name="fade">
+        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles"/>
+      </transition>
     </div>
   </div>
 </template>
 <script>
+import axios from 'axios';
 import ValueBox from '@/components/UIComponents/ValueBox';
 import ValueRow from '@/components/UIComponents/ValueRow';
-import axios from 'axios';
-import { billingCyclesApiUrl } from './../../../../api-url';
+import Extrato from './Extrato';
+
+import {
+  billingCyclesApiUrl,
+  billingSummaryApiUrl,
+} from './../../../../api-url';
 
 export default {
   components: {
     ValueBox,
     ValueRow,
+    Extrato,
   },
   data() {
     return {
-      tabCreate: false,
-      tabList: true,
       showLoader: false,
-      tabDelete: false,
-      tabUpdate: false,
+      tabs: {
+        tabList: true,
+        tabExtract: false,
+        tabCreate: false,
+        tabDelete: false,
+        tabUpdate: false,
+      },
       billingCycles: [],
       billingCycle: {
         credits: [{ value: null }],
@@ -180,11 +206,20 @@ export default {
       credit: 0,
       total: 0,
       debt: 0,
+      billingSummary: {
+        credit: 0,
+        debt: 0,
+        total: 0,
+      },
     };
   },
   created() {
     this.showLoader = true;
     this.getBillingCycles();
+    this.getBillingSumary();
+  },
+  mounted() {
+    this.getBillingSumary();
   },
   watch: {
     billingCycle: {
@@ -195,12 +230,28 @@ export default {
     },
   },
   methods: {
+    sumProperty(array = []) {
+      const sum = array.reduce((prev, curr) => prev + curr.value, 0);
+      return sum;
+    },
+    getBillingSumary() {
+      axios
+        .get(billingSummaryApiUrl)
+        .then(({ data }) => {
+          this.billingSummary.credit = data.credit;
+          this.billingSummary.debt = data.debt;
+          this.billingSummary.total = data.credit - data.debt;
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    },
     toggleTabs(tab) {
-      this.tabCreate = false;
-      this.tabList = false;
-      this.tabDelete = false;
-      this.tabUpdate = false;
-      this[tab] = true;
+      /* eslint-disable no-param-reassign */
+      const setAll = (obj, val) => Object.keys(obj).forEach((k) => { obj[k] = val; });
+      const setNull = obj => setAll(obj, null);
+      setNull(this.tabs);
+      this.tabs[tab] = true;
     },
     cancel() {
       this.toggleTabs('tabList');
@@ -244,8 +295,10 @@ export default {
         debts: [{ value: null }],
       };
     },
-    createBillingCycle() {
-      this.showLoader = true;
+    showTabExtract() {
+      this.toggleTabs('tabExtract');
+    },
+    removeNullValuesOfCreditsAndDebts() {
       this.billingCycle.credits = this.billingCycle.credits.filter(
         credit => (credit.name && credit.value ? credit : null),
       );
@@ -253,7 +306,10 @@ export default {
       this.billingCycle.debts = this.billingCycle.debts.filter(
         credit => (credit.name && credit.value ? credit : null),
       );
-
+    },
+    createBillingCycle() {
+      this.showLoader = true;
+      this.removeNullValuesOfCreditsAndDebts();
       axios
         .post(billingCyclesApiUrl, JSON.stringify(this.billingCycle), {
           headers: {
@@ -263,6 +319,7 @@ export default {
         .then((response) => {
           console.log(response);
           this.getBillingCycles();
+          this.getBillingSumary();
           this.toggleTabs('tabList');
           this.$notify({
             group: 'top-right',
@@ -302,6 +359,7 @@ export default {
               console.log(response);
               dialog.close();
               this.getBillingCycles();
+              this.getBillingSumary();
               this.toggleTabs('tabList');
               this.$notify({
                 group: 'top-right',
@@ -322,6 +380,7 @@ export default {
         .confirm()
         .then((dialog) => {
           const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
+          this.removeNullValuesOfCreditsAndDebts();
           axios
             .put(url, JSON.stringify(this.billingCycle), {
               headers: {
@@ -332,6 +391,7 @@ export default {
               console.log(response);
               dialog.close();
               this.getBillingCycles();
+              this.getBillingSumary();
 
               this.toggleTabs('tabList');
               this.$notify({
@@ -403,6 +463,15 @@ export default {
   border-bottom-color: #f4f4f4;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
 
