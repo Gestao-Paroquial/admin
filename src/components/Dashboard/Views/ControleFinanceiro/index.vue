@@ -3,22 +3,22 @@
     <loader v-if="showLoader" />
     <ul class="nav nav-tabs">
 
-      <li :class="{'active': tabList}">
+      <li :class="{'active': tabs.tabList}">
         <a href="" data-target="#tabList" data-toggle="tab" aria-expanded="false" @click.prevent="toggleTabs('tabList')">
           <i class="fa fa-bars"></i> Lista</a>
       </li>
 
-      <li :class="{'active': tabCreate}">
+      <li :class="{'active': tabs.tabCreate}">
         <a href="" data-target="#tabCreate" data-toggle="tab" aria-expanded="true" @click.prevent="showTabCreate()">
           <i class="fa fa-plus"></i> Incluir</a>
       </li>
-      <li :class="{'active': tabExtract}">
+      <li :class="{'active': tabs.tabExtract}">
         <a href="" data-target="#tabExtract" data-toggle="tab" aria-expanded="true" @click.prevent="showTabExtract()">
           <i class="fa fa-get-pocket"></i> Extratos</a>
       </li>
     </ul>
     <div class="tab-content">
-      <div v-if="tabList">
+      <div v-if="tabs.tabList">
         <h3>Resumo de todas as movimentações:</h3>
         <ValueRow :credit="billingSummary.credit" :debt="billingSummary.debt" :total="billingSummary.total" />
         <h3>Lista de ovimentações:</h3>
@@ -54,13 +54,13 @@
         </table>
       </div>
       <transition name="fade">
-        <form @submit.prevent="createBillingCycle()" v-if="tabCreate || tabDelete || tabUpdate">
+        <form @submit.prevent="createBillingCycle()" v-if="tabs.tabCreate || tabs.tabDelete || tabs.tabUpdate">
           <div class=" row ">
             <div class="col-md-6 ">
-              <fg-input type="text " :required="true " :disabled="tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name" />
+              <fg-input type="text " :required="true " :disabled="tabs.tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name" />
             </div>
             <div class="col-md-6 ">
-              <fg-input type="month" :required="true " :disabled="tabDelete" label="Mês e Ano " placeholder="Mês e Ano " v-model="billingCycle.date" />
+              <fg-input type="month" :required="true " :disabled="tabs.tabDelete" label="Mês e Ano " placeholder="Mês e Ano " v-model="billingCycle.date" />
             </div>
           </div>
 
@@ -87,19 +87,19 @@
                     <tr>
                       <th>Nome</th>
                       <th>Valor</th>
-                      <th v-if="!tabDelete">Ações</th>
+                      <th v-if="!tabs.tabDelete">Ações</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="(credit, index) in billingCycle.credits " :key="index ">
                       <td>
-                        <fg-input v-model="credit.name" placeholder="Informe o Nome " :disabled="tabDelete" />
+                        <fg-input v-model="credit.name" placeholder="Informe o Nome " :disabled="tabs.tabDelete" />
                       </td>
                       <td>
-                        <fg-input v-model="credit.value" placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
+                        <fg-input v-model="credit.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number " />
                       </td>
 
-                      <td style="width:150px; " v-if="!tabDelete " class=" ">
+                      <td style="width:150px; " v-if="!tabs.tabDelete " class=" ">
                         <button class="btn btn-success btn-simple btn-xs " type="button" @click="addDebtOrCredit(index, 'credits') ">
                           <i class="fa fa-plus "></i>
                         </button>
@@ -126,19 +126,19 @@
                     <tr>
                       <th>Nome</th>
                       <th>Valor</th>
-                      <th v-if="!tabDelete">Ações</th>
+                      <th v-if="!tabs.tabDelete">Ações</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="(debt, index) in billingCycle.debts " :key="index ">
                       <td>
-                        <fg-input v-model="debt.name" placeholder="Informe o Nome " :disabled="tabDelete" @change="alert()" />
+                        <fg-input v-model="debt.name" placeholder="Informe o Nome " :disabled="tabs.tabDelete" @change="alert()" />
                       </td>
                       <td>
-                        <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabDelete" type="number " />
+                        <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number " />
                       </td>
 
-                      <td style="width:150px; " v-if="!tabDelete " class=" ">
+                      <td style="width:150px; " v-if="!tabs.tabDelete " class=" ">
                         <button class="btn btn-success btn-simple btn-xs " type="button" @click="addDebtOrCredit(index, 'debts') ">
                           <i class="fa fa-plus "></i>
                         </button>
@@ -157,17 +157,17 @@
           </div>
 
           <div class="box-footer ">
-            <button class="btn btn-primary" type="submit" v-if="tabCreate">Incluir</button>
-            <button class="btn btn-warning" type="button" @click="updateBillingCycle()" v-if="tabUpdate">Alterar</button>
-            <button class="btn btn-danger" type="button" @click.prevent="deleteBillingCycle()" v-if="tabDelete">Excluir</button>
+            <button class="btn btn-primary" type="submit" v-if="tabs.tabCreate">Incluir</button>
+            <button class="btn btn-warning" type="button" @click="updateBillingCycle()" v-if="tabs.tabUpdate">Alterar</button>
+            <button class="btn btn-danger" type="button" @click.prevent="deleteBillingCycle()" v-if="tabs.tabDelete">Excluir</button>
             <button class="btn btn-default" type="button" @click="cancel() ">Cancelar</button>
           </div>
 
         </form>
       </transition>
-     <transition name="fade">
-       <Extrato/>
-     </transition>
+      <transition name="fade">
+        <Extrato v-if="tabs.tabExtract"/>
+      </transition>
     </div>
   </div>
 </template>
@@ -191,11 +191,13 @@ export default {
   data() {
     return {
       showLoader: false,
-      tabList: true,
-      tabExtract: false,
-      tabCreate: false,
-      tabDelete: false,
-      tabUpdate: false,
+      tabs: {
+        tabList: true,
+        tabExtract: false,
+        tabCreate: false,
+        tabDelete: false,
+        tabUpdate: false,
+      },
       billingCycles: [],
       billingCycle: {
         credits: [{ value: null }],
@@ -245,12 +247,11 @@ export default {
         });
     },
     toggleTabs(tab) {
-      this.tabCreate = false;
-      this.tabList = false;
-      this.tabDelete = false;
-      this.tabUpdate = false;
-      this.tabExtract = false;
-      this[tab] = true;
+      /* eslint-disable no-param-reassign */
+      const setAll = (obj, val) => Object.keys(obj).forEach((k) => { obj[k] = val; });
+      const setNull = obj => setAll(obj, null);
+      setNull(this.tabs);
+      this.tabs[tab] = true;
     },
     cancel() {
       this.toggleTabs('tabList');
