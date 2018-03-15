@@ -21,7 +21,7 @@
       <div v-if="tabs.tabList">
         <h3>Resumo de todas as movimentações:</h3>
         <ValueRow :credit="billingSummary.credit" :debt="billingSummary.debt" :total="billingSummary.total" />
-        <h3>Lista de ovimentações:</h3>
+        <h3>Lista de movimentações:</h3>
         <table class="table">
           <thead>
             <tr>
