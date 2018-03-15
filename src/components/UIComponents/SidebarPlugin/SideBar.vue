@@ -14,7 +14,9 @@
           Gestão Paroquial
         </a>
       </div>
-      <slot/>
+      <div class="user">
+        <p class="name">Olá, {{user.name}}</p>
+      </div>
       <ul :class="navClasses">
         <!--By default vue-router adds an active class to each route link. This way the links are colored when clicked-->
         <router-link v-for="(link,index) in sidebarLinks" :to="link.path" tag="li" :ref="link.name" :key="index">
@@ -91,14 +93,14 @@ export default {
      * @returns {{transform: string}}
      */
     arrowMovePx() {
-      return this.linkHeight * this.activeLinkIndex;
+      return this.linkHeight * this.activeLinkIndex + this.linkHeight;
     },
   },
   data() {
     return {
       linkHeight: 60,
       activeLinkIndex: 0,
-
+      user: {},
       windowWidth: 0,
       isWindows: false,
       hasAutoHeight: false,
@@ -117,6 +119,7 @@ export default {
   },
   mounted() {
     this.findActiveLink();
+    this.user = JSON.parse(localStorage.getItem('user'));
   },
   watch: {
     $route() {
@@ -125,6 +128,22 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
+.user {
+  padding: 0;
+  margin: 0 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
 
+.user .name {
+  padding: 11px 0px;
+  display: block;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 400;
+  line-height: 40px;
+  text-align: left;
+  margin: 0;
+  color: #fff;
+}
 </style>

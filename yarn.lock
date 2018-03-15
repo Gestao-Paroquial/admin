@@ -8620,9 +8620,9 @@ vue-eslint-parser@^2.0.3:
     esquery "^1.0.0"
     lodash "^4.17.4"
 
-vue-event-calendar@^1.5.2:
+"vue-event-calendar@https://github.com/Leocardoso94/vue-event-calendar":
   version "1.5.2"
-  resolved "https://registry.yarnpkg.com/vue-event-calendar/-/vue-event-calendar-1.5.2.tgz#4ed7e85073aa203558e931e04e0cd832e9db0b95"
+  resolved "https://github.com/Leocardoso94/vue-event-calendar#10beba77082afc88447f2ee6f3eae06e0868a91c"
   dependencies:
     vue "^2.1.8"
 

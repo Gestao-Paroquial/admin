@@ -77,6 +77,7 @@ export default {
         .then(({ data }) => {
           if (data.success) {
             localStorage.setItem('token', data.token);
+            localStorage.setItem('user', JSON.stringify(data.user));
             this.$router.push({ path: '/' });
           }
         })
