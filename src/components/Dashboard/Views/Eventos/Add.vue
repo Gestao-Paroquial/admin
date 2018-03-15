@@ -57,7 +57,9 @@ export default {
       this.event.date = this.event.date.replace(/-/g, '/');
       this.event.id = new Date().getTime();
 
-      const events = JSON.parse(localStorage.getItem('events'));
+      let events = JSON.parse(localStorage.getItem('events'));
+
+      if(!events) events = [];
 
       events.push(this.event);
 
