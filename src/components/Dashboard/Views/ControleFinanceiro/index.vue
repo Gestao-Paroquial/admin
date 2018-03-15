@@ -166,7 +166,7 @@
         </form>
       </transition>
       <transition name="fade">
-        <Extrato v-if="tabs.tabExtract"/>
+        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles"/>
       </transition>
     </div>
   </div>
