@@ -59,7 +59,7 @@ export default {
 
       let events = JSON.parse(localStorage.getItem('events'));
 
-      if(!events) events = [];
+      if (!events) events = [];
 
       events.push(this.event);
 
