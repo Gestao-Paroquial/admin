@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h3 class="">Extratos</h3>
+    <h2 class="">Extratos</h2>
+    <hr>
     <div class="row">
       <div class="col-md-12">
         <span>Selecione um período:</span>
@@ -11,12 +12,13 @@
         </v-select>
       </div>
     </div>
-     <transition name="fade">
-    <div class="center-block loader-wrapper text-center" v-if="showLoader">
-      <h5 class="">Aguarde:</h5>
-      <fingerprint-spinner :animation-duration="1500" :size="100" color="#41B883" />
-    </div>
-     </transition>
+    <hr>
+    <transition name="fade">
+      <div class="center-block loader-wrapper text-center" v-if="showLoader">
+        <h5 class="">Aguarde:</h5>
+        <fingerprint-spinner :animation-duration="1500" :size="100" color="#41B883" />
+      </div>
+    </transition>
     <transition name="fade">
       <div v-if="showExtract">
         <h3>Dados de {{selectedPeriod}}:</h3>
