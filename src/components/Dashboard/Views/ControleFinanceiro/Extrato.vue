@@ -31,7 +31,7 @@
           </thead>
           <tfoot>
             <tr :class="{success: sumOfBillingCyclesValue > 0, danger: sumOfBillingCyclesValue < 0  }">
-              <td>Soma</td>
+              <td>Total</td>
               <td>{{formatToPrice(sumOfBillingCyclesValue)}}</td>
             </tr>
           </tfoot>
