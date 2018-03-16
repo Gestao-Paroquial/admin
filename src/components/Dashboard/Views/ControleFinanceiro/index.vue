@@ -54,7 +54,7 @@
         </table>
       </div>
       <transition name="fade">
-        <form @submit.prevent="createBillingCycle()" v-if="tabs.tabCreate || tabs.tabDelete || tabs.tabUpdate">
+        <form @submit.prevent="handleSubmit()" v-if="tabs.tabCreate || tabs.tabDelete || tabs.tabUpdate">
           <div class=" row ">
             <div class="col-md-6 ">
               <fg-input type="text " :required="true " :disabled="tabs.tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name" />
@@ -96,7 +96,7 @@
                         <fg-input v-model="credit.name" placeholder="Informe o Nome " :disabled="tabs.tabDelete" />
                       </td>
                       <td>
-                        <fg-input v-model="credit.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number " />
+                        <fg-input v-model="credit.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number" :min="0" :step="'0.01'" />
                       </td>
 
                       <td style="width:150px; " v-if="!tabs.tabDelete " class=" ">
@@ -135,7 +135,7 @@
                         <fg-input v-model="debt.name" placeholder="Informe o Nome " :disabled="tabs.tabDelete" @change="alert()" />
                       </td>
                       <td>
-                        <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number " />
+                        <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number" :min="0" :step="'0.01'" />
                       </td>
 
                       <td style="width:150px; " v-if="!tabs.tabDelete " class=" ">
@@ -158,7 +158,7 @@
 
           <div class="box-footer ">
             <button class="btn btn-primary" type="submit" v-if="tabs.tabCreate">Incluir</button>
-            <button class="btn btn-warning" type="button" @click="updateBillingCycle()" v-if="tabs.tabUpdate">Alterar</button>
+            <button class="btn btn-warning" type="submit" v-if="tabs.tabUpdate">Alterar</button>
             <button class="btn btn-danger" type="button" @click.prevent="deleteBillingCycle()" v-if="tabs.tabDelete">Excluir</button>
             <button class="btn btn-default" type="button" @click="cancel() ">Cancelar</button>
           </div>
@@ -230,6 +230,11 @@ export default {
     },
   },
   methods: {
+    handleSubmit() {
+      console.log('aaaaaaaa');
+      if (this.tabs.tabCreate) this.createBillingCycle();
+      if (this.tabs.tabUpdate) this.updateBillingCycle();
+    },
     formatDate(date) {
       return new Date(date).toLocaleDateString('pt-BR', {
         year: 'numeric',
