@@ -7,11 +7,11 @@ import axios from 'axios';
 import VueTheMask from 'vue-the-mask';
 import Notifications from 'vue-notification';
 import VuejsDialog from 'vuejs-dialog';
-import 'vue-event-calendar/dist/style.css'; // ^1.1.10, CSS has been extracted as one file, so you can easily update it.
-import vueEventCalendar from 'vue-event-calendar';
+// import 'vue-event-calendar/dist/style.css'; // ^1.1.10, CSS has been extracted as one file, so you can easily update it.
 import Chartist from 'chartist';
 import 'bootstrap/dist/css/bootstrap.css';
 import GlobalComponents from './globalComponents';
+import VueEventCalendar from './components/UIComponents/EventCalendar';
 import SideBar from './components/UIComponents/SidebarPlugin';
 import App from './App';
 import routes from './routes/routes';
@@ -34,7 +34,7 @@ Vue.use(VuejsDialog, {
   message: 'Você tem certeza?',
   animation: 'bounce',
 });
-Vue.use(vueEventCalendar, { locale: 'pt-br', color: '#41B883' });
+Vue.use(VueEventCalendar, { locale: 'pt-br', color: '#41B883' });
 // Mixins
 Vue.mixin({
   methods: {
