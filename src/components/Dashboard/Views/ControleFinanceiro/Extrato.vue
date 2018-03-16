@@ -67,6 +67,7 @@ export default {
   watch: {
     selectedPeriod() {
       this.showLoader = true;
+      this.showExtract = false;
 
       const filteredBillingCycles = this.billingCycles.filter(
         billingCycle =>
