@@ -104,6 +104,7 @@ export default {
       return new Date(date).toLocaleDateString('pt-BR', {
         year: 'numeric',
         month: 'long',
+        timeZone: 'UTC',
       });
     },
     getAllValuesOfBillingCycles(billingCycles = []) {

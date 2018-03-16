@@ -37,7 +37,7 @@
             <tr v-for="billingCycle in billingCycles" :key="billingCycle.id">
 
               <td>{{billingCycle.name}}</td>
-              <td>{{new Date(billingCycle.date).toLocaleDateString('pt-BR',{ year: 'numeric', month: 'long'})}}</td>
+              <td>{{formatDate(billingCycle.date)}}</td>
               <td>{{formatToPrice(sumProperty(billingCycle.credits))}}</td>
               <td>{{formatToPrice(sumProperty(billingCycle.debts))}}</td>
               <td>{{formatToPrice(sumProperty(billingCycle.credits) - sumProperty(billingCycle.debts))}}</td>
@@ -166,7 +166,7 @@
         </form>
       </transition>
       <transition name="fade">
-        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles"/>
+        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles" />
       </transition>
     </div>
   </div>
@@ -230,6 +230,13 @@ export default {
     },
   },
   methods: {
+    formatDate(date) {
+      return new Date(date).toLocaleDateString('pt-BR', {
+        year: 'numeric',
+        month: 'long',
+        timeZone: 'UTC',
+      });
+    },
     sumProperty(array = []) {
       const sum = array.reduce((prev, curr) => prev + curr.value, 0);
       return sum;
@@ -248,7 +255,10 @@ export default {
     },
     toggleTabs(tab) {
       /* eslint-disable no-param-reassign */
-      const setAll = (obj, val) => Object.keys(obj).forEach((k) => { obj[k] = val; });
+      const setAll = (obj, val) =>
+        Object.keys(obj).forEach((k) => {
+          obj[k] = val;
+        });
       const setNull = obj => setAll(obj, null);
       setNull(this.tabs);
       this.tabs[tab] = true;
