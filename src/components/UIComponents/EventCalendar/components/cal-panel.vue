@@ -21,8 +21,7 @@
             event: date.status ? (date.title != undefined) : false,
             [calendar.options.className] : (date.date == selectedDay)
           }, ...date.customClass]" :key="date.date">
-          <p class="date-num" @click="handleChangeCurday(date)" :style="{color: date.title != undefined ? ((date.date == selectedDay) ? '#fff' : customColor) : 'inherit'}">
-            {{date.status ? date.date.split('/')[2] : '&nbsp;'}}</p>
+          <p class="date-num" @click="handleChangeCurday(date)" :style="{color: date.title != undefined ? ((date.date == selectedDay) ? '#fff' : customColor) : 'inherit'}"> <span>{{date.status ? date.date.split('/')[2] : '&nbsp;'}}</span></p>
           <span v-if="date.status ? (today == date.date) : false" class="is-today" :style="{backgroundColor: customColor }"></span>
           <span v-if="date.status ? (date.title != undefined) : false" class="is-event" :style="{borderColor: customColor, backgroundColor: (date.date == selectedDay) ? customColor : 'inherit'}"></span>
         </div>
@@ -34,36 +33,36 @@
 <script>
 /* eslint-disable */
 
-import i18n from '../i18n';
-import { dateTimeFormatter, isEqualDateStr } from '../tools';
+import i18n from "../i18n";
+import { dateTimeFormatter, isEqualDateStr } from "../tools";
 
 export default {
-  name: 'cal-panel',
+  name: "cal-panel",
   data() {
     return {
-      i18n,
+      i18n
     };
   },
   props: {
     events: {
       type: Array,
-      required: true,
+      required: true
     },
     calendar: {
       type: Object,
-      required: true,
+      required: true
     },
     selectedDay: {
       type: String,
-      required: false,
-    },
+      required: false
+    }
   },
   computed: {
     dayList() {
       const firstDay = new Date(
         this.calendar.params.curYear,
         this.calendar.params.curMonth,
-        1,
+        1
       );
       let dayOfWeek = firstDay.getDay();
       // 根据当前日期计算偏移量 // Calculate the offset based on the current date
@@ -93,12 +92,12 @@ export default {
           date: `${item.getFullYear()}/${item.getMonth() +
             1}/${item.getDate()}`,
           status,
-          customClass: [],
+          customClass: []
         };
-        this.events.forEach((event) => {
+        this.events.forEach(event => {
           if (isEqualDateStr(event.date, tempItem.date)) {
             tempItem.title = event.title;
-            tempItem.desc = event.desc || '';
+            tempItem.desc = event.desc || "";
             if (event.customClass) tempItem.customClass.push(event.customClass);
           }
         });
@@ -115,32 +114,32 @@ export default {
       const tempDate = Date.parse(
         new Date(
           `${this.calendar.params.curYear}/${this.calendar.params.curMonth +
-            1}/01`,
-        ),
+            1}/01`
+        )
       );
       return dateTimeFormatter(
         tempDate,
-        this.i18n[this.calendar.options.locale].format,
+        this.i18n[this.calendar.options.locale].format
       );
     },
     customColor() {
       return this.calendar.options.color;
-    },
+    }
   },
   methods: {
     nextMonth() {
       this.$EventCalendar.nextMonth();
-      this.$emit('month-changed', this.curYearMonth);
+      this.$emit("month-changed", this.curYearMonth);
     },
     preMonth() {
       this.$EventCalendar.preMonth();
-      this.$emit('month-changed', this.curYearMonth);
+      this.$emit("month-changed", this.curYearMonth);
     },
     handleChangeCurday(date) {
       if (date.status) {
-        this.$emit('cur-day-changed', date.date);
+        this.$emit("cur-day-changed", date.date);
       }
-    },
-  },
+    }
+  }
 };
 </script>

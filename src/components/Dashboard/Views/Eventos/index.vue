@@ -1,9 +1,6 @@
 <template>
   <div class="eventos">
     <h2 class="title">Eventos</h2>
-    <div class="row">
-      <btn-add-new-item></btn-add-new-item>
-    </div>
     <hr>
     <vue-event-calendar :events="events" class="events">
       <template scope="props">

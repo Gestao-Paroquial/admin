@@ -11,24 +11,24 @@
 <script>
 /* eslint-disable */
 
-import { isEqualDateStr } from './tools';
+import { isEqualDateStr } from "./tools";
 
-import calEvents from './components/cal-events';
-import calPanel from './components/cal-panel';
+import calEvents from "./components/cal-events";
+import calPanel from "./components/cal-panel";
 
-const inBrowser = typeof window !== 'undefined';
+const inBrowser = typeof window !== "undefined";
 export default {
-  name: 'vue-event-calendar',
+  name: "vue-event-calendar",
   components: {
-    'cal-events': calEvents,
-    'cal-panel': calPanel,
+    "cal-events": calEvents,
+    "cal-panel": calPanel
   },
   data() {
     return {
       selectedDayEvents: {
-        date: 'all',
-        events: this.events || [], // default show all event
-      },
+        date: "all",
+        events: this.events || [] // default show all event
+      }
     };
   },
   props: {
@@ -42,15 +42,15 @@ export default {
         events.forEach((event, index) => {
           if (!event.date) {
             console.error(
-              `${'Vue-Event-Calendar-Error:' +
-                'Prop events Wrong at index '}${index}`,
+              `${"Vue-Event-Calendar-Error:" +
+                "Prop events Wrong at index "}${index}`
             );
             validate = false;
           }
         });
         return validate;
-      },
-    },
+      }
+    }
   },
   computed: {
     calendarOptions() {
@@ -60,15 +60,15 @@ export default {
       }
       return {
         options: {
-          locale: 'en', // zh
-          color: ' #f29543',
+          locale: "en", // zh
+          color: " #f29543"
         },
         params: {
           curYear: dateObj.getFullYear(),
           curMonth: dateObj.getMonth(),
           curDate: dateObj.getDate(),
-          curEventsDate: 'all',
-        },
+          curEventsDate: "all"
+        }
       };
     },
     calendarParams() {
@@ -80,59 +80,59 @@ export default {
         curYear: dateObj.getFullYear(),
         curMonth: dateObj.getMonth(),
         curDate: dateObj.getDate(),
-        curEventsDate: 'all',
+        curEventsDate: "all"
       };
-    },
+    }
   },
   created() {
-    if (this.calendarParams.curEventsDate !== 'all') {
+    if (this.calendarParams.curEventsDate !== "all") {
       this.handleChangeCurDay(this.calendarParams.curEventsDate);
     }
   },
   methods: {
     handleChangeCurDay(date) {
       const events = this.events.filter(event =>
-        isEqualDateStr(event.date, date),
+        isEqualDateStr(event.date, date)
       );
-      if (events.length > 0) {
-        this.selectedDayEvents = {
-          date,
-          events,
-        };
-      }
-      this.$emit('day-changed', {
+
+      this.selectedDayEvents = {
         date,
-        events,
+        events
+      };
+
+      this.$emit("day-changed", {
+        date,
+        events
       });
     },
     handleMonthChanged(yearMonth) {
-      this.$emit('month-changed', yearMonth);
-    },
+      this.$emit("month-changed", yearMonth);
+    }
   },
   watch: {
     calendarParams() {
-      if (this.calendarParams.curEventsDate !== 'all') {
+      if (this.calendarParams.curEventsDate !== "all") {
         const events = this.events.filter(event =>
-          isEqualDateStr(event.date, this.calendarParams.curEventsDate),
+          isEqualDateStr(event.date, this.calendarParams.curEventsDate)
         );
         this.selectedDayEvents = {
           date: this.calendarParams.curEventsDate,
-          events,
+          events
         };
       } else {
         this.selectedDayEvents = {
-          date: 'all',
-          events: this.events,
+          date: "all",
+          events: this.events
         };
       }
     },
     events() {
       this.selectedDayEvents = {
-        date: 'all',
-        events: this.events || [],
+        date: "all",
+        events: this.events || []
       };
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="less">
@@ -153,6 +153,9 @@ export default {
       padding: 100px 50px;
       .date-num {
         line-height: 50px;
+        span {
+          cursor: pointer;
+        }
       }
     }
     .events-wrapper {
@@ -177,9 +180,11 @@ export default {
       }
     }
     .events-wrapper {
+      position: relative;
       width: 100%;
       margin-top: 10px;
       padding: 10px;
+      padding-top: 40px;
     }
   }
 }
@@ -322,6 +327,7 @@ export default {
       border-radius: 20px;
       margin: 0 auto;
       font-size: 22px;
+      padding: 10px 0;
     }
     .event-item {
       padding: 5px 20px;

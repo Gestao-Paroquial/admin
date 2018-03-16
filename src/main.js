@@ -35,7 +35,7 @@ Vue.use(VuejsDialog, {
   message: 'Você tem certeza?',
   animation: 'bounce',
 });
-Vue.use(VueEventCalendar, { locale: 'pt-br', color: '#41B883' });
+Vue.use(VueEventCalendar, { locale: 'pt-br', color: '#f3bb45' });
 // Mixins
 Vue.mixin({
   methods: {

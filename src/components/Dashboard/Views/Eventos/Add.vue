@@ -22,7 +22,7 @@
 
             <div class="row">
               <div class="col-md-6">
-                <fg-input type="date" :required="true" label="Título do Evento" placeholder="Link" v-model="event.date" />
+                <fg-input type="date" :required="true" label="Data do Evento" placeholder="Link" v-model="event.date" />
               </div>
 
             </div>
@@ -52,6 +52,9 @@ export default {
       showLoader: false,
     };
   },
+  mounted() {
+    this.event.date = this.formatDate();
+  },
   methods: {
     add() {
       this.event.date = this.event.date.replace(/-/g, '/');
@@ -74,6 +77,21 @@ export default {
       });
 
       this.$router.push({ path: '/admin/eventos' });
+    },
+    formatDate() {
+      if (this.$route.query.date === 'all') return '';
+      const data = new Date(this.$route.query.date);
+      console.log(data);
+      let dia = data.getDate();
+      if (dia.toString().length == 1) {
+        dia = `0${dia}`;
+      }
+      let mes = data.getMonth() + 1;
+      if (mes.toString().length == 1) {
+        mes = `0${mes}`;
+      }
+      const ano = data.getFullYear();
+      return `${ano}-${mes}-${dia}`;
     },
   },
 };

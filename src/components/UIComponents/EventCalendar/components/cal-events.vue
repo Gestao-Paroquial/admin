@@ -1,8 +1,11 @@
 <template>
   <div class="events-wrapper" :style="bgColor">
+    <div class="row">
     <h2 class="date">
       {{dayEventsTitle}}
+      <btn-add-new-item :query="{date: dayEvents.date}" />
     </h2>
+    </div>
     <div class="cal-events">
       <slot>
         <div v-for="(event, index) in events" class="event-item" :key="index">
@@ -46,6 +49,7 @@ export default {
   computed: {
     dayEventsTitle() {
       if (this.title) return this.title;
+
       if (this.dayEvents.date !== 'all') {
         let tempDate;
         if (this.dayEvents.events.length !== 0) {
@@ -56,7 +60,7 @@ export default {
           Date.parse(new Date(this.dayEvents.date)),
           i18n[this.locale].fullFormat,
         );
-        return `${tempDate} ${i18n[this.locale].notHaveEvents}`;
+        return `${tempDate}`;
       }
       return i18n[this.locale].dayEventsTitle;
     },
@@ -72,3 +76,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+a.btn.btn-success.btn-fill.pull-right {
+    position: absolute;
+    top: 10px;
+    right: 5%;
+}
+</style>
