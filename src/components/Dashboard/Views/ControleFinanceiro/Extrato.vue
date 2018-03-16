@@ -20,7 +20,7 @@
       </div>
     </transition>
     <transition name="fade">
-      <div v-if="showExtract">
+      <div v-if="valuesOfBillingCycles.length > 0">
         <h3>Dados de {{selectedPeriod}}:</h3>
         <table class="table table-striped">
           <thead>
@@ -57,7 +57,6 @@ export default {
     return {
       selectedPeriod: null,
       showLoader: null,
-      showExtract: null,
       valuesOfBillingCycles: [],
     };
   },
@@ -66,22 +65,19 @@ export default {
   },
   watch: {
     selectedPeriod() {
+      this.valuesOfBillingCycles = [];
+      if (!this.selectedPeriod) return;
+
       this.showLoader = true;
-      this.showExtract = false;
 
-      const filteredBillingCycles = this.billingCycles.filter(
-        billingCycle =>
-          this.formatDate(billingCycle.date) === this.selectedPeriod,
-      );
-
-      this.valuesOfBillingCycles = this.getAllValuesOfBillingCycles(
-        filteredBillingCycles,
-      );
+      const filteredBillingCycles = this.billingCycles.filter(billingCycle => this.formatDate(billingCycle.date) === this.selectedPeriod);
 
       setTimeout(() => {
         this.showLoader = false;
         setTimeout(() => {
-          this.showExtract = true;
+          this.valuesOfBillingCycles = this.getAllValuesOfBillingCycles(
+            filteredBillingCycles,
+          );
         }, 500);
       }, 1000);
     },
@@ -143,5 +139,8 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+h2 {
+  margin-top: 0;
 }
 </style>
