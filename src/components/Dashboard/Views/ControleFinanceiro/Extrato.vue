@@ -70,7 +70,10 @@ export default {
 
       this.showLoader = true;
 
-      const filteredBillingCycles = this.billingCycles.filter(billingCycle => this.formatDate(billingCycle.date) === this.selectedPeriod);
+      const filteredBillingCycles = this.billingCycles.filter(
+        billingCycle =>
+          this.formatDate(billingCycle.date) === this.selectedPeriod,
+      );
 
       setTimeout(() => {
         this.showLoader = false;
@@ -97,13 +100,6 @@ export default {
     },
   },
   methods: {
-    formatDate(date) {
-      return new Date(date).toLocaleDateString('pt-BR', {
-        year: 'numeric',
-        month: 'long',
-        timeZone: 'UTC',
-      });
-    },
     getAllValuesOfBillingCycles(billingCycles = []) {
       const valuesOfBillingCycles = [];
 
@@ -118,9 +114,6 @@ export default {
       });
 
       return valuesOfBillingCycles;
-    },
-    formatToPrice(value) {
-      return `R$ ${value.toFixed(2)}`;
     },
   },
 };

@@ -231,16 +231,8 @@ export default {
   },
   methods: {
     handleSubmit() {
-      console.log('aaaaaaaa');
       if (this.tabs.tabCreate) this.createBillingCycle();
       if (this.tabs.tabUpdate) this.updateBillingCycle();
-    },
-    formatDate(date) {
-      return new Date(date).toLocaleDateString('pt-BR', {
-        year: 'numeric',
-        month: 'long',
-        timeZone: 'UTC',
-      });
     },
     sumProperty(array = []) {
       const sum = array.reduce((prev, curr) => prev + curr.value, 0);
@@ -286,9 +278,6 @@ export default {
       }
 
       this.total = this.credit - this.debt;
-    },
-    formatToPrice(value) {
-      return `R$ ${value.toFixed(2)}`;
     },
     showTabUpdate(billingCycle) {
       this.toggleTabs('tabUpdate');
@@ -336,13 +325,7 @@ export default {
           this.getBillingCycles();
           this.getBillingSumary();
           this.toggleTabs('tabList');
-          this.$notify({
-            group: 'top-right',
-            title: 'Sucesso!',
-            text: 'Ciclo de pagamento inserido com sucesso',
-            type: 'success',
-            speed: 2000,
-          });
+          this.notify(this.billingCycle.name, 'inserido');
         })
         .catch((response) => {
           console.log(response);
@@ -362,6 +345,15 @@ export default {
           this.showLoader = false;
         });
     },
+    notify(billingCycleTitle = 'Ciclo de pagamento', action = '') {
+      this.$notifications.notify({
+        message: `${billingCycleTitle} ${action} com sucesso`,
+        icon: 'ti-bell',
+        horizontalAlign: 'right',
+        verticalAlign: 'top',
+        type: 'success',
+      });
+    },
     deleteBillingCycle() {
       this.$dialog
         .confirm()
@@ -375,14 +367,8 @@ export default {
               dialog.close();
               this.getBillingCycles();
               this.getBillingSumary();
+              this.notify(this.billingCycle.name, 'excluído');
               this.toggleTabs('tabList');
-              this.$notify({
-                group: 'top-right',
-                title: 'Sucesso!',
-                text: 'Ciclo de pagamento excluído com sucesso',
-                type: 'success',
-                speed: 2000,
-              });
             })
             .catch(response => console.log(response));
         })
@@ -409,13 +395,7 @@ export default {
               this.getBillingSumary();
 
               this.toggleTabs('tabList');
-              this.$notify({
-                group: 'top-right',
-                title: 'Sucesso!',
-                text: 'Ciclo de pagamento alterado com sucesso',
-                type: 'success',
-                speed: 2000,
-              });
+              this.notify(this.billingCycle.name, 'alterado');
             })
             .catch(response => console.log(response));
         })

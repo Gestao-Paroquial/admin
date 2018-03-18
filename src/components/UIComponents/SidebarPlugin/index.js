@@ -78,11 +78,12 @@ const SidebarStore = {
     //  icon: 'ti-map',
     //  path: '/admin/maps'
     // },
-    // {
-    //  name: 'Notifications',
-    //  icon: 'ti-bell',
-    //  path: '/admin/notifications'
-    // }
+    //
+    {
+      name: 'Notifications',
+      icon: 'ti-bell',
+      path: '/admin/notifications',
+    },
   ],
   displaySidebar(value) {
     this.showSidebar = value;

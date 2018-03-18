@@ -21,8 +21,8 @@ export default {
     placeholder: String,
     value: [String, Number],
     required: Boolean,
-    min: Number,
-    step: Number,
+    min: [String, Number],
+    step: [String, Number],
   },
 };
 </script>

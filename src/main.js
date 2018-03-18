@@ -5,11 +5,11 @@ import axios from 'axios';
 
 // Plugins
 import VueTheMask from 'vue-the-mask';
-import Notifications from 'vue-notification';
 import VuejsDialog from 'vuejs-dialog';
 import vSelect from 'vue-select';
 import Chartist from 'chartist';
 import 'bootstrap/dist/css/bootstrap.css';
+import Notifications from './components/UIComponents/NotificationPlugin';
 import GlobalComponents from './globalComponents';
 import VueEventCalendar from './components/UIComponents/EventCalendar';
 import SideBar from './components/UIComponents/SidebarPlugin';
@@ -40,6 +40,12 @@ Vue.use(VueEventCalendar, { locale: 'pt-br', color: '#4c4c4b' });
 Vue.mixin({
   methods: {
     capitalize: str => str.replace(/\b\w/g, l => l.toUpperCase()),
+    formatToPrice: value => `R$ ${value.toFixed(2)}`,
+    formatDate: date => new Date(date).toLocaleDateString('pt-BR', {
+      year: 'numeric',
+      month: 'long',
+      timeZone: 'UTC',
+    }),
   },
 });
 
