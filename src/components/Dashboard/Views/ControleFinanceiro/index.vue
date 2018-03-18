@@ -56,11 +56,19 @@
       <transition name="fade">
         <form @submit.prevent="handleSubmit()" v-if="tabs.tabCreate || tabs.tabDelete || tabs.tabUpdate">
           <div class=" row ">
-            <div class="col-md-6 ">
+            <div class="col-md-4 ">
               <fg-input type="text " :required="true " :disabled="tabs.tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name" />
             </div>
-            <div class="col-md-6 ">
+            <div class="col-md-4 ">
               <fg-input type="month" :required="true " :disabled="tabs.tabDelete" label="Mês e Ano " placeholder="Mês e Ano " v-model="billingCycle.date" />
+            </div>
+            <div class="col-md-4 ">
+              <label>Comunidade:</label>
+              <v-select v-model="comunidadeSelecionada" :options="nomeDasComunidades">
+                <span slot="no-options">
+                  Nenhum resultado encontrado
+                </span>
+              </v-select>
             </div>
           </div>
 
@@ -68,13 +76,13 @@
 
             <h3 class="col-md-12">Resumo Deste Ciclo</h3>
 
-            <value-box grid="col-sm-12 col-md-4" color-class="bg-green" icon-class="fa fa-bank" :value="formatToPrice(credit)" text="Total de Créditos">
+            <value-box grid="col-sm-12 col-md-4" color-class="bg-green" icon-class="fa fa-bank" :value="credit" text="Total de Créditos">
             </value-box>
 
-            <value-box grid="col-sm-12 col-md-4" color-class="bg-red" icon-class="fa fa-credit-card" :value="formatToPrice(debt)" text="Total de Débitos">
+            <value-box grid="col-sm-12 col-md-4" color-class="bg-red" icon-class="fa fa-credit-card" :value="debt" text="Total de Débitos">
             </value-box>
 
-            <value-box grid="col-sm-12 col-md-4" color-class="bg-blue" icon-class="fa fa-money" :value="formatToPrice(total)" text="Valor Consolidado">
+            <value-box grid="col-sm-12 col-md-4" color-class="bg-blue" icon-class="fa fa-money" :value="total" text="Valor Consolidado">
             </value-box>
           </div>
 
@@ -180,6 +188,7 @@ import Extrato from './Extrato';
 import {
   billingCyclesApiUrl,
   billingSummaryApiUrl,
+  comunidadesApiUrl,
 } from './../../../../api-url';
 
 export default {
@@ -191,6 +200,8 @@ export default {
   data() {
     return {
       showLoader: false,
+      comunidades: [],
+      comunidadeSelecionada: null,
       tabs: {
         tabList: true,
         tabExtract: false,
@@ -213,13 +224,16 @@ export default {
       },
     };
   },
-  created() {
+  mounted() {
     this.showLoader = true;
     this.getBillingCycles();
     this.getBillingSumary();
+    this.getComunidades();
   },
-  mounted() {
-    this.getBillingSumary();
+  computed: {
+    nomeDasComunidades() {
+      return this.comunidades.map(comunidade => ({ label: comunidade.nome, value: comunidade.id }));
+    },
   },
   watch: {
     billingCycle: {
@@ -230,11 +244,19 @@ export default {
     },
   },
   methods: {
+    getComunidades() {
+      axios.get(comunidadesApiUrl)
+        .then(({ data }) => {
+          this.comunidades = data;
+        });
+    },
     handleSubmit() {
+      this.billingCycle.comunidade_id = this.comunidadeSelecionada.value;
       if (this.tabs.tabCreate) this.createBillingCycle();
       if (this.tabs.tabUpdate) this.updateBillingCycle();
     },
     sumProperty(array = []) {
+      if (array.length === 0) return 0;
       const sum = array.reduce((prev, curr) => prev + curr.value, 0);
       return sum;
     },
@@ -283,6 +305,10 @@ export default {
       this.toggleTabs('tabUpdate');
       /* eslint-disable no-param-reassign */
       billingCycle.date = billingCycle.date.substring(0, 7);
+      axios.get(`${comunidadesApiUrl}/${billingCycle.comunidade_id}`)
+        .then(({ data }) => {
+          this.comunidadeSelecionada = { label: data.nome, value: data.id };
+        });
       this.billingCycle = billingCycle;
       this.initCreditsAndDebts();
     },
