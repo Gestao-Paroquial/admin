@@ -6,13 +6,13 @@
 
         <h3>Números da {{comunidade.nome}}</h3>
 
-        <value-box grid="col-sm-12" color-class="bg-green" icon-class="fa fa-bank" :value="credits" text="Total de Receitas">
+        <value-box grid="col-md-12" color-class="bg-green" icon-class="fa fa-bank" :value="credits" text="Total de Receitas">
         </value-box>
 
-        <value-box grid="col-sm-12" color-class="bg-red" icon-class="fa fa-credit-card" :value="debts" text="Total de Gastos">
+        <value-box grid="col-md-12" color-class="bg-red" icon-class="fa fa-credit-card" :value="debts" text="Total de Gastos">
         </value-box>
 
-        <value-box grid="col-sm-12" color-class="bg-blue" icon-class="fa fa-money" :value="credits-debts" text="Valor Consolidado">
+        <value-box grid="col-md-12" color-class="bg-blue" icon-class="fa fa-money" :value="credits-debts" text="Valor Consolidado">
         </value-box>
       </div>
 
