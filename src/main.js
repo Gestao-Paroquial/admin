@@ -8,6 +8,7 @@ import VueTheMask from 'vue-the-mask';
 import VuejsDialog from 'vuejs-dialog';
 import vSelect from 'vue-select';
 import Chartist from 'chartist';
+import fullCalendar from 'vue-fullcalendar';
 import 'bootstrap/dist/css/bootstrap.css';
 import Notifications from './components/UIComponents/NotificationPlugin';
 import GlobalComponents from './globalComponents';
@@ -26,6 +27,7 @@ Vue.use(Notifications);
 Vue.use(SideBar);
 Vue.use(VueTheMask);
 Vue.component('v-select', vSelect);
+Vue.component('full-calendar', fullCalendar);
 Vue.use(VuejsDialog, {
   html: true,
   loader: true,

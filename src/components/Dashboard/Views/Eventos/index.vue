@@ -1,38 +1,20 @@
 <template>
   <div class="eventos">
-    <h2 class="title">Eventos</h2>
-    <hr>
-    <vue-event-calendar :events="events" class="events">
-      <template scope="props">
-        <div v-for="(event) in props.showEvents" class="event-item" :key="event.id">
-          <!-- In here do whatever you want, make you owner event template -->
-          <div class="row">
-            <!-- <router-link v-bind:to="{ path: event.id.toString()}" append> </router-link> -->
-            <div class="col-md-11">
-              <h3 class="title">{{event.title}}</h3>
-              <p class="time">{{event.date}}</p>
-              <p class="desc">{{event.description}}</p>
-            </div>
-            <div class="col-md-1">
-              <router-link v-bind:to="{ path: event.id.toString(), }" append class="btn btn-simple btn-xs btn-info btn-icon edit ">
-                <i class="ti-eye "></i>
-              </router-link>
-              <router-link v-bind:to="{ path: event.id.toString(), query: { update: true }}" append class="btn btn-simple btn-xs btn-warning btn-icon view">
-                <i class="ti-pencil-alt"></i>
-              </router-link>
-              <router-link v-bind:to="{ path: event.id.toString(), query: { delete: true }} " append class="btn btn-simple btn-xs btn-danger btn-icon remove ">
-                <i class="ti-close "></i>
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </template>
-    </vue-event-calendar>
-
+    <go-to-add-page></go-to-add-page>
+    <full-calendar :events="events" locale="pt-br" @eventClick="eventClick" @dayClick="dayClick" @moreClick="moreClick">
+    </full-calendar>
   </div>
 </template>
 
 <script>
+// const demoEvents = [
+//   {
+//     title: 'Sunny Out of Office',
+//     start: '2018-03-25',
+//     end: null,
+//     cssClass: ['family', 'career'],
+//   },
+// ];
 export default {
   data() {
     return {
@@ -43,11 +25,51 @@ export default {
     const events = JSON.parse(localStorage.getItem('events'));
     if (events) this.events = events;
   },
+  methods: {
+    changeMonth(start, end, current) {
+      console.log('changeMonth', start, end, current);
+    },
+    eventClick(event, jsEvent, pos) {
+      console.log('eventClick', event, jsEvent, pos);
+
+      this.$router.push({ path: `/admin/eventos/${event.id}` });
+    },
+    dayClick(day, jsEvent) {
+      console.log('dayClick', day, jsEvent);
+    },
+    moreClick(day, events, jsEvent) {
+      console.log('moreCLick', day, events, jsEvent);
+    },
+  },
 };
 </script>
-<style lang="scss" scoped>
-h2 {
-  text-align: center;
-  margin: 15px auto 40px;
+<style lang="scss" >
+.eventos {
+  h2 {
+    text-align: center;
+    margin: 15px auto 40px;
+  }
+
+  .family {
+    background-color: #000;
+  }
+
+  .prev-month,
+  .next-month {
+    border-radius: 20px;
+    box-sizing: border-box;
+    border-width: 2px;
+    background-color: transparent;
+    font-size: 12px;
+    font-weight: 500;
+    border-style: solid;
+    padding: 7px 18px;
+    border-color: #66615b;
+    color: #66615b;
+    transition: all 0.15s linear;
+  }
+  .comp-full-calendar {
+    max-width: initial;
+  }
 }
 </style>

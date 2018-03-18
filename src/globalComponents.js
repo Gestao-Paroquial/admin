@@ -13,7 +13,7 @@ const GlobalComponents = {
     Vue.component('drop-down', DropDown);
     Vue.component('loader', Loader);
     Vue.component('back-button', BackButton);
-    Vue.component('btn-add-new-item', GoToAddPage);
+    Vue.component('go-to-add-page', GoToAddPage);
   },
 };
 
