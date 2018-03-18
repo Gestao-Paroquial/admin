@@ -256,6 +256,7 @@ export default {
       if (this.tabs.tabUpdate) this.updateBillingCycle();
     },
     sumProperty(array = []) {
+      if (array.length === 0) return 0;
       const sum = array.reduce((prev, curr) => prev + curr.value, 0);
       return sum;
     },
