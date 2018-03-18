@@ -57,6 +57,9 @@ export default {
   margin: 0 0 10px 0;
   white-space: nowrap;
   padding: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .small-box h3,
