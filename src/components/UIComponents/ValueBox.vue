@@ -3,7 +3,7 @@
     <div class="card">
       <div class="small-box " :class="colorClass">
         <div class="inner">
-          <h3 class="ng-binding">{{value}}</h3>
+          <h3 class="ng-binding">{{formatToPrice(value)}}</h3>
           <p class="ng-binding">{{text}}</p>
         </div>
         <div class="icon">
@@ -18,7 +18,7 @@ export default {
   props: {
     grid: String,
     text: String,
-    value: String,
+    value: Number,
     colorClass: String,
     iconClass: String,
   },
