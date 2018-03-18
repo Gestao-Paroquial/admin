@@ -19,8 +19,6 @@
     "bootstrap": "3.3.7",
     "chartist": "^0.11.0",
     "epic-spinners": "^1.0.2",
-    "less": "^3.0.1",
-    "less-loader": "^4.1.0",
     "lodash.debounce": "^4.0.8",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.6",

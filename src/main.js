@@ -12,7 +12,6 @@ import fullCalendar from 'vue-fullcalendar';
 import 'bootstrap/dist/css/bootstrap.css';
 import Notifications from './components/UIComponents/NotificationPlugin';
 import GlobalComponents from './globalComponents';
-import VueEventCalendar from './components/UIComponents/EventCalendar';
 import SideBar from './components/UIComponents/SidebarPlugin';
 import App from './App';
 import routes from './routes/routes';
@@ -37,7 +36,7 @@ Vue.use(VuejsDialog, {
   message: 'Você tem certeza?',
   animation: 'bounce',
 });
-Vue.use(VueEventCalendar, { locale: 'pt-br', color: '#4c4c4b' });
+
 // Mixins
 Vue.mixin({
   methods: {
