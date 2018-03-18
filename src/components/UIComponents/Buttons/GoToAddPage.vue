@@ -1,5 +1,5 @@
 <template>
-  <router-link v-bind:to="{ path: path}" type="button" class="btn btn-success btn-fill pull-right" append>
+  <router-link v-bind:to="{ path: path, query}" type="button" class="btn btn-success btn-fill pull-right" append>
     <i class="fa fa-plus" aria-hidden="true" />
   </router-link>
 </template>
@@ -10,6 +10,7 @@ export default {
       default: 'add',
       type: String,
     },
+    query: Object,
   },
 };
 </script>

@@ -37,7 +37,7 @@
             <tr v-for="billingCycle in billingCycles" :key="billingCycle.id">
 
               <td>{{billingCycle.name}}</td>
-              <td>{{new Date(billingCycle.date).toLocaleDateString('pt-BR',{ year: 'numeric', month: 'long'})}}</td>
+              <td>{{formatDate(billingCycle.date)}}</td>
               <td>{{formatToPrice(sumProperty(billingCycle.credits))}}</td>
               <td>{{formatToPrice(sumProperty(billingCycle.debts))}}</td>
               <td>{{formatToPrice(sumProperty(billingCycle.credits) - sumProperty(billingCycle.debts))}}</td>
@@ -54,7 +54,7 @@
         </table>
       </div>
       <transition name="fade">
-        <form @submit.prevent="createBillingCycle()" v-if="tabs.tabCreate || tabs.tabDelete || tabs.tabUpdate">
+        <form @submit.prevent="handleSubmit()" v-if="tabs.tabCreate || tabs.tabDelete || tabs.tabUpdate">
           <div class=" row ">
             <div class="col-md-6 ">
               <fg-input type="text " :required="true " :disabled="tabs.tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name" />
@@ -96,7 +96,7 @@
                         <fg-input v-model="credit.name" placeholder="Informe o Nome " :disabled="tabs.tabDelete" />
                       </td>
                       <td>
-                        <fg-input v-model="credit.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number " />
+                        <fg-input v-model="credit.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number" :min="0" :step="'0.01'" />
                       </td>
 
                       <td style="width:150px; " v-if="!tabs.tabDelete " class=" ">
@@ -135,7 +135,7 @@
                         <fg-input v-model="debt.name" placeholder="Informe o Nome " :disabled="tabs.tabDelete" @change="alert()" />
                       </td>
                       <td>
-                        <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number " />
+                        <fg-input v-model="debt.value" placeholder="Informe o Valor " :disabled="tabs.tabDelete" type="number" :min="0" :step="'0.01'" />
                       </td>
 
                       <td style="width:150px; " v-if="!tabs.tabDelete " class=" ">
@@ -158,7 +158,7 @@
 
           <div class="box-footer ">
             <button class="btn btn-primary" type="submit" v-if="tabs.tabCreate">Incluir</button>
-            <button class="btn btn-warning" type="button" @click="updateBillingCycle()" v-if="tabs.tabUpdate">Alterar</button>
+            <button class="btn btn-warning" type="submit" v-if="tabs.tabUpdate">Alterar</button>
             <button class="btn btn-danger" type="button" @click.prevent="deleteBillingCycle()" v-if="tabs.tabDelete">Excluir</button>
             <button class="btn btn-default" type="button" @click="cancel() ">Cancelar</button>
           </div>
@@ -166,7 +166,7 @@
         </form>
       </transition>
       <transition name="fade">
-        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles"/>
+        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles" />
       </transition>
     </div>
   </div>
@@ -230,6 +230,10 @@ export default {
     },
   },
   methods: {
+    handleSubmit() {
+      if (this.tabs.tabCreate) this.createBillingCycle();
+      if (this.tabs.tabUpdate) this.updateBillingCycle();
+    },
     sumProperty(array = []) {
       const sum = array.reduce((prev, curr) => prev + curr.value, 0);
       return sum;
@@ -248,7 +252,10 @@ export default {
     },
     toggleTabs(tab) {
       /* eslint-disable no-param-reassign */
-      const setAll = (obj, val) => Object.keys(obj).forEach((k) => { obj[k] = val; });
+      const setAll = (obj, val) =>
+        Object.keys(obj).forEach((k) => {
+          obj[k] = val;
+        });
       const setNull = obj => setAll(obj, null);
       setNull(this.tabs);
       this.tabs[tab] = true;
@@ -271,9 +278,6 @@ export default {
       }
 
       this.total = this.credit - this.debt;
-    },
-    formatToPrice(value) {
-      return `R$ ${value.toFixed(2)}`;
     },
     showTabUpdate(billingCycle) {
       this.toggleTabs('tabUpdate');
@@ -321,13 +325,7 @@ export default {
           this.getBillingCycles();
           this.getBillingSumary();
           this.toggleTabs('tabList');
-          this.$notify({
-            group: 'top-right',
-            title: 'Sucesso!',
-            text: 'Ciclo de pagamento inserido com sucesso',
-            type: 'success',
-            speed: 2000,
-          });
+          this.notify(this.billingCycle.name, 'inserido');
         })
         .catch((response) => {
           console.log(response);
@@ -347,6 +345,15 @@ export default {
           this.showLoader = false;
         });
     },
+    notify(billingCycleTitle = 'Ciclo de pagamento', action = '') {
+      this.$notifications.notify({
+        message: `${billingCycleTitle} ${action} com sucesso`,
+        icon: 'ti-bell',
+        horizontalAlign: 'right',
+        verticalAlign: 'top',
+        type: 'success',
+      });
+    },
     deleteBillingCycle() {
       this.$dialog
         .confirm()
@@ -360,14 +367,8 @@ export default {
               dialog.close();
               this.getBillingCycles();
               this.getBillingSumary();
+              this.notify(this.billingCycle.name, 'excluído');
               this.toggleTabs('tabList');
-              this.$notify({
-                group: 'top-right',
-                title: 'Sucesso!',
-                text: 'Ciclo de pagamento excluído com sucesso',
-                type: 'success',
-                speed: 2000,
-              });
             })
             .catch(response => console.log(response));
         })
@@ -394,13 +395,7 @@ export default {
               this.getBillingSumary();
 
               this.toggleTabs('tabList');
-              this.$notify({
-                group: 'top-right',
-                title: 'Sucesso!',
-                text: 'Ciclo de pagamento alterado com sucesso',
-                type: 'success',
-                speed: 2000,
-              });
+              this.notify(this.billingCycle.name, 'alterado');
             })
             .catch(response => console.log(response));
         })

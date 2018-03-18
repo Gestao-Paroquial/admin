@@ -22,9 +22,11 @@
 
             <div class="row">
               <div class="col-md-6">
-                <fg-input type="date" :required="true" label="Título do Evento" placeholder="Link" v-model="event.date" />
+                <fg-input type="datetime-local" :required="true" label="Início do Evento" placeholder="Data" v-model="event.start" />
               </div>
-
+              <div class="col-md-6">
+                <fg-input type="datetime-local" :required="false" label="Fim do Evento" placeholder="Data" v-model="event.end" />
+              </div>
             </div>
 
             <hr>
@@ -45,16 +47,25 @@ export default {
   data() {
     return {
       event: {
-        date: '', // Required
+        start: '', // Required
         title: '', // Required
         description: '',
       },
       showLoader: false,
     };
   },
+
   methods: {
+    notify(eventTitle = 'Evento', action = '') {
+      this.$notifications.notify({
+        message: `${eventTitle} ${action} com sucesso`,
+        icon: 'ti-bell',
+        horizontalAlign: 'right',
+        verticalAlign: 'top',
+        type: 'success',
+      });
+    },
     add() {
-      this.event.date = this.event.date.replace(/-/g, '/');
       this.event.id = new Date().getTime();
 
       let events = JSON.parse(localStorage.getItem('events'));
@@ -65,13 +76,7 @@ export default {
 
       localStorage.setItem('events', JSON.stringify(events));
 
-      this.$notify({
-        group: 'top-right',
-        title: 'Sucesso!',
-        text: 'Evento inserido com sucesso',
-        type: 'success',
-        speed: 1000,
-      });
+      this.notify(this.event.title, 'inserido');
 
       this.$router.push({ path: '/admin/eventos' });
     },
