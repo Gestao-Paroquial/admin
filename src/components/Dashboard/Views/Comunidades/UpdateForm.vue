@@ -9,25 +9,25 @@
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Nome" placeholder="Nome" v-model="comunidade.nome" />
+            <fg-input :disabled="!$route.query.update" type="text" :required="true" label="Nome" placeholder="Nome" v-model="comunidade.nome" />
           </div>
           <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" :type="'email'" :required="true" label="Email" placeholder="Email" v-model="comunidade.email" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="CNPJ" placeholder="CNPJ" v-model="comunidade.cnpj" v-mask="'##.###.###/####-##'" :pattern="'.{0}|.{18}'" :title="'Número inválido'" />
+            <fg-input :disabled="!$route.query.update" :type="'email'" :required="true" label="Email" placeholder="Email" v-model="comunidade.email" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="comunidade.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
+            <fg-input :disabled="!$route.query.update" type="text" :required="false" label="CNPJ" placeholder="CNPJ" v-model="comunidade.cnpj" v-mask="'##.###.###/####-##'" :pattern="'.{0}|.{18}'" :title="'Número inválido'" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <fg-input :disabled="!$route.query.update" type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="comunidade.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
           </div>
           <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Celular" placeholder="Celular" v-model="comunidade.celular" v-mask="[ '(##) #####-####']" :pattern="'.{0}|.{15}'" :title="'Número inválido'" />
+            <fg-input :disabled="!$route.query.update" type="text" :required="false" label="Celular" placeholder="Celular" v-model="comunidade.celular" v-mask="[ '(##) #####-####']" :pattern="'.{0}|.{15}'" :title="'Número inválido'" />
           </div>
         </div>
 
@@ -37,36 +37,36 @@
               <label>
                 CEP
               </label>
-              <input :disabled="$route.query.delete" class="form-control border-input" placeholder="CEP" v-model="comunidade.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" @change="searchCEP" required="required" type="text">
+              <input :disabled="!$route.query.update" class="form-control border-input" placeholder="CEP" v-model="comunidade.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" @change="searchCEP" required="required" type="text">
             </div>
           </div>
           <div class="col-md-5">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="comunidade.endereco" />
+            <fg-input :disabled="!$route.query.update" type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="comunidade.endereco" />
           </div>
           <div class="col-md-2">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="comunidade.nro" />
+            <fg-input :disabled="!$route.query.update" type="text" :required="true" label="Número" placeholder="Número" v-model="comunidade.nro" />
           </div>
           <div class="col-md-3">
-            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="comunidade.compl" />
+            <fg-input :disabled="!$route.query.update" type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="comunidade.compl" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-5">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="comunidade.bairro" />
+            <fg-input :disabled="!$route.query.update" type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="comunidade.bairro" />
           </div>
           <div class="col-md-5">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="comunidade.cidade" />
+            <fg-input :disabled="!$route.query.update" type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="comunidade.cidade" />
           </div>
           <div class="col-md-2">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="UF" placeholder="UF" v-model="comunidade.uf" />
+            <fg-input :disabled="!$route.query.update" type="text" :required="true" label="UF" placeholder="UF" v-model="comunidade.uf" />
           </div>
         </div>
 
         <hr>
         <div class="text-center">
-          <button class="btn btn-info btn-fill btn-wd" v-if="$route.query.update">
-            Alterar Comunidade
+          <button class="btn btn-warning btn-fill btn-wd" v-if="$route.query.update">
+            Alterar
           </button>
           <button class="btn btn-danger btn-fill btn-wd" v-if="$route.query.delete" @click.prevent="del">
             Deletar
