@@ -47,6 +47,14 @@ Vue.mixin({
       month: 'long',
       timeZone: 'UTC',
     }),
+    notificationConfig: (message, type = 'success', horizontalAlign = 'right',
+      verticalAlign = 'top', icon = 'ti-bell') => ({
+      message,
+      icon,
+      horizontalAlign,
+      verticalAlign,
+      type,
+    }),
   },
 });
 

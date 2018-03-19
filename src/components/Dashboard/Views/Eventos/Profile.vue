@@ -62,13 +62,9 @@ export default {
   },
   methods: {
     notify(eventTitle = 'Evento', action = '') {
-      this.$notifications.notify({
-        message: `${eventTitle} ${action} com sucesso`,
-        icon: 'ti-bell',
-        horizontalAlign: 'right',
-        verticalAlign: 'top',
-        type: 'success',
-      });
+      this.$notifications.notify(
+        this.notificationConfig(`${eventTitle} ${action} com sucesso`),
+      );
     },
     del() {
       this.$dialog
