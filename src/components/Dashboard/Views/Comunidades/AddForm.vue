@@ -99,12 +99,12 @@ export default {
         .then((response) => {
           console.log(response);
           this.showLoader = false;
-          this.$notify({
-            group: 'top-right',
-            title: 'Sucesso!',
-            text: 'comunidade inserido com sucesso',
+          this.$notifications.notify({
+            message: `${this.comunidade.nome} inserido com sucesso`,
+            icon: 'ti-bell',
+            horizontalAlign: 'right',
+            verticalAlign: 'top',
             type: 'success',
-            speed: 1000,
           });
           this.$router.push({ path: '/admin/comunidades' });
         })

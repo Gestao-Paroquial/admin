@@ -91,6 +91,15 @@ export default {
     };
   },
   methods: {
+    notify(comunidadeTitle = 'Comunidade', action = '') {
+      this.$notifications.notify({
+        message: `${comunidadeTitle} ${action} com sucesso`,
+        icon: 'ti-bell',
+        horizontalAlign: 'right',
+        verticalAlign: 'top',
+        type: 'success',
+      });
+    },
     update() {
       this.$dialog
         .confirm()
@@ -107,13 +116,7 @@ export default {
             )
             .then((response) => {
               dialog.close();
-              this.$notify({
-                group: 'top-right',
-                title: 'Sucesso!',
-                text: 'comunidade alterado',
-                type: 'success',
-                speed: 1000,
-              });
+              this.notify(this.comunidade.nome, 'alterado');
               console.log(response);
             })
             .catch((error) => {
@@ -133,13 +136,7 @@ export default {
             .then((response) => {
               console.log(response);
               dialog.close();
-              this.$notify({
-                group: 'top-right',
-                title: 'Sucesso!',
-                text: 'comunidade excluído',
-                type: 'success',
-                speed: 1000,
-              });
+              this.notify(this.comunidade.nome, 'removido');
               this.$router.push({ path: '/admin/comunidades' });
             })
             .catch(err => console.log(err));
