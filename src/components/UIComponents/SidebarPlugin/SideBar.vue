@@ -14,7 +14,7 @@
           Gestão Paroquial
         </a>
       </div>
-      <div class="user">
+      <div class="user" v-if="user.name">
         <p class="name">Olá, {{user.name}}</p>
       </div>
       <ul :class="navClasses">
