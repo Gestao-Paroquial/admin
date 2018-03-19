@@ -12,7 +12,7 @@
             <fg-input :type="'text'" :required="true" label="Descricão" placeholder="Descricão" v-model="eventoHome.descricao" />
           </div>
           <div class="col-md-6">
-            <fg-input type="url" :required="false" label="Destino do Banner" placeholder="Link" v-model="eventoHome.destino" />
+            <fg-input type="url" :required="true" label="Destino do Banner" placeholder="Link" v-model="eventoHome.destino" />
           </div>
         </div>
 
@@ -77,13 +77,9 @@ export default {
             })
             .then(() => {
               this.showLoader = false;
-              this.$notify({
-                group: 'top-right',
-                title: 'Sucesso!',
-                text: 'Evento inserido com sucesso',
-                type: 'success',
-                speed: 1000,
-              });
+              this.$notifications.notify(
+                this.notificationConfig('Evento adicionado com sucesso'),
+              );
               this.$router.push({ path: '/admin/eventos-home' });
             })
             .catch(error => console.log(error));

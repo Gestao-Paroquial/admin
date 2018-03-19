@@ -232,7 +232,10 @@ export default {
   },
   computed: {
     nomeDasComunidades() {
-      return this.comunidades.map(comunidade => ({ label: comunidade.nome, value: comunidade.id }));
+      return this.comunidades.map(comunidade => ({
+        label: comunidade.nome,
+        value: comunidade.id,
+      }));
     },
   },
   watch: {
@@ -245,10 +248,9 @@ export default {
   },
   methods: {
     getComunidades() {
-      axios.get(comunidadesApiUrl)
-        .then(({ data }) => {
-          this.comunidades = data;
-        });
+      axios.get(comunidadesApiUrl).then(({ data }) => {
+        this.comunidades = data;
+      });
     },
     handleSubmit() {
       this.billingCycle.comunidade_id = this.comunidadeSelecionada.value;
@@ -305,7 +307,8 @@ export default {
       this.toggleTabs('tabUpdate');
       /* eslint-disable no-param-reassign */
       billingCycle.date = billingCycle.date.substring(0, 7);
-      axios.get(`${comunidadesApiUrl}/${billingCycle.comunidade_id}`)
+      axios
+        .get(`${comunidadesApiUrl}/${billingCycle.comunidade_id}`)
         .then(({ data }) => {
           this.comunidadeSelecionada = { label: data.nome, value: data.id };
         });
@@ -372,13 +375,9 @@ export default {
         });
     },
     notify(billingCycleTitle = 'Ciclo de pagamento', action = '') {
-      this.$notifications.notify({
-        message: `${billingCycleTitle} ${action} com sucesso`,
-        icon: 'ti-bell',
-        horizontalAlign: 'right',
-        verticalAlign: 'top',
-        type: 'success',
-      });
+      this.$notifications.notify(
+        this.notificationConfig(`${billingCycleTitle} ${action} com sucesso`),
+      );
     },
     deleteBillingCycle() {
       this.$dialog

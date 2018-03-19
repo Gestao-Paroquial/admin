@@ -99,13 +99,11 @@ export default {
         .then((response) => {
           console.log(response);
           this.showLoader = false;
-          this.$notifications.notify({
-            message: `${this.comunidade.nome} inserido com sucesso`,
-            icon: 'ti-bell',
-            horizontalAlign: 'right',
-            verticalAlign: 'top',
-            type: 'success',
-          });
+          this.$notifications.notify(
+            this.notificationConfig(
+              `${this.comunidade.nome} inserido com sucesso`,
+            ),
+          );
           this.$router.push({ path: '/admin/comunidades' });
         })
         .catch(error => console.log(error));
@@ -129,7 +127,9 @@ export default {
           console.log(error);
           alert('CEP INVÁLIDO');
         })
-        .then(() => { this.showLoader = false; });
+        .then(() => {
+          this.showLoader = false;
+        });
     },
   },
 };

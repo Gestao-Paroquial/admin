@@ -92,13 +92,9 @@ export default {
   },
   methods: {
     notify(comunidadeTitle = 'Comunidade', action = '') {
-      this.$notifications.notify({
-        message: `${comunidadeTitle} ${action} com sucesso`,
-        icon: 'ti-bell',
-        horizontalAlign: 'right',
-        verticalAlign: 'top',
-        type: 'success',
-      });
+      this.$notifications.notify(
+        this.notificationConfig(`${comunidadeTitle} ${action} com sucesso`),
+      );
     },
     update() {
       this.$dialog

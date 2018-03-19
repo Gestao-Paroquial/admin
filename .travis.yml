@@ -8,5 +8,6 @@ cache:
   directories:
     - node_modules
 
-script: #caso você tenha algum teste para ser rodado
+script:
+  - yarn lint
   - bash ./deploy.sh

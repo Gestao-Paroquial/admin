@@ -9,21 +9,22 @@
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" :type="'text'" :required="true" label="Descricão" placeholder="Descricão" v-model="eventoHome.descricao" />
+            <fg-input :disabled="!$route.query.update" :type="'text'" :required="true" label="Descricão" placeholder="Descricão" v-model="eventoHome.descricao" />
           </div>
           <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" type="url" :required="false" label="Destino do Banner" placeholder="Link" v-model="eventoHome.destino" />
+            <fg-input :disabled="!$route.query.update" type="url" :required="true" label="Destino do Banner" placeholder="Link" v-model="eventoHome.destino" />
           </div>
         </div>
 
         <div class="row">
           <h3 class="text-center">Imagem</h3>
-          <picture-input ref="pictureInput" @change="onChange" width="1280" height="500" margin="16" accept="image/jpeg,image/png" size="10" buttonClass="btn" :customStrings="{    upload: '<h1>Bummer!</h1>',  change: 'Trocar Imagem',     drag: 'Faça o upload do banner' }" :zIndex="1" :prefill="eventoHome.imagem ?backEndUrl + eventoHome.imagem: null" />
+          <picture-input ref="pictureInput" v-if="$route.query.update" @change="onChange" width="1280" height="500" margin="16" accept="image/jpeg,image/png" buttonClass="btn" :customStrings="{ upload: '<h1>Bummer!</h1>',  change: 'Trocar Imagem',     drag: 'Faça o upload do banner' }" :zIndex="1" />
+          <img :src="backEndUrl+eventoHome.imagem" v-if="!$route.query.update" alt="" srcset="" style="width: 100%">
         </div>
         <hr>
         <div class="text-center">
-          <button class="btn btn-info btn-fill btn-wd" v-if="$route.query.update">
-            Update Profile
+          <button class="btn btn-warning btn-fill btn-wd" v-if="$route.query.update">
+            Alterar
           </button>
           <button class="btn btn-danger btn-fill btn-wd" v-if="$route.query.delete" @click.prevent="del">
             Deletar
@@ -51,6 +52,11 @@ export default {
     };
   },
   methods: {
+    notify(action = '') {
+      this.$notifications.notify(
+        this.notificationConfig(`Evento ${action} com sucesso`),
+      );
+    },
     update() {
       this.$dialog.confirm().then((dialog) => {
         const data = {
@@ -79,13 +85,8 @@ export default {
               )
               .then((response2) => {
                 dialog.close();
-                this.$notify({
-                  group: 'top-right',
-                  title: 'Sucesso!',
-                  text: 'Mensagem do Paroco alterada',
-                  type: 'success',
-                  speed: 1000,
-                });
+                this.notify('alterado');
+                this.$router.push({ path: '/admin/eventos-home' });
                 console.log(response2);
               })
               .catch((error) => {
@@ -106,13 +107,7 @@ export default {
             .then((response) => {
               console.log(response);
               dialog.close();
-              this.$notify({
-                group: 'top-right',
-                title: 'Sucesso!',
-                text: 'Mensagem do Paroco excluída',
-                type: 'success',
-                speed: 1000,
-              });
+              this.notify('excluído');
               this.$router.push({ path: '/admin/eventos-home' });
             })
             .catch(err => console.log(err));
