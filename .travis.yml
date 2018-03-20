@@ -10,4 +10,9 @@ cache:
 
 script:
   - yarn lint
-  - bash ./deploy.sh
+  - yarn build
+
+deploy:
+  provider: surge
+  project: ./dist/
+  domain: gestao-paroquial.surge.sh
