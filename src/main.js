@@ -5,12 +5,12 @@ import axios from 'axios';
 
 // Plugins
 import VueTheMask from 'vue-the-mask';
-import Notifications from 'vue-notification';
 import VuejsDialog from 'vuejs-dialog';
-import 'vue-event-calendar/dist/style.css'; // ^1.1.10, CSS has been extracted as one file, so you can easily update it.
-import vueEventCalendar from 'vue-event-calendar';
+import vSelect from 'vue-select';
 import Chartist from 'chartist';
+import fullCalendar from 'vue-fullcalendar';
 import 'bootstrap/dist/css/bootstrap.css';
+import Notifications from './components/UIComponents/NotificationPlugin';
 import GlobalComponents from './globalComponents';
 import SideBar from './components/UIComponents/SidebarPlugin';
 import App from './App';
@@ -25,6 +25,8 @@ Vue.use(vClickOutside);
 Vue.use(Notifications);
 Vue.use(SideBar);
 Vue.use(VueTheMask);
+Vue.component('v-select', vSelect);
+Vue.component('full-calendar', fullCalendar);
 Vue.use(VuejsDialog, {
   html: true,
   loader: true,
@@ -34,11 +36,25 @@ Vue.use(VuejsDialog, {
   message: 'Você tem certeza?',
   animation: 'bounce',
 });
-Vue.use(vueEventCalendar, { locale: 'pt-br' });
+
 // Mixins
 Vue.mixin({
   methods: {
     capitalize: str => str.replace(/\b\w/g, l => l.toUpperCase()),
+    formatToPrice: value => `R$ ${value.toFixed(2)}`,
+    formatDate: date => new Date(date).toLocaleDateString('pt-BR', {
+      year: 'numeric',
+      month: 'long',
+      timeZone: 'UTC',
+    }),
+    notificationConfig: (message, type = 'success', horizontalAlign = 'right',
+      verticalAlign = 'top', icon = 'ti-bell') => ({
+      message,
+      icon,
+      horizontalAlign,
+      verticalAlign,
+      type,
+    }),
   },
 });
 

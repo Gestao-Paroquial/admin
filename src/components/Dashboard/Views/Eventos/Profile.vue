@@ -11,23 +11,26 @@
           <form @submit.prevent="update">
             <div class="row">
               <div class="col-md-6">
-                <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Título do Evento" placeholder="Título" v-model="event.title" />
+                <fg-input  type="text" :required="true" label="Título do Evento" placeholder="Título" v-model="event.title" />
               </div>
               <div class="col-md-6">
-                <fg-input :disabled="$route.query.delete" :type="'text'" :required="true" label="Descricão do Evento" placeholder="Descricão" v-model="event.description" />
+                <fg-input  :type="'text'" :required="true" label="Descricão do Evento" placeholder="Descricão" v-model="event.description" />
               </div>
             </div>
             <div class="row">
               <div class="col-md-6">
-                <fg-input :disabled="$route.query.delete" type="date" :required="true" label="Título do Evento" placeholder="Link" v-model="event.date" />
+                <fg-input  type="datetime-local" :required="true" label="Início do Evento"  v-model="event.start" />
+              </div>
+              <div class="col-md-6">
+                <fg-input  type="datetime-local" :required="false" label="Fim do Evento"  v-model="event.end" />
               </div>
             </div>
             <hr>
             <div class="text-center">
-              <button class="btn btn-info btn-fill btn-wd" v-if="$route.query.update">
-                Update Profile
+              <button class="btn btn-warning btn-fill btn-wd" >
+                Alterar
               </button>
-              <button class="btn btn-danger btn-fill btn-wd" v-if="$route.query.delete" @click.prevent="del">
+              <button class="btn btn-danger btn-fill btn-wd"  @click.prevent="del">
                 Deletar
               </button>
             </div>
@@ -56,46 +59,54 @@ export default {
     this.event = events.find(
       event => event.id.toString() === this.$route.params.id,
     );
-    this.event.date = this.event.date.replace(/\//g, '-');
   },
   methods: {
+    notify(eventTitle = 'Evento', action = '') {
+      this.$notifications.notify(
+        this.notificationConfig(`${eventTitle} ${action} com sucesso`),
+      );
+    },
     del() {
-      const events = JSON.parse(localStorage.getItem('events'));
+      this.$dialog
+        .confirm()
+        .then((dialog) => {
+          dialog.close();
+          const events = JSON.parse(localStorage.getItem('events'));
 
-      const index = events.findIndex(event => event.id.toString() === this.$route.params.id);
+          const index = events.findIndex(event => event.id.toString() === this.$route.params.id);
 
-      events.splice(index, 1);
+          events.splice(index, 1);
 
-      localStorage.setItem('events', JSON.stringify(events));
+          localStorage.setItem('events', JSON.stringify(events));
 
-      this.$notify({
-        group: 'top-right',
-        title: 'Sucesso!',
-        text: 'Evento removido com sucesso',
-        type: 'success',
-        speed: 1000,
-      });
+          this.notify(this.event.title, 'removido');
 
-      this.$router.push({ path: '/admin/eventos' });
+          this.$router.push({ path: '/admin/eventos' });
+        })
+        .catch(() => {
+          console.log('Clicked on cancel');
+        });
     },
     update() {
-      const events = JSON.parse(localStorage.getItem('events'));
+      this.$dialog
+        .confirm()
+        .then((dialog) => {
+          dialog.close();
+          const events = JSON.parse(localStorage.getItem('events'));
 
-      const index = events.findIndex(event => event.id.toString() === this.$route.params.id);
+          const index = events.findIndex(event => event.id.toString() === this.$route.params.id);
 
-      events[index] = this.event;
+          events[index] = this.event;
 
-      localStorage.setItem('events', JSON.stringify(events));
+          localStorage.setItem('events', JSON.stringify(events));
 
-      this.$notify({
-        group: 'top-right',
-        title: 'Sucesso!',
-        text: 'Evento alterado com sucesso',
-        type: 'success',
-        speed: 1000,
-      });
+          this.notify(this.event.title, 'alterado');
 
-      this.$router.push({ path: '/admin/eventos' });
+          this.$router.push({ path: '/admin/eventos' });
+        })
+        .catch(() => {
+          console.log('Clicked on cancel');
+        });
     },
   },
 };
