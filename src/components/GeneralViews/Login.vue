@@ -26,7 +26,7 @@
                     <button type="submit" class="btn btn-fill btn-wd ">Login</button>
                     <div class="forgot">
                       <br>
-                      <a href="/register" class=""> Esqueceu sua senha? </a>
+                      <a href="#" class=""> Esqueceu sua senha? </a>
                     </div>
                   </div>
                 </div>
@@ -67,6 +67,9 @@ export default {
   methods: {
     login() {
       this.isLoading = true;
+      this.errorInLogin = false;
+      this.hasError = false;
+
       const userAsJson = JSON.stringify(this.user);
       axios
         .post(loginApiUrl, userAsJson, {
@@ -78,15 +81,14 @@ export default {
           if (data.success) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
+            this.isLoading = false;
             this.$router.push({ path: '/' });
           }
         })
         .catch(() => {
           this.errorInLogin = true;
-        })
-        .then(() => {
-          this.isLoading = false;
           this.hasError = true;
+          this.isLoading = false;
         });
     },
   },
