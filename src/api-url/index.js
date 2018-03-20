@@ -1,4 +1,4 @@
-export const billingCyclesUrl = 'http://localhost:3003';
+export const billingCyclesUrl = process.env.BILLING_CYCLE_API_URI;
 export const backEndUrl = 'http://localhost:8000';
 
 // URL
