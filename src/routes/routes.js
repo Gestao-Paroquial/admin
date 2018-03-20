@@ -212,6 +212,7 @@ const routes = [
       },
     ],
   },
+  { path: '/admin/*', requiresAuth: true },
   { path: '*', component: NotFound },
 ];
 
