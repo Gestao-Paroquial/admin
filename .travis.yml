@@ -14,5 +14,6 @@ script:
 
 deploy:
   provider: surge
+  skip_cleanup: true
   project: ./dist/
   domain: gestao-paroquial.surge.sh
