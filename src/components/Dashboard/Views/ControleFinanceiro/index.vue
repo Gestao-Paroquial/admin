@@ -180,7 +180,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import axios from '@/plugins/axios';
 import ValueBox from '@/components/UIComponents/ValueBox';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Extrato from './Extrato';

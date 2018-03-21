@@ -23,7 +23,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import axios from '@/plugins/axios';
 import UpdateForm from './UpdateForm';
 import {
   comunidadesApiUrl,

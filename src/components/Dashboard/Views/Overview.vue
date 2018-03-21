@@ -71,7 +71,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import axios from '@/plugins/axios';
 import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
