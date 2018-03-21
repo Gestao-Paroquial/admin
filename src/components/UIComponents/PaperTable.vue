@@ -11,7 +11,8 @@
         <table class="table " :class="tableClass">
           <thead>
             <th v-for="column in columns" :key="column" @click="orderBy(column)">
-              {{ getColumn(column) }}<span :class="{'ti-angle-up': desc < 0, 'ti-angle-down': desc > 0}" v-if="column===selectedColumn" />
+              {{ getColumn(column) }}
+              <span :class="{'ti-angle-up': desc < 0, 'ti-angle-down': desc > 0}" v-if="column===selectedColumn" />
             </th>
             <th>Ações</th>
           </thead>
@@ -38,25 +39,29 @@
           </tbody>
         </table>
       </div>
-      <div class="col-sm-6 pagination-info">
-        <p class="category">Mostrando {{ start + 1 }} até {{ start+itemsPerPage >= data.length? data.length :start+itemsPerPage }} de {{ data.length }} registros</p>
+      <div class="row">
+        <div class="col-md-6 pagination-info">
+          <p class="category">Mostrando {{ start + 1 }} até {{ start+itemsPerPage >= data.length? data.length :start+itemsPerPage }} de {{ data.length }} registros</p>
+        </div>
       </div>
-      <div class="col-sm-12">
-        <ul class="pagination pull-right pagination-default">
-          <li class="page-item" :class="{'disabled': start == 0}" @click="previous">
-            <a href="javascript:void(0)" aria-label="Previous" class="page-link">
-              <i aria-hidden="true" class="fa fa-angle-double-left" />
-            </a>
-          </li>
-          <li class="page-item" :class="{'active': page == index}" v-for="(item, index) in data" :key="index" v-if="index < data.length/itemsPerPage">
-            <a href="javascript:void(0)" class="page-link" @click="start = itemsPerPage * index; page = index ">{{ index+1 }}</a>
-          </li>
-          <li class="page-pre" :class="{'disabled': data.length-start < itemsPerPage }" @click="next">
-            <a href="javascript:void(0)" aria-label="Next" class="page-link">
-              <i aria-hidden="true" class="fa fa-angle-double-right" />
-            </a>
-          </li>
-        </ul>
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="pagination pull-right pagination-default">
+            <li class="page-item" :class="{'disabled': start == 0}" @click="previous">
+              <a href="javascript:void(0)" aria-label="Previous" class="page-link">
+                <i aria-hidden="true" class="fa fa-angle-double-left" />
+              </a>
+            </li>
+            <li class="page-item" :class="{'active': page == index}" v-for="(item, index) in data" :key="index" v-if="index < data.length/itemsPerPage">
+              <a href="javascript:void(0)" class="page-link" @click="start = itemsPerPage * index; page = index ">{{ index+1 }}</a>
+            </li>
+            <li class="page-pre" :class="{'disabled': data.length-start < itemsPerPage }" @click="next">
+              <a href="javascript:void(0)" aria-label="Next" class="page-link">
+                <i aria-hidden="true" class="fa fa-angle-double-right" />
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -92,8 +97,8 @@ export default {
     return {
       page: 0,
       start: 0,
-      desc: 1,
-      selectedColumn: null,
+      desc: -1,
+      selectedColumn: 'id',
     };
   },
   computed: {

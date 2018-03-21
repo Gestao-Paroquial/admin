@@ -4,7 +4,7 @@ import vClickOutside from 'v-click-outside';
 
 
 // Plugins
-import axios from '@/plugins/axios';
+import axios from 'axios';
 import VueTheMask from 'vue-the-mask';
 import VuejsDialog from 'vuejs-dialog';
 import vSelect from 'vue-select';
@@ -78,7 +78,11 @@ router.beforeEach((to, from, next) => {
     if (!localStorage.getItem('token')) {
       next(loginRedirect);
     } else {
-      axios.get(`${validateTokenUrl}`)
+      axios.get(`${validateTokenUrl}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
         .then(() => {
           next();
         })
