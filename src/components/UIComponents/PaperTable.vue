@@ -10,7 +10,9 @@
       <div class="col-sm-12">
         <table class="table " :class="tableClass">
           <thead>
-            <th v-for="column in columns" :key="column">{{ getColumn(column) }}</th>
+            <th v-for="column in columns" :key="column" @click="orderBy(column)">
+              {{ getColumn(column) }}<span :class="{'ti-angle-up': desc < 0, 'ti-angle-down': desc > 0}" v-if="column===selectedColumn" />
+            </th>
             <th>Ações</th>
           </thead>
           <tbody>
@@ -90,6 +92,8 @@ export default {
     return {
       page: 0,
       start: 0,
+      desc: 1,
+      selectedColumn: null,
     };
   },
   computed: {
@@ -130,6 +134,29 @@ export default {
     getColumn(column) {
       return this.capitalize(column.split('.')[0]);
     },
+    orderBy(column = '') {
+      if (column.match(/\./g)) {
+        const columns = column.split(/\./);
+
+        this.data.sort((a, b) => {
+          if (a[columns[0]][[columns[1]]] < b[columns[0]][[columns[1]]]) {
+            return -1 * this.desc;
+          }
+          if (a[columns[0]][[columns[1]]] > b[columns[0]][[columns[1]]]) {
+            return 1 * this.desc;
+          }
+          return 0;
+        });
+      } else {
+        this.data.sort((a, b) => {
+          if (a[column] < b[column]) return -1 * this.desc;
+          if (a[column] > b[column]) return 1 * this.desc;
+          return 0;
+        });
+      }
+      this.selectedColumn = column;
+      this.desc = this.desc * -1;
+    },
   },
 };
 </script>
@@ -138,6 +165,7 @@ th {
   padding: 12px;
   vertical-align: middle;
   text-align: center;
+  cursor: pointer;
 }
 .pagination > li > a:hover,
 .pagination > li > a:focus,
