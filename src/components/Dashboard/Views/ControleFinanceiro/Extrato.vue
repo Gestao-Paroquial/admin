@@ -1,67 +1,155 @@
 <template>
   <div>
-    <h2 class="">Extratos</h2>
+    <h2 class="">Relatórios</h2>
     <hr>
     <div class="row">
-      <div class="col-md-12">
-        <span>Selecione um período:</span>
-        <v-select v-model="selectedPeriod" :options="uniqPeriods">
-          <span slot="no-options">
-            Nenhum resultado encontrado
-          </span>
-        </v-select>
+      <h3>Selecione o tipo de relatório</h3>
+      <div class="col-lg-3 col-sm-6 " v-for="relatorio in relatoriosCards" :key="relatorio.title" @click="selecionarRelatorio(relatorio.type)">
+        <div class="card relatorio-card" :class="{active: tipoDeRelatorio[relatorio.type]}">
+          <div class="content">
+            <div class="row">
+              <div class="col-xs-5">
+                <div class="icon-big text-center" :class="`icon-${relatorio.alert}`">
+                  <i :class="relatorio.icon" />
+                </div>
+              </div>
+              <div class="col-xs-7">
+                <div class="numbers">
+                  <p>{{ relatorio.title }}</p>
+                  {{ relatorio.value }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <hr>
     <transition name="fade">
-      <div class="center-block loader-wrapper text-center" v-if="showLoader">
-        <h5 class="">Aguarde:</h5>
-        <fingerprint-spinner :animation-duration="1500" :size="100" color="#41B883" />
+      <div v-if="tipoDeRelatorio.mensal">
+        <div class="row">
+          <div class="col-md-12">
+            <span>Selecione um período:</span>
+            <v-select v-model="selectedPeriod" :options="uniqPeriods">
+              <span slot="no-options">
+                Nenhum resultado encontrado
+              </span>
+            </v-select>
+          </div>
+        </div>
+        <hr>
+        <transition name="fade">
+          <div v-if="valuesOfBillingCycles.length > 0">
+            <h3>Dados de {{selectedPeriod}}:</h3>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Descrição do gasto</th>
+                  <th>Valor</th>
+                </tr>
+              </thead>
+              <tfoot>
+                <tr :class="{success: sumOfBillingCyclesValue > 0, danger: sumOfBillingCyclesValue < 0  }">
+                  <td>Total</td>
+                  <td>{{formatToPrice(sumOfBillingCyclesValue)}}</td>
+                </tr>
+              </tfoot>
+              <tbody>
+                <tr v-for="(item, index) in valuesOfBillingCycles" :key="index">
+                  <td>{{item.name}}</td>
+                  <td :class="{'text-success': item.value > 0, 'text-danger': item.value < 0  }">{{formatToPrice(item.value)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </transition>
       </div>
     </transition>
     <transition name="fade">
-      <div v-if="valuesOfBillingCycles.length > 0">
-        <h3>Dados de {{selectedPeriod}}:</h3>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Descrição do gasto</th>
-              <th>Valor</th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr :class="{success: sumOfBillingCyclesValue > 0, danger: sumOfBillingCyclesValue < 0  }">
-              <td>Total</td>
-              <td>{{formatToPrice(sumOfBillingCyclesValue)}}</td>
-            </tr>
-          </tfoot>
-          <tbody>
-            <tr v-for="(item, index) in valuesOfBillingCycles" :key="index">
-              <td>{{item.name}}</td>
-              <td :class="{'text-success': item.value > 0, 'text-danger': item.value < 0  }">{{formatToPrice(item.value)}}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div v-if="tipoDeRelatorio.porComunidade">
+        <div class="row">
+          <div class="col-md-12">
+            <span>Selecione uma comunidade:</span>
+            <v-select v-model="comunidadeSelecionada" :options="nomeDasComunidades">
+              <span slot="no-options">
+                Nenhum resultado encontrado
+              </span>
+            </v-select>
+          </div>
+        </div>
+        <transition name="fade">
+          <div v-if="comunidadeSelecionada">
+            <h3>Relatório da comunidade {{comunidadeSelecionada.value.nome}}</h3>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Período</th>
+                  <th>Descrição do gasto</th>
+                  <th>Valor</th>
+                </tr>
+              </thead>
+              <!-- <tfoot>
+                <tr :class="{success: sumOfBillingCyclesValue > 0, danger: sumOfBillingCyclesValue < 0  }">
+                  <td>Total</td>
+                  <td>{{formatToPrice(sumOfBillingCyclesValue)}}</td>
+                </tr>
+              </tfoot> -->
+              <tbody>
+                <tr v-for="(billingCycle) in comunidadeSelecionada.billingCycles" :key="billingCycle.id">
+                  <td>{{formatDate(billingCycle.date)}}</td>
+                  <td>{{billingCycle.name}}</td>
+                  <!-- <td :class="{'text-success': item.value > 0, 'text-danger': item.value < 0  }">{{formatToPrice(item.value)}}</td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </transition>
+        <hr>
       </div>
+    </transition>
+    <transition name="fade">
+      <loader v-if="showLoader"></loader>
     </transition>
   </div>
 </template>
 <script>
-import { FingerprintSpinner } from 'epic-spinners';
+import axios from '@/plugins/axios';
+import Loader from './Loader';
+import { findBillingCycleByComunityId } from '../../../../api-url/index';
 
 export default {
   components: {
-    FingerprintSpinner,
+    Loader,
   },
   data() {
     return {
       selectedPeriod: null,
       showLoader: null,
       valuesOfBillingCycles: [],
+      comunidadeSelecionada: null,
+      tipoDeRelatorio: {
+        mensal: false,
+        porComunidade: false,
+      },
+      relatoriosCards: [
+        {
+          alert: 'warning',
+          icon: 'ti-calendar',
+          title: 'Extrato',
+          value: 'Mensal',
+          type: 'mensal',
+        },
+        {
+          alert: 'success',
+          icon: 'fa fa-building',
+          title: 'Gastos por comunidade',
+          type: 'porComunidade',
+        },
+      ],
     };
   },
   props: {
     billingCycles: Array,
+    comunidades: Array,
   },
   watch: {
     selectedPeriod() {
@@ -84,9 +172,21 @@ export default {
         }, 500);
       }, 1000);
     },
-  },
+    comunidadeSelecionada() {
+      this.showLoader = true;
 
+      axios.get(findBillingCycleByComunityId(this.comunidadeSelecionada.value.id))
+        .then(({ data }) => {
+          this.comunidadeSelecionada.billingCycles = data;
+          this.showLoader = false;
+          console.log(data);
+        });
+    },
+  },
   computed: {
+    nomeDasComunidades() {
+      return this.comunidades.map(comunidade => ({ label: comunidade.nome, value: comunidade }));
+    },
     uniqPeriods() {
       return [
         ...new Set(this.billingCycles.map(item => this.formatDate(item.date))),
@@ -115,6 +215,16 @@ export default {
 
       return valuesOfBillingCycles;
     },
+    selecionarRelatorio(type) {
+      /* eslint-disable no-param-reassign */
+      const setAll = (obj, val) =>
+        Object.keys(obj).forEach((k) => {
+          obj[k] = val;
+        });
+      const setNull = obj => setAll(obj, null);
+      setNull(this.tipoDeRelatorio);
+      this.tipoDeRelatorio[type] = true;
+    },
   },
 };
 </script>
@@ -135,5 +245,16 @@ export default {
 }
 h2 {
   margin-top: 0;
+}
+
+.relatorio-card {
+  cursor: pointer;
+  transition: all ease-in 0.5s;
+  will-change: transform;
+}
+
+.relatorio-card.active {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  transform: scale(1.02);
 }
 </style>

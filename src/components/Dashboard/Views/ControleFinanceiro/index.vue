@@ -14,7 +14,7 @@
       </li>
       <li :class="{'active': tabs.tabExtract}">
         <a href="" data-target="#tabExtract" data-toggle="tab" aria-expanded="true" @click.prevent="showTabExtract()">
-          <i class="fa fa-get-pocket"></i> Extratos</a>
+          <i class="fa fa-get-pocket"></i> Relatórios</a>
       </li>
     </ul>
     <div class="tab-content">
@@ -174,13 +174,13 @@
         </form>
       </transition>
       <transition name="fade">
-        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles" />
+        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles" :comunidades="comunidades"/>
       </transition>
     </div>
   </div>
 </template>
 <script>
-import axios from 'axios';
+import axios from '@/plugins/axios';
 import ValueBox from '@/components/UIComponents/ValueBox';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Extrato from './Extrato';
