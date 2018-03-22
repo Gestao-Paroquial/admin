@@ -18,6 +18,7 @@ import App from './App';
 import routes from './routes/routes';
 import './assets/sass/paper-dashboard.scss';
 import { validateTokenUrl } from './api-url';
+import axiosIntance from './plugins/axios';
 
 // plugin setup
 Vue.use(VueRouter);
@@ -75,15 +76,17 @@ router.beforeEach((to, from, next) => {
   };
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!localStorage.getItem('token')) {
+    const token = localStorage.getItem('token');
+    if (!token) {
       next(loginRedirect);
     } else {
       axios.get(`${validateTokenUrl}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${token}`,
         },
       })
         .then(() => {
+          Object.assign(axiosIntance.defaults, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } });
           next();
         })
         .catch(() => next(loginRedirect));
