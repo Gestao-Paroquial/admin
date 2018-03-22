@@ -17,5 +17,4 @@ export const logoutApiUrl = `${backEndUrl}/api/logout`;
 export const validateTokenUrl = `${backEndUrl}/api/validateToken`;
 
 // Helpers
-export const findBillingCycleByComunityId = comunidadeId => `${findBillingCycleByComunity}?id=${comunidadeId}`
-;
+export const findBillingCycleByComunityId = comunidadeId => `${findBillingCycleByComunity}?id=${comunidadeId}`;
