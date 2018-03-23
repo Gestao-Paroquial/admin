@@ -100,46 +100,39 @@ export default {
       this.$dialog
         .confirm()
         .then((dialog) => {
-          axios
-            .put(
-              `${comunidadesApiUrl}/${this.comunidade.id}`,
-              JSON.stringify(this.comunidade),
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                },
+          dialog.close();
+          return axios.put(
+            `${comunidadesApiUrl}/${this.comunidade.id}`,
+            JSON.stringify(this.comunidade),
+            {
+              headers: {
+                'Content-Type': 'application/json',
               },
-            )
-            .then((response) => {
-              dialog.close();
-              this.notify(this.comunidade.nome, 'alterado');
-              console.log(response);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+            },
+          );
         })
-        .catch(() => {
-          console.log('Clicked on cancel');
+        .then((response) => {
+          this.notify(this.comunidade.nome, 'alterado');
+          console.log(response);
+          this.$router.push({ path: '/admin/comunidades' });
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
     del() {
       this.$dialog
         .confirm()
         .then((dialog) => {
-          axios
-            .delete(`${comunidadesApiUrl}/${this.comunidade.id}`)
-            .then((response) => {
-              console.log(response);
-              dialog.close();
-              this.notify(this.comunidade.nome, 'removido');
-              this.$router.push({ path: '/admin/comunidades' });
-            })
-            .catch(err => console.log(err));
+          dialog.close();
+          return axios.delete(`${comunidadesApiUrl}/${this.comunidade.id}`);
         })
-        .catch(() => {
-          console.log('Clicked on cancel');
-        });
+        .then((response) => {
+          console.log(response);
+          this.$router.push({ path: '/admin/comunidades' });
+          this.notify(this.comunidade.nome, 'removido');
+        })
+        .catch(err => console.log(err));
     },
     searchCEP(event) {
       const cep = event.target.value.replace('-', '');
