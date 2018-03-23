@@ -7,6 +7,7 @@ export const comunidadesApiUrl = `${backEndUrl}/api/comunidades`;
 export const pastoraisApiUrl = `${backEndUrl}/api/pastorais`;
 export const membrosPastoraisApiUrl = `${backEndUrl}/api/membrosPastorais`;
 export const mensagensParocoApiUrl = `${backEndUrl}/api/mensagensParoco`;
+export const facebookApiUrl = `${billingCyclesUrl}/api/facebook`;
 export const billingCyclesApiUrl = `${billingCyclesUrl}/api/billingCycles`;
 export const billingSummaryApiUrl = `${billingCyclesUrl}/api/billingSummary`;
 export const findBillingCycleByComunity = `${billingCyclesUrl}/api/billingCycles/findByComunidade`;
