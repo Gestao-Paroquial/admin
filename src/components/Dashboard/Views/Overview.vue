@@ -75,7 +75,7 @@ import axios from '@/plugins/axios';
 import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
-import { billingSummaryApiUrl } from './../../../api-url';
+import { billingSummaryApiUrl, facebookApiUrl } from './../../../api-url';
 
 export default {
   components: {
@@ -115,11 +115,12 @@ export default {
         },
         {
           type: 'info',
-          icon: 'ti-twitter-alt',
-          title: 'Followers',
-          value: '+45',
-          footerText: 'Updated now',
+          icon: 'ti-facebook',
+          title: 'Curtidas',
+          value: 0,
+          footerText: 'Atualizar agora',
           footerIcon: 'ti-reload',
+          id: 'facebook',
         },
       ],
       usersChart: {
@@ -200,6 +201,7 @@ export default {
   },
   mounted() {
     this.getBillingSumary();
+    this.getFacebook();
   },
   methods: {
     getBillingSumary() {
@@ -209,6 +211,17 @@ export default {
           this.billingSummary.credit = data.credit;
           this.billingSummary.debt = data.debt;
           this.billingSummary.total = data.credit - data.debt;
+        })
+        .catch((response) => {
+          console.log(response);
+        });
+    },
+    getFacebook() {
+      axios
+        .get(facebookApiUrl)
+        .then(({ data }) => {
+          const facebookStat = this.statsCards.find(stat => stat.id === 'facebook');
+          facebookStat.value = data.fan_count;
         })
         .catch((response) => {
           console.log(response);
