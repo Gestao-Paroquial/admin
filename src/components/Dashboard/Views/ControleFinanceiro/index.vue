@@ -385,21 +385,18 @@ export default {
         .then((dialog) => {
           /* eslint-disable no-underscore-dangle */
           const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
-          axios
-            .delete(url)
-            .then((response) => {
-              console.log(response);
-              dialog.close();
-              this.getBillingCycles();
-              this.getBillingSumary();
-              this.notify(this.billingCycle.name, 'excluído');
-              this.toggleTabs('tabList');
-            })
-            .catch(response => console.log(response));
+          dialog.close();
+          return axios
+            .delete(url);
         })
-        .catch(() => {
-          console.log('Clicked on cancel');
-        });
+        .then((response) => {
+          console.log(response);
+          this.getBillingCycles();
+          this.getBillingSumary();
+          this.notify(this.billingCycle.name, 'excluído');
+          this.toggleTabs('tabList');
+        })
+        .catch(response => console.log(response));
     },
     updateBillingCycle() {
       this.$dialog
@@ -407,26 +404,22 @@ export default {
         .then((dialog) => {
           const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
           this.removeNullValuesOfCreditsAndDebts();
-          axios
+          dialog.close();
+          return axios
             .put(url, JSON.stringify(this.billingCycle), {
               headers: {
                 'Content-Type': 'application/json',
               },
-            })
-            .then((response) => {
-              console.log(response);
-              dialog.close();
-              this.getBillingCycles();
-              this.getBillingSumary();
-
-              this.toggleTabs('tabList');
-              this.notify(this.billingCycle.name, 'alterado');
-            })
-            .catch(response => console.log(response));
+            });
         })
-        .catch(() => {
-          console.log('Clicked on cancel');
-        });
+        .then((response) => {
+          console.log(response);
+          this.getBillingCycles();
+          this.getBillingSumary();
+          this.toggleTabs('tabList');
+          this.notify(this.billingCycle.name, 'alterado');
+        })
+        .catch(response => console.log(response));
     },
     addDebtOrCredit(index, property) {
       this.billingCycle[property].splice(index + 1, 0, {
