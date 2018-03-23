@@ -4,7 +4,7 @@ import NotFound from '@/components/GeneralViews/NotFoundPage';
 import Login from '@/components/GeneralViews/Login';
 
 // Admin pages
-import Overview from '@/components/Dashboard/Views/Overview';
+import Overview from '@/components/Dashboard/Views/Overview/index';
 import UserProfile from '@/components/Dashboard/Views/UserProfile';
 import Notifications from '@/components/Dashboard/Views/Notifications';
 import Icons from '@/components/Dashboard/Views/Icons';

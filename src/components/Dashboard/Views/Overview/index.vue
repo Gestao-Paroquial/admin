@@ -22,6 +22,11 @@
     <!-- Controle Financeiro -->
     <value-row :credit="billingSummary.credit" :debt="billingSummary.debt" :total="billingSummary.total" />
 
+    <div class="row">
+      <solicitacoes title="Casamentos" :solicitacoes="casamentos"></solicitacoes>
+      <solicitacoes title="Batismos" :solicitacoes="batismos"></solicitacoes>
+    </div>
+
     <!--Charts-->
     <div class="row">
 
@@ -75,19 +80,67 @@ import axios from '@/plugins/axios';
 import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
-import { billingSummaryApiUrl, facebookApiUrl } from './../../../api-url';
+import Solicitacoes from './Solicitacoes';
+import { billingSummaryApiUrl, facebookApiUrl } from './../../../../api-url';
 
 export default {
   components: {
     StatsCard,
     ChartCard,
     ValueRow,
+    Solicitacoes,
   },
   /**
    * Chart data used to render stats, charts. Should be replaced with server data
    */
   data() {
     return {
+      casamentos: [
+        {
+          nome: 'Pavan kumar',
+          data: new Date(),
+          status: 'Pendente',
+          mensagem:
+            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
+        },
+        {
+          nome: 'Sonu Nigam',
+          data: new Date(),
+          status: 'Aprovado',
+          mensagem:
+            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
+        },
+        {
+          nome: 'Arijit singh',
+          data: new Date(),
+          status: 'Rejeitado',
+          mensagem:
+            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
+        },
+      ],
+      batismos: [
+        {
+          nome: 'Pavan kumar',
+          data: new Date(),
+          status: 'Pendente',
+          mensagem:
+            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
+        },
+        {
+          nome: 'Sonu Nigam',
+          data: new Date(),
+          status: 'Pendente',
+          mensagem:
+            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
+        },
+        {
+          nome: 'Arijit singh',
+          data: new Date(),
+          status: 'Pendente',
+          mensagem:
+            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
+        },
+      ],
       statsCards: [
         {
           type: 'warning',
@@ -220,7 +273,9 @@ export default {
       axios
         .get(facebookApiUrl)
         .then(({ data }) => {
-          const facebookStat = this.statsCards.find(stat => stat.id === 'facebook');
+          const facebookStat = this.statsCards.find(
+            stat => stat.id === 'facebook',
+          );
           facebookStat.value = data.fan_count;
         })
         .catch((response) => {
