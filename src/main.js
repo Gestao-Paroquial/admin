@@ -47,7 +47,14 @@ Vue.mixin({
     formatDate: date => new Date(date).toLocaleDateString('pt-BR', {
       year: 'numeric',
       month: 'long',
-      timeZone: 'UTC',
+    }),
+    formatCompleteDate: date => new Date(date).toLocaleDateString('pt-BR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
     }),
     notificationConfig: (message, type = 'success', horizontalAlign = 'right',
       verticalAlign = 'top', icon = 'ti-bell') => ({
