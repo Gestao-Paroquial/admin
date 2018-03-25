@@ -75,7 +75,7 @@ import axios from '@/plugins/axios';
 import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
-import { billingSummaryApiUrl } from './../../../api-url';
+import { billingSummaryApiUrl, analyticsUrl } from './../../../api-url';
 
 export default {
   components: {
@@ -106,12 +106,13 @@ export default {
           footerIcon: 'ti-calendar',
         },
         {
-          type: 'danger',
+          type: 'sucess',
           icon: 'ti-pulse',
-          title: 'Errors',
-          value: '23',
-          footerText: 'In the last hour',
-          footerIcon: 'ti-timer',
+          title: 'Visitantes ao site',
+          value: '0',
+          footerText: 'Nos últimos 7 dias',
+          footerIcon: 'ti-calendar',
+          id: 'analytics',
         },
         {
           type: 'info',
@@ -213,6 +214,13 @@ export default {
         .catch((response) => {
           console.log(response);
         });
+
+      axios.get(analyticsUrl).then(({ data }) => {
+        const analyticsStat = this.statsCards.find(
+          stat => stat.id === 'analytics',
+        );
+        analyticsStat.value = data.totalsForAllResults['ga:sessions'];
+      });
     },
   },
 };
