@@ -81,7 +81,11 @@ import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
-import { billingSummaryApiUrl, facebookApiUrl } from './../../../../api-url';
+import {
+  billingSummaryApiUrl,
+  facebookApiUrl,
+  analyticsUrl,
+} from './../../../../api-url';
 
 export default {
   components: {
@@ -159,12 +163,13 @@ export default {
           footerIcon: 'ti-calendar',
         },
         {
-          type: 'danger',
+          type: 'sucess',
           icon: 'ti-pulse',
-          title: 'Errors',
-          value: '23',
-          footerText: 'In the last hour',
-          footerIcon: 'ti-timer',
+          title: 'Visitantes ao site',
+          value: localStorage.getItem('gaSessions'),
+          footerText: 'Nos últimos 7 dias',
+          footerIcon: 'ti-calendar',
+          id: 'analytics',
         },
         {
           type: 'info',
@@ -255,6 +260,7 @@ export default {
   mounted() {
     this.getBillingSumary();
     this.getFacebook();
+    this.getAnalytics();
   },
   methods: {
     getBillingSumary() {
@@ -276,11 +282,21 @@ export default {
           const facebookStat = this.statsCards.find(
             stat => stat.id === 'facebook',
           );
-          facebookStat.value = data.fan_count;
+          facebookStat.value = data.fan_count ? data.fan_count : 1800;
         })
         .catch((response) => {
           console.log(response);
         });
+    },
+    getAnalytics() {
+      axios.get(analyticsUrl).then(({ data }) => {
+        const analyticsStat = this.statsCards.find(
+          stat => stat.id === 'analytics',
+        );
+        const gaSessions = data.totalsForAllResults['ga:sessions'];
+        analyticsStat.value = gaSessions;
+        localStorage.setItem('gaSessions', gaSessions);
+      });
     },
   },
 };
