@@ -81,10 +81,7 @@ import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
-import {
-  facebookApiUrl,
-  analyticsUrl,
-} from './../../../../api-url';
+import { facebookApiUrl, analyticsUrl } from './../../../../api-url';
 
 export default {
   components: {
@@ -272,14 +269,19 @@ export default {
         });
     },
     getAnalytics() {
-      axios.get(analyticsUrl).then(({ data }) => {
-        const analyticsStat = this.statsCards.find(
-          stat => stat.id === 'analytics',
-        );
-        const gaSessions = data.totalsForAllResults['ga:sessions'];
-        analyticsStat.value = gaSessions;
-        localStorage.setItem('gaSessions', gaSessions);
-      });
+      const analyticsStat = this.statsCards.find(
+        stat => stat.id === 'analytics',
+      );
+      if (process.env.NODE_ENV !== 'development') {
+        axios.get(analyticsUrl).then(({ data }) => {
+          const gaSessions = data.totalsForAllResults['ga:sessions'];
+          analyticsStat.value = gaSessions;
+          localStorage.setItem('gaSessions', gaSessions);
+        });
+      }
+
+      analyticsStat.value = 5;
+      localStorage.setItem('gaSessions', 5);
     },
   },
 };
