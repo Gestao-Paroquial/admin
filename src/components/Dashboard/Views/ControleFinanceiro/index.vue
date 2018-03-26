@@ -20,7 +20,7 @@
     <div class="tab-content">
       <div v-if="tabs.tabList">
         <h3>Resumo de todas as movimentações:</h3>
-        <ValueRow :credit="billingSummary.credit" :debt="billingSummary.debt" :total="billingSummary.total" />
+        <ValueRow  />
         <h3>Lista de movimentações:</h3>
         <table class="table">
           <thead>
@@ -187,7 +187,6 @@ import Extrato from './Extrato';
 
 import {
   billingCyclesApiUrl,
-  billingSummaryApiUrl,
   comunidadesApiUrl,
 } from './../../../../api-url';
 
@@ -227,7 +226,6 @@ export default {
   mounted() {
     this.showLoader = true;
     this.getBillingCycles();
-    this.getBillingSumary();
     this.getComunidades();
   },
   computed: {
@@ -261,18 +259,6 @@ export default {
       if (array.length === 0) return 0;
       const sum = array.reduce((prev, curr) => prev + curr.value, 0);
       return sum;
-    },
-    getBillingSumary() {
-      axios
-        .get(billingSummaryApiUrl)
-        .then(({ data }) => {
-          this.billingSummary.credit = data.credit;
-          this.billingSummary.debt = data.debt;
-          this.billingSummary.total = data.credit - data.debt;
-        })
-        .catch((response) => {
-          console.log(response);
-        });
     },
     toggleTabs(tab) {
       /* eslint-disable no-param-reassign */
@@ -352,7 +338,6 @@ export default {
         .then((response) => {
           console.log(response);
           this.getBillingCycles();
-          this.getBillingSumary();
           this.toggleTabs('tabList');
           this.notify(this.billingCycle.name, 'inserido');
         })
@@ -391,7 +376,6 @@ export default {
               console.log(response);
               dialog.close();
               this.getBillingCycles();
-              this.getBillingSumary();
               this.notify(this.billingCycle.name, 'excluído');
               this.toggleTabs('tabList');
             })
@@ -417,7 +401,6 @@ export default {
               console.log(response);
               dialog.close();
               this.getBillingCycles();
-              this.getBillingSumary();
 
               this.toggleTabs('tabList');
               this.notify(this.billingCycle.name, 'alterado');

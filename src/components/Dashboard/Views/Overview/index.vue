@@ -20,7 +20,7 @@
     </div>
 
     <!-- Controle Financeiro -->
-    <value-row :credit="billingSummary.credit" :debt="billingSummary.debt" :total="billingSummary.total" />
+    <value-row/>
 
     <div class="row">
       <solicitacoes title="Casamentos" :solicitacoes="casamentos"></solicitacoes>
@@ -82,7 +82,6 @@ import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
 import {
-  billingSummaryApiUrl,
   facebookApiUrl,
   analyticsUrl,
 } from './../../../../api-url';
@@ -250,31 +249,13 @@ export default {
         },
         options: {},
       },
-      billingSummary: {
-        credit: 0,
-        debt: 0,
-        total: 0,
-      },
     };
   },
   mounted() {
-    this.getBillingSumary();
     this.getFacebook();
     this.getAnalytics();
   },
   methods: {
-    getBillingSumary() {
-      axios
-        .get(billingSummaryApiUrl)
-        .then(({ data }) => {
-          this.billingSummary.credit = data.credit;
-          this.billingSummary.debt = data.debt;
-          this.billingSummary.total = data.credit - data.debt;
-        })
-        .catch((response) => {
-          console.log(response);
-        });
-    },
     getFacebook() {
       axios
         .get(facebookApiUrl)
