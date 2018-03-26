@@ -175,7 +175,7 @@ export default {
           type: 'info',
           icon: 'ti-facebook',
           title: 'Curtidas',
-          value: 0,
+          value: localStorage.getItem('fan_count'),
           footerText: 'Atualizar agora',
           footerIcon: 'ti-reload',
           id: 'facebook',
@@ -283,6 +283,8 @@ export default {
             stat => stat.id === 'facebook',
           );
           facebookStat.value = data.fan_count ? data.fan_count : 1800;
+
+          localStorage.setItem('fan_count', facebookStat.value);
         })
         .catch((response) => {
           console.log(response);
