@@ -47,6 +47,8 @@ Vue.mixin({
     formatDate: date => new Date(date).toLocaleDateString('pt-BR', {
       year: 'numeric',
       month: 'long',
+      day: 'numeric',
+      timeZone: 'UTC',
     }),
     formatCompleteDate: date => new Date(date).toLocaleDateString('pt-BR', {
       year: 'numeric',
