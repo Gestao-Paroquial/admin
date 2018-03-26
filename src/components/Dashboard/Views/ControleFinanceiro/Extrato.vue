@@ -220,7 +220,9 @@ export default {
         if (debts.length > 0) valuesOfBillingCycles.push(...debts);
 
         valuesOfBillingCycles.push(...billingCycle.credits.map((credit) => {
+          /* eslint-disable no-param-reassign */
           credit.date = billingCycle.date;
+          /* eslint-enable no-param-reassign */
           return credit;
         }));
       });
