@@ -15,31 +15,31 @@
           <li class="open">
             <a href="#" class="dropdown-toggle btn-magnify" data-toggle="dropdown">
               <i class="ti-panel" />
-              <p>Stats</p>
+              <p>Status</p>
             </a>
           </li>
-          <drop-down title="5 Notifications" icon="ti-bell">
+          <drop-down title="5 Notificações" icon="ti-bell">
             <li>
-              <a href="#">Notification 1</a>
+              <a href="#">Notificações 1</a>
             </li>
             <li>
-              <a href="#">Notification 2</a>
+              <a href="#">Notificações 2</a>
             </li>
             <li>
-              <a href="#">Notification 3</a>
+              <a href="#">Notificações 3</a>
             </li>
             <li>
-              <a href="#">Notification 4</a>
+              <a href="#">Notificações 4</a>
             </li>
             <li>
-              <a href="#">Another notification</a>
+              <a href="#">Outra Notificação</a>
             </li>
           </drop-down>
           <li>
             <a href="#" class="btn-rotate">
               <i class="ti-settings" />
               <p>
-                Settings
+                Configurações
               </p>
             </a>
           </li>
