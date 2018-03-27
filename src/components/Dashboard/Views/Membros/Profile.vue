@@ -9,7 +9,7 @@
 <script>
 import axios from 'axios';
 import UpdateForm from './UpdateForm';
-import { membrosPastoraisApiUrl, pastoraisApiUrl } from './../../../../api-url';
+import { membrosUrl, pastoraisApiUrl } from './../../../../api-url';
 
 export default {
   components: {
@@ -28,7 +28,7 @@ export default {
   created() {
     const self = this;
     axios
-      .get(`${membrosPastoraisApiUrl}/${self.$route.params.id}`)
+      .get(`${membrosUrl}/${self.$route.params.id}`)
       .then(({ data }) => {
         this.membroPastoral = data;
         const pastoralAtual = data.pastorais;

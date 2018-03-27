@@ -76,7 +76,7 @@
 <script>
 import axios from 'axios';
 import SelectList from '@/components/UIComponents/Forms/SelectList';
-import { membrosPastoraisApiUrl } from '../../../../api-url/index';
+import { membrosUrl } from '../../../../api-url/index';
 
 export default {
   props: {
@@ -100,7 +100,7 @@ export default {
       ).value;
 
       axios
-        .post(membrosPastoraisApiUrl, JSON.stringify(this.membroPastoral), {
+        .post(membrosUrl, JSON.stringify(this.membroPastoral), {
           headers: {
             'Content-Type': 'application/json',
           },

@@ -5,7 +5,7 @@
     <p class="category">{{ subTitle }}</p>
 
     <div class=" card card-plain">
-      <paper-table type="hover" :data="table.data" :columns="membrosPastoraisHeaders">
+      <paper-table type="hover" :data="table.data" :columns="membrosHeaders">
         <div slot="header">
           <div class="col-sm-12">
             <label class="label-search form-group">
@@ -13,7 +13,7 @@
             </label>
             <label for="" class="form-group">
               <select name="" id="" class=" form-group filter-options border-input" v-model="filterProperty">
-                <option v-for="header in membrosPastoraisHeaders.filter(obj => obj.match(/^[^.]+$/))" :key="header">{{header}}</option>
+                <option v-for="header in membrosHeaders.filter(obj => obj.match(/^[^.]+$/))" :key="header">{{header}}</option>
               </select>
             </label>
             <router-link v-bind:to="{ path: 'add'}" type="button" class="btn btn-success btn-fill pull-right" append>
@@ -31,15 +31,10 @@ import Modal from '@/components/UIComponents/Modal/Modal';
 import SimpleForm from '@/components/UIComponents/Forms/SimpleForm';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
-import { membrosPastoraisApiUrl } from './../../../../api-url';
+import { membrosUrl } from './../../../../api-url';
 
-const membrosPastoraisHeaders = [
-  'id',
-  'nome',
-  'email',
-  'celular',
-  'cep',
-  'pastorais.nome',
+const membrosHeaders = [
+  'id', 'nome', 'email',
 ];
 
 export default {
@@ -52,23 +47,23 @@ export default {
     return {
       showModalAdd: false,
       showModalUpdate: false,
-      membrosPastorais: [],
+      membros: [],
       table: { data: [] },
       showLoader: true,
       filterProperty: 'id',
       termToSearch: '',
-      membrosPastoraisHeaders,
-      title: 'Lista de membrosPastorais',
-      subTitle: 'Aqui você ira encontrar a lista de membrosPastorais completa',
+      membrosHeaders,
+      title: 'Lista de membros',
+      subTitle: 'Aqui você ira encontrar a lista de membros completa',
     };
   },
   created() {
     axios
-      .get(membrosPastoraisApiUrl)
+      .get(membrosUrl)
       .then((response) => {
-        console.log(response);
-        this.membrosPastorais = response.data;
+        this.membros = response.data;
         this.table.data = response.data;
+        console.log(response.data);
         this.showLoader = false;
       })
       .catch((error) => {
@@ -78,7 +73,7 @@ export default {
   watch: {
     termToSearch: debounce(
       function filter() {
-        const membrosPastoraisFiltrados = this.membrosPastorais.filter(
+        const membrosFiltrados = this.membros.filter(
           obj =>
             (obj[this.filterProperty]
               ? obj[this.filterProperty]
@@ -87,7 +82,7 @@ export default {
                 .match(this.termToSearch.toLowerCase())
               : undefined),
         );
-        this.updateTable(membrosPastoraisFiltrados);
+        this.updateTable(membrosFiltrados);
       },
       // Este é o número de milissegundos que aguardamos para
       // que o usuário pare de digitar
@@ -95,8 +90,8 @@ export default {
     ),
   },
   methods: {
-    updateTable(membrosPastorais) {
-      this.table.data = [...membrosPastorais];
+    updateTable(membros) {
+      this.table.data = [...membros];
     },
   },
 };

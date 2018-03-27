@@ -78,7 +78,7 @@
 <script>
 import axios from 'axios';
 import SelectList from '@/components/UIComponents/Forms/SelectList';
-import { membrosPastoraisApiUrl } from '../../../../api-url/index';
+import { membrosUrl } from '../../../../api-url/index';
 
 export default {
   props: {
@@ -100,7 +100,7 @@ export default {
         .then((dialog) => {
           axios
             .put(
-              `${membrosPastoraisApiUrl}/${this.membroPastoral.id}`,
+              `${membrosUrl}/${this.membroPastoral.id}`,
               JSON.stringify(this.membroPastoral),
               {
                 headers: {
@@ -132,7 +132,7 @@ export default {
         .confirm()
         .then((dialog) => {
           axios
-            .delete(`${membrosPastoraisApiUrl}/${this.membroPastoral.id}`)
+            .delete(`${membrosUrl}/${this.membroPastoral.id}`)
             .then((response) => {
               console.log(response);
               dialog.close();
