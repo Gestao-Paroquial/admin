@@ -2,16 +2,16 @@
   <div class="card">
     <loader v-if="showLoader" />
     <div class="header">
-      <h4 class="title">Informações da membroPastoral</h4>
+      <h4 class="title">Informações da membro</h4>
     </div>
     <div class="content">
       <form @submit.prevent="update">
         <div class="row">
           <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Nome" placeholder="Nome" v-model="membroPastoral.nome" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Nome" placeholder="Nome" v-model="membro.nome" />
           </div>
           <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" :type="'email'" :required="true" label="Email" placeholder="Email" v-model="membroPastoral.email" />
+            <fg-input :disabled="$route.query.delete" :type="'email'" :required="true" label="Email" placeholder="Email" v-model="membro.email" />
           </div>
         </div>
 
@@ -23,10 +23,10 @@
 
         <div class="row">
           <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="membroPastoral.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="membro.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
           </div>
           <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Celular" placeholder="Celular" v-model="membroPastoral.celular" v-mask="[ '(##) #####-####']" :pattern="'.{0}|.{15}'" :title="'Número inválido'" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Celular" placeholder="Celular" v-model="membro.celular" v-mask="[ '(##) #####-####']" :pattern="'.{0}|.{15}'" :title="'Número inválido'" />
           </div>
         </div>
 
@@ -36,29 +36,29 @@
               <label>
                 CEP
               </label>
-              <input class="form-control border-input" placeholder="CEP" v-model="membroPastoral.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" :disabled="$route.query.delete" @change="searchCEP" required="required" type="text">
+              <input class="form-control border-input" placeholder="CEP" v-model="membro.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" :disabled="$route.query.delete" @change="searchCEP" required="required" type="text">
             </div>
           </div>
           <div class="col-md-5">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="membroPastoral.endereco" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="membro.endereco" />
           </div>
           <div class="col-md-2">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="membroPastoral.nro" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="membro.nro" />
           </div>
           <div class="col-md-3">
-            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="membroPastoral.compl" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="membro.compl" />
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-5">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="membroPastoral.bairro" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="membro.bairro" />
           </div>
           <div class="col-md-5">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="membroPastoral.cidade" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="membro.cidade" />
           </div>
           <div class="col-md-2">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="UF" placeholder="UF" v-model="membroPastoral.uf" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="UF" placeholder="UF" v-model="membro.uf" />
           </div>
         </div>
         <hr>
@@ -82,7 +82,7 @@ import { membrosUrl } from '../../../../api-url/index';
 
 export default {
   props: {
-    membroPastoral: Object,
+    membro: Object,
     selectList: Object,
   },
   components: {
@@ -100,8 +100,8 @@ export default {
         .then((dialog) => {
           axios
             .put(
-              `${membrosUrl}/${this.membroPastoral.id}`,
-              JSON.stringify(this.membroPastoral),
+              `${membrosUrl}/${this.membro.id}`,
+              JSON.stringify(this.membro),
               {
                 headers: {
                   'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ export default {
         .confirm()
         .then((dialog) => {
           axios
-            .delete(`${membrosUrl}/${this.membroPastoral.id}`)
+            .delete(`${membrosUrl}/${this.membro.id}`)
             .then((response) => {
               console.log(response);
               dialog.close();
@@ -161,10 +161,10 @@ export default {
       axios
         .get(uri)
         .then(({ data }) => {
-          this.membroPastoral.endereco = data.logradouro;
-          this.membroPastoral.cidade = data.localidade;
-          this.membroPastoral.uf = data.uf;
-          this.membroPastoral.bairro = data.bairro;
+          this.membro.endereco = data.logradouro;
+          this.membro.cidade = data.localidade;
+          this.membro.uf = data.uf;
+          this.membro.bairro = data.bairro;
         })
         .catch((error) => {
           console.log(error);

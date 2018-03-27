@@ -2,7 +2,7 @@
   <div class="row">
     <back-button/>
     <div class="col-lg-12 ">
-      <add-form :membroPastoral="membroPastoral" :select-list="selectList"/>
+      <add-form :membro="membro" :select-list="selectList"/>
     </div>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      membroPastoral: {},
+      membro: {},
       selectList: {
         label: 'Pastorais',
         name: 'pastorais_id',
