@@ -2,14 +2,14 @@
   <div class="row">
     <back-button/>
     <div class="col-lg-12 ">
-      <add-form :membro="membro" :select-list="selectList"/>
+      <add-form :membro="membro" />
     </div>
   </div>
 </template>
 <script>
-import axios from 'axios';
 import AddForm from './AddForm';
-import { pastoraisApiUrl } from './../../../../api-url';
+
+const CLASSE_TELEFONE_DO_MEMBRO = 3;
 
 export default {
   components: {
@@ -17,26 +17,8 @@ export default {
   },
   data() {
     return {
-      membro: {},
-      selectList: {
-        label: 'Pastorais',
-        name: 'pastorais_id',
-        options: [{}],
-      },
+      membro: { classe_telefone_id: CLASSE_TELEFONE_DO_MEMBRO },
     };
-  },
-  created() {
-    axios
-      .get(pastoraisApiUrl)
-      .then(({ data }) => {
-        const pastoraisToSelectList = data.map(pastoral => ({
-          value: pastoral.nome,
-          id: pastoral.id,
-        }));
-
-        this.selectList.options.push(...pastoraisToSelectList);
-      })
-      .catch(err => console.log(err));
   },
 };
 </script>

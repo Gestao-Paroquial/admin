@@ -26,12 +26,6 @@
 
         <div class="row">
           <div class="col-md-6">
-            <select-list :selectList="selectList" :required="true"></select-list>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6">
             <fg-input type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="membro.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
           </div>
           <div class="col-md-6">
@@ -84,16 +78,11 @@
 </template>
 <script>
 import axios from '@/plugins/axios';
-import SelectList from '@/components/UIComponents/Forms/SelectList';
 import { membrosUrl, tiposMembroUrl } from '../../../../api-url/index';
 
 export default {
   props: {
     membro: Object,
-    selectList: Object,
-  },
-  components: {
-    SelectList,
   },
   data() {
     return {
