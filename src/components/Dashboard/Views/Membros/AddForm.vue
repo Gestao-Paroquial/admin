@@ -135,15 +135,15 @@ export default {
         .catch(error => console.log(error));
     },
     searchCEP(event) {
-      const cep = event.target.value.replace('-', '');
-
-
+      const cep = event.target.value;
+      this.showLoader = true;
       cepPromise(cep)
         .then((data) => {
           this.membro.endereco = data.street;
           this.membro.cidade = data.city;
           this.membro.uf = data.state;
           this.membro.bairro = data.neighborhood;
+          this.showLoader = false;
         })
         .catch(() => {
           this.$notifications.notify(
@@ -151,6 +151,7 @@ export default {
               'O CEP fornecido não foi encontrado na base do correio', 'danger',
             ),
           );
+          this.showLoader = false;
         });
 
       // axios
