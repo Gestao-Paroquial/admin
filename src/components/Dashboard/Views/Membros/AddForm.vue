@@ -77,6 +77,7 @@
   </div>
 </template>
 <script>
+import cepPromise from 'cep-promise';
 import axios from '@/plugins/axios';
 import { membrosUrl, tiposMembroUrl } from '../../../../api-url/index';
 
@@ -136,25 +137,37 @@ export default {
     searchCEP(event) {
       const cep = event.target.value.replace('-', '');
 
-      const uri = `https://viacep.com.br/ws/${cep}/json/`;
 
-      this.showLoader = true;
-
-      axios
-        .get(uri)
-        .then(({ data }) => {
-          this.membro.endereco = data.logradouro;
-          this.membro.cidade = data.localidade;
-          this.membro.uf = data.uf;
-          this.membro.bairro = data.bairro;
+      cepPromise(cep)
+        .then((data) => {
+          this.membro.endereco = data.street;
+          this.membro.cidade = data.city;
+          this.membro.uf = data.state;
+          this.membro.bairro = data.neighborhood;
         })
-        .catch((error) => {
-          console.log(error);
-          alert('CEP INVÁLIDO');
-        })
-        .then(() => {
-          this.showLoader = false;
+        .catch(() => {
+          this.$notifications.notify(
+            this.notificationConfig(
+              'O CEP fornecido não foi encontrado na base do correio', 'danger',
+            ),
+          );
         });
+
+      // axios
+      //   .get(uri)
+      //   .then(({ data }) => {
+      //     this.membro.endereco = data.logradouro;
+      //     this.membro.cidade = data.localidade;
+      //     this.membro.uf = data.uf;
+      //     this.membro.bairro = data.bairro;
+      //   })
+      //   .catch((error) => {
+      //     console.log(error);
+      //     alert('CEP INVÁLIDO');
+      //   })
+      //   .then(() => {
+      //     this.showLoader = false;
+      //   });
     },
   },
 };
