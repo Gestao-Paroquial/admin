@@ -34,6 +34,25 @@
         </div>
 
         <div class="row">
+          <div class="col-md-6">
+            <label for="">Comunidades</label>
+            <v-select v-model="membro.comunidades" :options="comunidadesToSelectList" multiple>
+              <span slot="no-options">
+                Nenhum resultado encontrado
+              </span>
+            </v-select>
+          </div>
+          <div class="col-md-6">
+            <label for="">Pastorais</label>
+            <v-select v-model="membro.pastorais" :options="pastoraisToSelectList" multiple>
+              <span slot="no-options">
+                Nenhum resultado encontrado
+              </span>
+            </v-select>
+          </div>
+        </div>
+
+        <div class="row">
           <div class="col-md-2">
             <div class="form-group">
               <label>
@@ -79,7 +98,12 @@
 <script>
 import cepPromise from 'cep-promise';
 import axios from '@/plugins/axios';
-import { membrosUrl, tiposMembroUrl } from '../../../../api-url/index';
+import {
+  membrosUrl,
+  tiposMembroUrl,
+  comunidadesApiUrl,
+  pastoraisApiUrl,
+} from '../../../../api-url/index';
 
 export default {
   props: {
@@ -90,12 +114,19 @@ export default {
       showLoader: false,
       firstName: '',
       tiposMembro: [],
-      tipoMembro: null,
+      comunidades: [],
+      pastorais: [],
     };
   },
   mounted() {
     axios.get(tiposMembroUrl).then(({ data }) => {
       this.tiposMembro = data;
+    });
+    axios.get(comunidadesApiUrl).then(({ data }) => {
+      this.comunidades = data;
+    });
+    axios.get(pastoraisApiUrl).then(({ data }) => {
+      this.pastorais = data;
     });
   },
   computed: {
@@ -105,34 +136,44 @@ export default {
         value: tipoMembro.id,
       }));
     },
+    comunidadesToSelectList() {
+      return this.comunidades.map(comunidade => ({
+        label: comunidade.nome,
+        value: comunidade.id,
+      }));
+    },
+    pastoraisToSelectList() {
+      return this.pastorais.map(pastoral => ({
+        label: `${pastoral.nome} ${pastoral.id}`,
+        value: pastoral.id,
+      }));
+    },
   },
   methods: {
     add() {
-      this.showLoader = true;
-      this.membro.pastorais_id = document.querySelector(
-        '[name="pastorais_id"]',
-      ).value;
+      console.log(this.membro, membrosUrl);
+      // this.showLoader = true;
 
-      axios
-        .post(membrosUrl, JSON.stringify(this.membro), {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          this.showLoader = false;
-          console.log(JSON.stringify(this.membro));
-          // this.$notify({
-          //   group: 'top-right',
-          //   title: 'Sucesso!',
-          //   text: 'membro inserido com sucesso',
-          //   type: 'success',
-          //   speed: 1000,
-          // });
-          // this.$router.push({ path: '/admin/membros-pastorais' });
-        })
-        .catch(error => console.log(error));
+      // axios
+      //   .post(membrosUrl, JSON.stringify(this.membro), {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //   })
+      //   .then((response) => {
+      //     console.log(response);
+      //     this.showLoader = false;
+
+      //     this.$notify({
+      //       group: 'top-right',
+      //       title: 'Sucesso!',
+      //       text: 'membro inserido com sucesso',
+      //       type: 'success',
+      //       speed: 1000,
+      //     });
+      //     this.$router.push({ path: '/admin/membros-pastorais' });
+      //   })
+      //   .catch(error => console.log(error));
     },
     searchCEP(event) {
       const cep = event.target.value;
@@ -148,7 +189,8 @@ export default {
         .catch(() => {
           this.$notifications.notify(
             this.notificationConfig(
-              'O CEP fornecido não foi encontrado na base do correio', 'danger',
+              'O CEP fornecido não foi encontrado na base do correio',
+              'danger',
             ),
           );
           this.showLoader = false;
