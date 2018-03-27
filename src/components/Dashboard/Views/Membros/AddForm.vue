@@ -8,6 +8,15 @@
       <form @submit.prevent="add">
         <div class="row">
           <div class="col-md-6">
+            <v-select v-model="membro.tipo_membro_id" :options="tiposMembroToSelectList">
+              <span slot="no-options">
+                Nenhum resultado encontrado
+              </span>
+            </v-select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
             <fg-input type="text" :required="true" label="Nome" placeholder="Nome" v-model="membro.nome" />
           </div>
           <div class="col-md-6">
@@ -74,9 +83,9 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import axios from '@/plugins/axios';
 import SelectList from '@/components/UIComponents/Forms/SelectList';
-import { membrosUrl } from '../../../../api-url/index';
+import { membrosUrl, tiposMembroUrl } from '../../../../api-url/index';
 
 export default {
   props: {
@@ -90,7 +99,22 @@ export default {
     return {
       showLoader: false,
       firstName: '',
+      tiposMembro: [],
+      tipoMembro: null,
     };
+  },
+  mounted() {
+    axios.get(tiposMembroUrl).then(({ data }) => {
+      this.tiposMembro = data;
+    });
+  },
+  computed: {
+    tiposMembroToSelectList() {
+      return this.tiposMembro.map(tipoMembro => ({
+        label: tipoMembro.descricao,
+        value: tipoMembro.id,
+      }));
+    },
   },
   methods: {
     add() {
@@ -108,14 +132,15 @@ export default {
         .then((response) => {
           console.log(response);
           this.showLoader = false;
-          this.$notify({
-            group: 'top-right',
-            title: 'Sucesso!',
-            text: 'membro inserido com sucesso',
-            type: 'success',
-            speed: 1000,
-          });
-          this.$router.push({ path: '/admin/membros-pastorais' });
+          console.log(JSON.stringify(this.membro));
+          // this.$notify({
+          //   group: 'top-right',
+          //   title: 'Sucesso!',
+          //   text: 'membro inserido com sucesso',
+          //   type: 'success',
+          //   speed: 1000,
+          // });
+          // this.$router.push({ path: '/admin/membros-pastorais' });
         })
         .catch(error => console.log(error));
     },
