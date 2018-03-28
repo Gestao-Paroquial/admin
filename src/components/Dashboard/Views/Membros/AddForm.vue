@@ -2,7 +2,7 @@
   <div class="card">
     <loader v-if="showLoader" />
     <div class="header">
-      <h4 class="title">Adicionar Novo Membro da Pastoral</h4>
+      <h3>Adicionar Novo Membro da Pastoral</h3>
     </div>
     <div class="content">
       <form @submit.prevent="add">
@@ -22,6 +22,23 @@
           <div class="col-md-6">
             <fg-input :type="'email'" :required="true" label="Email" placeholder="Email" v-model="membro.email" />
           </div>
+        </div>
+
+        <h4>Telefones
+          <button @click="addTelefone" class="btn" type="button">
+            <i aria-hidden="true" class="fa fa-plus"></i>
+          </button>
+        </h4>
+
+        <div class="row telefone-row">
+          <transition-group name="list">
+            <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
+              <fg-input type="text" :required="false" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
+              <button class="btn" @click="removeTelefone(index)" type="button" v-if="membro.telefones.length > 1">
+                <i aria-hidden="true" class="fa fa-minus"></i>
+              </button>
+            </div>
+          </transition-group>
         </div>
 
         <div class="row">
@@ -51,7 +68,7 @@
             </v-select>
           </div>
         </div>
-
+        <h4>Endereço</h4>
         <div class="row">
           <div class="col-md-2">
             <div class="form-group">
@@ -175,6 +192,9 @@ export default {
       //   })
       //   .catch(error => console.log(error));
     },
+    getTelMask() {
+      return ['(##) ####-####'];
+    },
     searchCEP(event) {
       const cep = event.target.value;
       this.showLoader = true;
@@ -212,9 +232,32 @@ export default {
       //     this.showLoader = false;
       //   });
     },
+    addTelefone() {
+      this.membro.telefones.push({});
+    },
+    removeTelefone(index) {
+      if (this.membro.telefones.length === 1) return;
+      this.membro.telefones.splice(index, 1);
+    },
   },
 };
 </script>
 <style>
-
+.telefone-row {
+  padding: 15px;
+}
+.telefone-row  [class*="col-"] {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+.telefone-row .form-group {
+  display: inline-block;
+}
+.list-enter-active, .list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active em versões anteriores a 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
 </style>

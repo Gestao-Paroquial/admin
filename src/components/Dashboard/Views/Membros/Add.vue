@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      membro: { classe_telefone_id: CLASSE_TELEFONE_DO_MEMBRO },
+      membro: { classe_telefone_id: CLASSE_TELEFONE_DO_MEMBRO, telefones: [{}] },
     };
   },
 };
