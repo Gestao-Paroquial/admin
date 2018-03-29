@@ -8,6 +8,7 @@ export const pastoraisApiUrl = `${backEndUrl}/api/pastorais`;
 export const membrosUrl = `${backEndUrl}/api/membros`;
 export const mensagensParocoApiUrl = `${backEndUrl}/api/mensagensParoco`;
 export const tiposMembroUrl = `${backEndUrl}/api/tiposMembro`;
+export const tiposDependenteUrl = `${backEndUrl}/api/tiposDependente`;
 export const facebookApiUrl = `${billingCyclesUrl}/api/facebook`;
 export const billingCyclesApiUrl = `${billingCyclesUrl}/api/billingCycles`;
 export const billingSummaryApiUrl = `${billingCyclesUrl}/api/billingSummary`;

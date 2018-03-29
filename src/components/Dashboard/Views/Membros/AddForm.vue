@@ -27,20 +27,12 @@
             <fg-input :type="'date'" :required="true" label="Data de Nascimento" placeholder="Data de Nascimento" v-model="membro.data_Nascimento" />
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-4">
-            <fg-input type="text" :required="true" label="Nome do Pai" placeholder="Nome do Pai" v-model="membro.nome_Pai" />
-          </div>
-          <div class="col-md-4">
-            <fg-input type="text" :required="true" label="Nome da Mãe" placeholder="Nome da Mãe" v-model="membro.nome_Mae" />
-          </div>
-        </div>
         <h4>Informações Religiosas</h4>
         <div class="row">
           <div class="col-md-4">
             <label for="">Batizado?</label>
             <div class="">
-              <label><input type="radio" v-model="membro.batizado"  name="batizado" :value="false">Não</label>
+              <label><input type="radio" v-model="membro.batizado" name="batizado" :value="false">Não</label>
             </div>
             <div class="">
               <label><input type="radio" v-model="membro.batizado" name="batizado" :value="true">Sim</label>
@@ -49,7 +41,7 @@
           <div class="col-md-4">
             <label for="">Crismado?</label>
             <div class="">
-              <label><input type="radio" v-model="membro.crismado"  name="crismado" :value="false">Não</label>
+              <label><input type="radio" v-model="membro.crismado" name="crismado" :value="false">Não</label>
             </div>
             <div class="">
               <label><input type="radio" v-model="membro.crismado" name="crismado" :value="true">Sim</label>
@@ -58,7 +50,7 @@
           <div class="col-md-4">
             <label for="">1º Eucaristia?</label>
             <div class="">
-              <label><input type="radio" v-model="membro['1_eucaristia']"  name="1_eucaristia" :value="false">Não</label>
+              <label><input type="radio" v-model="membro['1_eucaristia']" name="1_eucaristia" :value="false">Não</label>
             </div>
             <div class="">
               <label><input type="radio" v-model="membro['1_eucaristia']" name="1_eucaristia" :value="true">Sim</label>
@@ -90,7 +82,6 @@
             <i aria-hidden="true" class="fa fa-plus"></i>
           </button>
         </h4>
-
         <div class="row telefone-row">
           <transition-group name="list" tag="div">
             <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
@@ -122,7 +113,6 @@
             <fg-input type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="membro.compl" />
           </div>
         </div>
-
         <div class="row">
           <div class="col-md-5">
             <fg-input type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="membro.bairro" />
@@ -135,6 +125,42 @@
           </div>
         </div>
 
+        <h4>Dependentes
+          <button @click="addDependente" class="btn" type="button">
+            <i aria-hidden="true" class="fa fa-plus"></i>
+          </button>
+        </h4>
+        <transition-group name="list">
+          <div class="row" v-for="(dependente, index) in membro.dependentes" :key="index">
+            <div class="col-md-3">
+              <label>Dependente</label>
+              <v-select v-model="dependente.tipo_dependente_id" :options="tiposDependenteToSelectList">
+                <span slot="no-options">
+                  Nenhum resultado encontrado
+                </span>
+              </v-select>
+            </div>
+            <transition name="list">
+              <div class="col-md-3" v-if="dependente.tipo_dependente_id">
+                <fg-input type="text" :required="true" :label="`Nome ${dependente.tipo_dependente_id? dependente.tipo_dependente_id.label: ''}`" placeholder="Nome do dependente" v-model="dependente.nome" />
+              </div>
+            </transition>
+            <transition name="list">
+              <div class="col-md-3" v-if="dependente.tipo_dependente_id">
+                <fg-input type="date" :required="true" :label="`Data de Nascimento ${dependente.tipo_dependente_id? dependente.tipo_dependente_id.label: ''}`" placeholder="Data de Nascimento" v-model="dependente.data_Nascimento" />
+              </div>
+            </transition>
+            <div class="col-md-3">
+              <div class="form-grou">
+                <label for="">Remover</label>
+                <br>
+                <button class="btn" @click="removeDependente(index)" type="button" v-if="membro.dependentes.length > 1">
+                <i aria-hidden="true" class="fa fa-minus"></i>
+              </button>
+              </div>
+            </div>
+          </div>
+        </transition-group>
         <hr>
         <div class="text-center">
           <button class="btn btn-info btn-fill btn-wd">
@@ -154,6 +180,7 @@ import {
   tiposMembroUrl,
   comunidadesApiUrl,
   pastoraisApiUrl,
+  tiposDependenteUrl,
 } from '../../../../api-url/index';
 
 export default {
@@ -167,11 +194,20 @@ export default {
       tiposMembro: [],
       comunidades: [],
       pastorais: [],
+      tiposDependente: [],
     };
+  },
+  watch: {
+    membro() {
+      console.log(this.membro);
+    },
   },
   mounted() {
     axios.get(tiposMembroUrl).then(({ data }) => {
       this.tiposMembro = data;
+    });
+    axios.get(tiposDependenteUrl).then(({ data }) => {
+      this.tiposDependente = data;
     });
     axios.get(comunidadesApiUrl).then(({ data }) => {
       this.comunidades = data;
@@ -185,6 +221,12 @@ export default {
       return this.tiposMembro.map(tipoMembro => ({
         label: tipoMembro.descricao,
         value: tipoMembro.id,
+      }));
+    },
+    tiposDependenteToSelectList() {
+      return this.tiposDependente.map(tipoDependente => ({
+        label: tipoDependente.descricao,
+        value: tipoDependente.id,
       }));
     },
     comunidadesToSelectList() {
@@ -269,9 +311,16 @@ export default {
     addTelefone() {
       this.membro.telefones.push({});
     },
+    addDependente() {
+      this.membro.dependentes.push({});
+    },
     removeTelefone(index) {
       if (this.membro.telefones.length === 1) return;
       this.membro.telefones.splice(index, 1);
+    },
+    removeDependente(index) {
+      if (this.membro.dependentes.length === 1) return;
+      this.membro.dependentes.splice(index, 1);
     },
   },
 };
