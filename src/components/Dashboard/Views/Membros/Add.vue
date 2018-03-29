@@ -17,7 +17,13 @@ export default {
   },
   data() {
     return {
-      membro: { classe_telefone_id: CLASSE_TELEFONE_DO_MEMBRO, telefones: [{}] },
+      membro: {
+        classe_telefone_id: CLASSE_TELEFONE_DO_MEMBRO,
+        telefones: [{}],
+        crismado: false,
+        batizado: false,
+        '1_eucaristia': false,
+      },
     };
   },
 };

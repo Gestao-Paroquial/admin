@@ -7,7 +7,8 @@
     <div class="content">
       <form @submit.prevent="add">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-3">
+            <label>Tipo de membro</label>
             <v-select v-model="membro.tipo_membro_id" :options="tiposMembroToSelectList">
               <span slot="no-options">
                 Nenhum resultado encontrado
@@ -16,11 +17,52 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <fg-input type="text" :required="true" label="Nome" placeholder="Nome" v-model="membro.nome" />
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <fg-input :type="'email'" :required="true" label="Email" placeholder="Email" v-model="membro.email" />
+          </div>
+          <div class="col-md-4">
+            <fg-input :type="'date'" :required="true" label="Data de Nascimento" placeholder="Data de Nascimento" v-model="membro.data_Nascimento" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <fg-input type="text" :required="true" label="Nome do Pai" placeholder="Nome do Pai" v-model="membro.nome_Pai" />
+          </div>
+          <div class="col-md-4">
+            <fg-input type="text" :required="true" label="Nome da Mãe" placeholder="Nome da Mãe" v-model="membro.nome_Mae" />
+          </div>
+        </div>
+        <h4>Informações Religiosas</h4>
+        <div class="row">
+          <div class="col-md-4">
+            <label for="">Batizado?</label>
+            <div class="">
+              <label><input type="radio" v-model="membro.batizado"  name="batizado" :value="false">Não</label>
+            </div>
+            <div class="">
+              <label><input type="radio" v-model="membro.batizado" name="batizado" :value="true">Sim</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="">Crismado?</label>
+            <div class="">
+              <label><input type="radio" v-model="membro.crismado"  name="crismado" :value="false">Não</label>
+            </div>
+            <div class="">
+              <label><input type="radio" v-model="membro.crismado" name="crismado" :value="true">Sim</label>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="">1º Eucaristia?</label>
+            <div class="">
+              <label><input type="radio" v-model="membro['1_eucaristia']"  name="1_eucaristia" :value="false">Não</label>
+            </div>
+            <div class="">
+              <label><input type="radio" v-model="membro['1_eucaristia']" name="1_eucaristia" :value="true">Sim</label>
+            </div>
           </div>
         </div>
 
@@ -31,7 +73,7 @@
         </h4>
 
         <div class="row telefone-row">
-          <transition-group name="list">
+          <transition-group name="list" tag="div">
             <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
               <fg-input type="text" :required="false" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
               <button class="btn" @click="removeTelefone(index)" type="button" v-if="membro.telefones.length > 1">
@@ -42,16 +84,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-6">
-            <fg-input type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="membro.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
-          </div>
-          <div class="col-md-6">
-            <fg-input type="text" :required="false" label="Celular" placeholder="Celular" v-model="membro.celular" v-mask="[ '(##) #####-####']" :pattern="'.{0}|.{15}'" :title="'Número inválido'" />
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label for="">Comunidades</label>
             <v-select v-model="membro.comunidades" :options="comunidadesToSelectList" multiple>
               <span slot="no-options">
@@ -59,7 +92,7 @@
               </span>
             </v-select>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label for="">Pastorais</label>
             <v-select v-model="membro.pastorais" :options="pastoraisToSelectList" multiple>
               <span slot="no-options">
@@ -246,17 +279,19 @@ export default {
 .telefone-row {
   padding: 15px;
 }
-.telefone-row  [class*="col-"] {
-    padding-left: 5px !important;
-    padding-right: 5px !important;
+.telefone-row [class*="col-"] {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
 }
 .telefone-row .form-group {
   display: inline-block;
 }
-.list-enter-active, .list-leave-active {
+.list-enter-active,
+.list-leave-active {
   transition: all 1s;
 }
-.list-enter, .list-leave-to /* .list-leave-active em versões anteriores a 2.1.8 */ {
+.list-enter,
+.list-leave-to {
   opacity: 0;
   transform: translateY(30px);
 }
