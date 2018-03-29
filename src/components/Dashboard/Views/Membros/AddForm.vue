@@ -9,7 +9,7 @@
         <div class="row">
           <div class="col-md-3">
             <label>Tipo de membro</label>
-            <v-select v-model="membro.tipo_membro_id" :options="tiposMembroToSelectList">
+            <v-select v-model="membro.tipo_membro" :options="tiposMembroToSelectList">
               <span slot="no-options">
                 Nenhum resultado encontrado
               </span>
@@ -85,7 +85,7 @@
         <div class="row telefone-row">
           <transition-group name="list" tag="div">
             <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
-              <fg-input type="text" :required="false" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
+              <fg-input type="text" :required="false" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{0}|.{14}|.{15}'" :title="'Número inválido'" />
               <button class="btn" @click="removeTelefone(index)" type="button" v-if="membro.telefones.length > 1">
                 <i aria-hidden="true" class="fa fa-minus"></i>
               </button>
@@ -134,30 +134,28 @@
           <div class="row" v-for="(dependente, index) in membro.dependentes" :key="index">
             <div class="col-md-3">
               <label>Dependente</label>
-              <v-select v-model="dependente.tipo_dependente_id" :options="tiposDependenteToSelectList">
+              <v-select v-model="dependente.tipo_dependente" :options="tiposDependenteToSelectList">
                 <span slot="no-options">
                   Nenhum resultado encontrado
                 </span>
               </v-select>
             </div>
             <transition name="list">
-              <div class="col-md-3" v-if="dependente.tipo_dependente_id">
-                <fg-input type="text" :required="true" :label="`Nome ${dependente.tipo_dependente_id? dependente.tipo_dependente_id.label: ''}`" placeholder="Nome do dependente" v-model="dependente.nome" />
+              <div class="col-md-3" v-if="dependente.tipo_dependente">
+                <fg-input type="text" :required="true" :label="`Nome ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Nome do dependente" v-model="dependente.nome" />
               </div>
             </transition>
             <transition name="list">
-              <div class="col-md-3" v-if="dependente.tipo_dependente_id">
-                <fg-input type="date" :required="true" :label="`Data de Nascimento ${dependente.tipo_dependente_id? dependente.tipo_dependente_id.label: ''}`" placeholder="Data de Nascimento" v-model="dependente.data_Nascimento" />
+              <div class="col-md-3" v-if="dependente.tipo_dependente">
+                <fg-input type="date" :required="true" :label="`Data de Nascimento ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Data de Nascimento" v-model="dependente.data_Nascimento" />
               </div>
             </transition>
-            <div class="col-md-3">
-              <div class="form-grou">
+            <div class="col-md-3" v-if="membro.dependentes.length > 1">
                 <label for="">Remover</label>
                 <br>
-                <button class="btn" @click="removeDependente(index)" type="button" v-if="membro.dependentes.length > 1">
+                <button class="btn" @click="removeDependente(index)" type="button" >
                 <i aria-hidden="true" class="fa fa-minus"></i>
               </button>
-              </div>
             </div>
           </div>
         </transition-group>
@@ -196,11 +194,6 @@ export default {
       pastorais: [],
       tiposDependente: [],
     };
-  },
-  watch: {
-    membro() {
-      console.log(this.membro);
-    },
   },
   mounted() {
     axios.get(tiposMembroUrl).then(({ data }) => {
@@ -244,29 +237,25 @@ export default {
   },
   methods: {
     add() {
-      console.log(this.membro, membrosUrl);
-      // this.showLoader = true;
+      this.membro.tipo_membro_id = this.membro.tipo_membro.value;
+      this.membro.dependentes = this.membro.dependentes.map(dependente => Object.assign(dependente, { tipo_dependente_id: dependente.tipo_dependente.value }));
 
-      // axios
-      //   .post(membrosUrl, JSON.stringify(this.membro), {
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //   })
-      //   .then((response) => {
-      //     console.log(response);
-      //     this.showLoader = false;
-
-      //     this.$notify({
-      //       group: 'top-right',
-      //       title: 'Sucesso!',
-      //       text: 'membro inserido com sucesso',
-      //       type: 'success',
-      //       speed: 1000,
-      //     });
-      //     this.$router.push({ path: '/admin/membros-pastorais' });
-      //   })
-      //   .catch(error => console.log(error));
+      this.showLoader = true;
+      axios
+        .post(membrosUrl, JSON.stringify(this.membro), {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(({ data }) => {
+          this.$notifications.notify(
+            this.notificationConfig(data.message,
+            ),
+          );
+          this.$router.push({ path: '/admin/membros' });
+          this.showLoader = false;
+        })
+        .catch(error => console.log(error));
     },
     getTelMask() {
       return ['(##) ####-####'];

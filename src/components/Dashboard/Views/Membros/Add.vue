@@ -24,6 +24,7 @@ export default {
         crismado: false,
         batizado: false,
         '1_eucaristia': false,
+        status: 1,
       },
     };
   },
