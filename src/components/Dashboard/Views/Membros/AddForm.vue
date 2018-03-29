@@ -257,9 +257,6 @@ export default {
         })
         .catch(error => console.log(error));
     },
-    getTelMask() {
-      return ['(##) ####-####'];
-    },
     searchCEP(event) {
       const cep = event.target.value;
       this.showLoader = true;
