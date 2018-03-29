@@ -20,7 +20,7 @@
     <div class="tab-content">
       <div v-if="tabs.tabList">
         <h3>Resumo de todas as movimentações:</h3>
-        <ValueRow :credit="billingSummary.credit" :debt="billingSummary.debt" :total="billingSummary.total" />
+        <ValueRow />
         <h3>Lista de movimentações:</h3>
         <table class="table">
           <thead>
@@ -60,7 +60,7 @@
               <fg-input type="text " :required="true " :disabled="tabs.tabDelete" label="Nome " placeholder="Nome " v-model="billingCycle.name" />
             </div>
             <div class="col-md-4 ">
-              <fg-input type="month" :required="true " :disabled="tabs.tabDelete" label="Mês e Ano " placeholder="Mês e Ano " v-model="billingCycle.date" />
+              <fg-input type="date" :required="true " :disabled="tabs.tabDelete" label="Data" placeholder="Data" v-model="billingCycle.date" />
             </div>
             <div class="col-md-4 ">
               <label>Comunidade:</label>
@@ -174,7 +174,7 @@
         </form>
       </transition>
       <transition name="fade">
-        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles" :comunidades="comunidades"/>
+        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles" :comunidades="comunidades" />
       </transition>
     </div>
   </div>
@@ -185,11 +185,7 @@ import ValueBox from '@/components/UIComponents/ValueBox';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Extrato from './Extrato';
 
-import {
-  billingCyclesApiUrl,
-  billingSummaryApiUrl,
-  comunidadesApiUrl,
-} from './../../../../api-url';
+import { billingCyclesApiUrl, comunidadesApiUrl } from './../../../../api-url';
 
 export default {
   components: {
@@ -227,7 +223,6 @@ export default {
   mounted() {
     this.showLoader = true;
     this.getBillingCycles();
-    this.getBillingSumary();
     this.getComunidades();
   },
   computed: {
@@ -262,18 +257,6 @@ export default {
       const sum = array.reduce((prev, curr) => prev + curr.value, 0);
       return sum;
     },
-    getBillingSumary() {
-      axios
-        .get(billingSummaryApiUrl)
-        .then(({ data }) => {
-          this.billingSummary.credit = data.credit;
-          this.billingSummary.debt = data.debt;
-          this.billingSummary.total = data.credit - data.debt;
-        })
-        .catch((response) => {
-          console.log(response);
-        });
-    },
     toggleTabs(tab) {
       /* eslint-disable no-param-reassign */
       const setAll = (obj, val) =>
@@ -303,23 +286,24 @@ export default {
 
       this.total = this.credit - this.debt;
     },
-    showTabUpdate(billingCycle) {
-      this.toggleTabs('tabUpdate');
+    configurarTabUpdateETabDelete(tab, billingCycle) {
       /* eslint-disable no-param-reassign */
-      billingCycle.date = billingCycle.date.substring(0, 7);
+      this.toggleTabs(tab);
+      billingCycle.date = billingCycle.date.substring(0, 10);
       axios
         .get(`${comunidadesApiUrl}/${billingCycle.comunidade_id}`)
         .then(({ data }) => {
           this.comunidadeSelecionada = { label: data.nome, value: data.id };
         });
       this.billingCycle = billingCycle;
+      /* eslint-enable no-param-reassign */
+    },
+    showTabUpdate(billingCycle) {
+      this.configurarTabUpdateETabDelete('tabUpdate', billingCycle);
       this.initCreditsAndDebts();
     },
     showTabDelete(billingCycle) {
-      this.toggleTabs('tabDelete');
-      billingCycle.date = billingCycle.date.substring(0, 7);
-      this.billingCycle = billingCycle;
-      /* eslint-enable no-param-reassign */
+      this.configurarTabUpdateETabDelete('tabDelete', billingCycle);
     },
     showTabCreate() {
       this.toggleTabs('tabCreate');
@@ -352,7 +336,6 @@ export default {
         .then((response) => {
           console.log(response);
           this.getBillingCycles();
-          this.getBillingSumary();
           this.toggleTabs('tabList');
           this.notify(this.billingCycle.name, 'inserido');
         })

@@ -20,7 +20,7 @@
     </div>
 
     <!-- Controle Financeiro -->
-    <value-row :credit="billingSummary.credit" :debt="billingSummary.debt" :total="billingSummary.total" />
+    <value-row/>
 
     <div class="row">
       <solicitacoes title="Casamentos" :solicitacoes="casamentos"></solicitacoes>
@@ -81,7 +81,7 @@ import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
-import { billingSummaryApiUrl, facebookApiUrl } from './../../../../api-url';
+import { facebookApiUrl, analyticsUrl } from './../../../../api-url';
 
 export default {
   components: {
@@ -159,18 +159,19 @@ export default {
           footerIcon: 'ti-calendar',
         },
         {
-          type: 'danger',
+          type: 'sucess',
           icon: 'ti-pulse',
-          title: 'Errors',
-          value: '23',
-          footerText: 'In the last hour',
-          footerIcon: 'ti-timer',
+          title: 'Visitantes ao site',
+          value: localStorage.getItem('gaSessions'),
+          footerText: 'Nos últimos 7 dias',
+          footerIcon: 'ti-calendar',
+          id: 'analytics',
         },
         {
           type: 'info',
           icon: 'ti-facebook',
           title: 'Curtidas',
-          value: 0,
+          value: localStorage.getItem('fan_count'),
           footerText: 'Atualizar agora',
           footerIcon: 'ti-reload',
           id: 'facebook',
@@ -245,30 +246,13 @@ export default {
         },
         options: {},
       },
-      billingSummary: {
-        credit: 0,
-        debt: 0,
-        total: 0,
-      },
     };
   },
   mounted() {
-    this.getBillingSumary();
     this.getFacebook();
+    this.getAnalytics();
   },
   methods: {
-    getBillingSumary() {
-      axios
-        .get(billingSummaryApiUrl)
-        .then(({ data }) => {
-          this.billingSummary.credit = data.credit;
-          this.billingSummary.debt = data.debt;
-          this.billingSummary.total = data.credit - data.debt;
-        })
-        .catch((response) => {
-          console.log(response);
-        });
-    },
     getFacebook() {
       axios
         .get(facebookApiUrl)
@@ -276,11 +260,28 @@ export default {
           const facebookStat = this.statsCards.find(
             stat => stat.id === 'facebook',
           );
-          facebookStat.value = data.fan_count;
+          facebookStat.value = data.fan_count ? data.fan_count : 1800;
+
+          localStorage.setItem('fan_count', facebookStat.value);
         })
         .catch((response) => {
           console.log(response);
         });
+    },
+    getAnalytics() {
+      const analyticsStat = this.statsCards.find(
+        stat => stat.id === 'analytics',
+      );
+      if (process.env.NODE_ENV !== 'development') {
+        axios.get(analyticsUrl).then(({ data }) => {
+          const gaSessions = data.totalsForAllResults['ga:sessions'];
+          analyticsStat.value = gaSessions;
+          localStorage.setItem('gaSessions', gaSessions);
+        });
+      }
+
+      analyticsStat.value = 5;
+      localStorage.setItem('gaSessions', 5);
     },
   },
 };

@@ -82,22 +82,22 @@ const routes = [
       },
       {
         path: 'eventos/add',
-        name: 'Eventos',
+        name: 'Novo Evento',
         component: AddEventos,
       },
       {
         path: 'eventos/:id',
-        name: 'Eventos',
+        name: 'Evento',
         component: ProfileEventos,
       },
       {
         path: 'eventos-home/add',
-        name: 'Eventos Home',
+        name: 'Novo evento home',
         component: AddEventosHome,
       },
       {
         path: 'eventos-home/:id',
-        name: 'Eventos Home',
+        name: 'Evento Home',
         component: EventosHomeProfile,
       },
       {
@@ -107,17 +107,17 @@ const routes = [
       },
       {
         path: 'mensagens-paroco/add',
-        name: 'mensagens Paroco',
+        name: 'Nova mensagem do Paroco',
         component: AddMensagensParoco,
       },
       {
         path: 'mensagens-paroco/:id',
-        name: 'mensagens Paroco',
+        name: 'mensagem do Paroco',
         component: MensagensParocoProfile,
       },
       {
         path: 'mensagens-paroco',
-        name: 'mensagens Paroco',
+        name: 'mensagens do Paroco',
         component: MensagensParoco,
       },
       {
