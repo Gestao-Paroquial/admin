@@ -11,27 +11,42 @@
           <form @submit.prevent="add">
 
             <div class="row">
-              <div class="col-md-6">
-                <fg-input type="text" :required="true" label="Título do Evento" placeholder="Título" v-model="event.title" />
+              <div class="col-md-4">
+                <fg-input type="text" :required="true" label="Título do Evento" placeholder="Título" v-model="event.titulo" />
               </div>
-              <div class="col-md-6">
-                <fg-input :type="'text'" :required="true" label="Descricão do Evento" placeholder="Descricão" v-model="event.description" />
+              <div class="col-md-4">
+                <fg-input :type="'text'" :required="true" label="Descricão do Evento" placeholder="Descricão" v-model="event.descricao" />
               </div>
-
+              <div class="col-md-4">
+                <label>Tipo de evento</label>
+                <v-select v-model="event.tipoEvento" :options="tiposEventoToSelectList">
+                  <span slot="no-options">
+                    Nenhum resultado encontrado
+                  </span>
+                </v-select>
+              </div>
             </div>
 
             <div class="row">
-              <div class="col-md-6">
-                <fg-input type="datetime-local" :required="true" label="Início do Evento" placeholder="Data" v-model="event.start" />
+              <div class="col-md-4">
+                <label>Comunidade</label>
+                <v-select v-model="event.comunidade" :options="comunidadesToSelectList">
+                  <span slot="no-options">
+                    Nenhum resultado encontrado
+                  </span>
+                </v-select>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-4">
+                <fg-input type="datetime-local" :required="true" label="Início do Evento" placeholder="Data" v-model="event.data_evento" />
+              </div>
+              <div class="col-md-4">
                 <fg-input type="datetime-local" :required="false" label="Fim do Evento" placeholder="Data" v-model="event.end" />
               </div>
             </div>
 
             <hr>
             <div class="text-center">
-              <button class="btn btn-info btn-fill btn-wd">
+              <button class="btn btn-info btn-fill btn-wd" type="submit">
                 Adicionar
               </button>
             </div>
@@ -43,18 +58,44 @@
   </div>
 </template>
 <script>
+import axios from '@/plugins/axios';
+import { tiposEventoUrl, comunidadesApiUrl } from '../../../../api-url/index';
+
 export default {
   data() {
     return {
       event: {
-        start: '', // Required
-        title: '', // Required
-        description: '',
+        data_evento: '', // Required
+        titulo: '', // Required
+        descricao: '',
       },
       showLoader: false,
+      tiposEvento: [],
+      comunidades: [],
     };
   },
-
+  mounted() {
+    axios.get(tiposEventoUrl).then(({ data }) => {
+      this.tiposEvento = data;
+    });
+    axios.get(comunidadesApiUrl).then(({ data }) => {
+      this.comunidades = data;
+    });
+  },
+  computed: {
+    tiposEventoToSelectList() {
+      return this.tiposEvento.map(tipoEvento => ({
+        label: tipoEvento.descricao,
+        value: tipoEvento.id,
+      }));
+    },
+    comunidadesToSelectList() {
+      return this.comunidades.map(comunidade => ({
+        label: comunidade.nome,
+        value: comunidade.id,
+      }));
+    },
+  },
   methods: {
     notify(eventTitle = 'Evento', action = '') {
       this.$notifications.notify(
@@ -62,19 +103,21 @@ export default {
       );
     },
     add() {
-      this.event.id = new Date().getTime();
+      this.event.tipo_evento_id = this.event.tipoEvento.value;
+      console.log(JSON.stringify(this.event, null, 2));
+      // this.event.id = new Date().getTime();
 
-      let events = JSON.parse(localStorage.getItem('events'));
+      // let events = JSON.parse(localStorage.getItem('events'));
 
-      if (!events) events = [];
+      // if (!events) events = [];
 
-      events.push(this.event);
+      // events.push(this.event);
 
-      localStorage.setItem('events', JSON.stringify(events));
+      // localStorage.setItem('events', JSON.stringify(events));
 
-      this.notify(this.event.title, 'inserido');
+      // this.notify(this.event.title, 'inserido');
 
-      this.$router.push({ path: '/admin/eventos' });
+      // this.$router.push({ path: '/admin/eventos' });
     },
   },
 };
