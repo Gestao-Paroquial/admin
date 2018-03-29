@@ -66,6 +66,25 @@
           </div>
         </div>
 
+        <div class="row">
+          <div class="col-md-4">
+            <label for="">Comunidades que participa</label>
+            <v-select v-model="membro.comunidades" :options="comunidadesToSelectList" multiple>
+              <span slot="no-options">
+                Nenhum resultado encontrado
+              </span>
+            </v-select>
+          </div>
+          <div class="col-md-4">
+            <label for="">Pastorais que participa</label>
+            <v-select v-model="membro.pastorais" :options="pastoraisToSelectList" multiple>
+              <span slot="no-options">
+                Nenhum resultado encontrado
+              </span>
+            </v-select>
+          </div>
+        </div>
+
         <h4>Telefones
           <button @click="addTelefone" class="btn" type="button">
             <i aria-hidden="true" class="fa fa-plus"></i>
@@ -83,24 +102,6 @@
           </transition-group>
         </div>
 
-        <div class="row">
-          <div class="col-md-4">
-            <label for="">Comunidades</label>
-            <v-select v-model="membro.comunidades" :options="comunidadesToSelectList" multiple>
-              <span slot="no-options">
-                Nenhum resultado encontrado
-              </span>
-            </v-select>
-          </div>
-          <div class="col-md-4">
-            <label for="">Pastorais</label>
-            <v-select v-model="membro.pastorais" :options="pastoraisToSelectList" multiple>
-              <span slot="no-options">
-                Nenhum resultado encontrado
-              </span>
-            </v-select>
-          </div>
-        </div>
         <h4>Endereço</h4>
         <div class="row">
           <div class="col-md-2">
