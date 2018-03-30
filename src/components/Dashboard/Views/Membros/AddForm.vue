@@ -85,7 +85,7 @@
         <div class="row telefone-row">
           <transition-group name="list" tag="div">
             <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
-              <fg-input type="text" :required="false" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{0}|.{14}|.{15}'" :title="'Número inválido'" />
+              <fg-input type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
               <button class="btn" @click="removeTelefone(index)" type="button" v-if="membro.telefones.length > 1">
                 <i aria-hidden="true" class="fa fa-minus"></i>
               </button>
@@ -151,9 +151,9 @@
               </div>
             </transition>
             <div class="col-md-3" v-if="membro.dependentes.length > 1">
-                <label for="">Remover</label>
-                <br>
-                <button class="btn" @click="removeDependente(index)" type="button" >
+              <label for="">Remover</label>
+              <br>
+              <button class="btn" @click="removeDependente(index)" type="button">
                 <i aria-hidden="true" class="fa fa-minus"></i>
               </button>
             </div>
@@ -238,7 +238,14 @@ export default {
   methods: {
     add() {
       this.membro.tipo_membro_id = this.membro.tipo_membro.value;
-      this.membro.dependentes = this.membro.dependentes.map(dependente => Object.assign(dependente, { tipo_dependente_id: dependente.tipo_dependente.value }));
+
+      this.membro.dependentes = this.membro.dependentes
+        .filter(dependente => dependente.tipo_dependente)
+        .map(dependente =>
+          Object.assign(dependente, {
+            tipo_dependente_id: dependente.tipo_dependente.value,
+          }),
+        );
 
       this.showLoader = true;
       axios
@@ -248,14 +255,14 @@ export default {
           },
         })
         .then(({ data }) => {
-          this.$notifications.notify(
-            this.notificationConfig(data.message,
-            ),
-          );
+          this.$notifications.notify(this.notificationConfig(data.message));
           this.$router.push({ path: '/admin/membros' });
           this.showLoader = false;
         })
-        .catch(error => console.log(error));
+        .catch((error) => {
+          this.showLoader = false;
+          console.log(error);
+        });
     },
     searchCEP(event) {
       const cep = event.target.value;
@@ -277,22 +284,6 @@ export default {
           );
           this.showLoader = false;
         });
-
-      // axios
-      //   .get(uri)
-      //   .then(({ data }) => {
-      //     this.membro.endereco = data.logradouro;
-      //     this.membro.cidade = data.localidade;
-      //     this.membro.uf = data.uf;
-      //     this.membro.bairro = data.bairro;
-      //   })
-      //   .catch((error) => {
-      //     console.log(error);
-      //     alert('CEP INVÁLIDO');
-      //   })
-      //   .then(() => {
-      //     this.showLoader = false;
-      //   });
     },
     addTelefone() {
       this.membro.telefones.push({});
