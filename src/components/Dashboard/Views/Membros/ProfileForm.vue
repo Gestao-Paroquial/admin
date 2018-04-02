@@ -86,7 +86,7 @@
           <transition-group name="list" tag="div">
             <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
               <fg-input :disabled="isDelete" type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
-              <button class="btn" @click="removeTelefone(index)" type="button" v-if="membro.telefones.length > 1 && !isDelete">
+              <button class="btn" @click="removeTelefone(index)" type="button" v-if="!isDelete">
                 <i aria-hidden="true" class="fa fa-minus"></i>
               </button>
             </div>
@@ -186,6 +186,7 @@ import {
   pastoraisApiUrl,
   tiposDependenteUrl,
   dependentesUrl,
+  telefonesUrl,
 } from '../../../../api-url/index';
 
 export default {
@@ -203,6 +204,7 @@ export default {
       pastorais: [],
       tiposDependente: [],
       dependentesToDelete: [],
+      telefonesToDelete: [],
     };
   },
   mounted() {
@@ -297,6 +299,7 @@ export default {
           dialog.close();
           this.$notifications.notify(this.notificationConfig(data.message));
           this.deleteDependentes();
+          this.deleteTelefones();
         })
         .catch((error) => {
           console.log(error);
@@ -305,6 +308,11 @@ export default {
     deleteDependentes() {
       this.dependentesToDelete.forEach((dependente) => {
         if (dependente.id) axios.delete(`${dependentesUrl}/${dependente.id}`);
+      });
+    },
+    deleteTelefones() {
+      this.telefonesToDelete.forEach((telefone) => {
+        if (telefone.id) axios.delete(`${telefonesUrl}/${telefone.id}`);
       });
     },
     deleteMembro() {
@@ -351,6 +359,7 @@ export default {
       this.membro.dependentes.push({});
     },
     removeTelefone(index) {
+      this.telefonesToDelete.push(this.membro.telefones[index]);
       this.membro.telefones.splice(index, 1);
     },
     removeDependente(index) {

@@ -11,6 +11,7 @@ export const tiposMembroUrl = `${backEndUrl}/api/tiposMembro`;
 export const tiposDependenteUrl = `${backEndUrl}/api/tiposDependente`;
 export const tiposEventoUrl = `${backEndUrl}/api/tiposEvento`;
 export const dependentesUrl = `${backEndUrl}/api/dependentes`;
+export const telefonesUrl = `${backEndUrl}/api/telefones`;
 export const facebookApiUrl = `${billingCyclesUrl}/api/facebook`;
 export const billingCyclesApiUrl = `${billingCyclesUrl}/api/billingCycles`;
 export const billingSummaryApiUrl = `${billingCyclesUrl}/api/billingSummary`;
