@@ -22,13 +22,20 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Telefone" placeholder="Telefone" v-model="comunidade.telefone" v-mask="['(##) ####-####']" :pattern="'.{0}|.{14}'" :title="'Número inválido'" />
-          </div>
-          <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Celular" placeholder="Celular" v-model="comunidade.celular" v-mask="[ '(##) #####-####']" :pattern="'.{0}|.{15}'" :title="'Número inválido'" />
-          </div>
+        <h4>Telefones
+          <button @click="addTelefone" class="btn" type="button" v-if="!$route.query.delete">
+            <i aria-hidden="true" class="fa fa-plus"></i>
+          </button>
+        </h4>
+        <div class="row telefone-row">
+          <transition-group name="list" tag="div">
+            <div class="col-md-4" v-for="(telefone, index) in comunidade.telefones" :key="index">
+              <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
+              <button class="btn" @click="removeTelefone(index)" type="button" v-if="!$route.query.delete">
+                <i aria-hidden="true" class="fa fa-minus"></i>
+              </button>
+            </div>
+          </transition-group>
         </div>
 
         <div class="row">
@@ -71,7 +78,7 @@
           <button class="btn btn-warning btn-fill btn-wd" v-if="$route.query.update">
             Alterar
           </button>
-          <button class="btn btn-danger btn-fill btn-wd" v-if="$route.query.delete" @click.prevent="del">
+          <button class="btn btn-danger btn-fill btn-wd" v-if="$route.query.delete" @click.prevent="deleteComunidade">
             Deletar
           </button>
         </div>
@@ -92,9 +99,29 @@ export default {
   data() {
     return {
       showLoader: false,
+      telefonesToDelete: [],
     };
   },
   methods: {
+    addTelefone() {
+      this.comunidade.telefones.push({});
+    },
+    removeTelefone(index) {
+      if (this.comunidade.telefones[index].id) {
+        this.$dialog
+          .confirm('Você tem certeza?')
+          .then((dialog) => {
+            dialog.close();
+            this.telefonesToDelete.push(this.comunidade.telefones[index]);
+            this.comunidade.telefones.splice(index, 1);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.comunidade.telefones.splice(index, 1);
+      }
+    },
     handleSubmit() {
       if (!this.$route.params.id) this.addComunidade();
       if (this.$route.query.update) this.updateComunidade();
@@ -130,7 +157,7 @@ export default {
           console.log(error);
         });
     },
-    del() {
+    deleteComunidade() {
       let dialog;
       this.$dialog
         .confirm()
@@ -165,5 +192,23 @@ export default {
 };
 </script>
 <style>
-
+.telefone-row {
+  padding: 15px;
+}
+.telefone-row [class*="col-"] {
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
+.telefone-row .form-group {
+  display: inline-block;
+}
+.list-enter-active,
+.list-leave-active {
+  transition: all 1s;
+}
+.list-enter,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
 </style>

@@ -38,14 +38,13 @@ export default {
   },
   data() {
     return {
-      comunidade: {},
+      comunidade: { telefones: [] },
       billingCycles: [],
     };
   },
   mounted() {
-    const self = this;
     axios
-      .get(`${comunidadesApiUrl}/${self.$route.params.id}`)
+      .get(`${comunidadesApiUrl}/${this.$route.params.id}`)
       .then(({ data }) => {
         this.comunidade = data;
       })

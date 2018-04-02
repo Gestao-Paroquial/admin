@@ -2,7 +2,7 @@
   <div class="row">
     <back-button/>
     <div class="col-lg-12 ">
-      <add-form :comunidade="comunidade" :teste="teste" />
+      <add-form :comunidade="comunidade" />
     </div>
   </div>
 </template>
@@ -15,8 +15,7 @@ export default {
   },
   data() {
     return {
-      comunidade: {},
-      teste: '',
+      comunidade: { telefones: [] },
     };
   },
 };
