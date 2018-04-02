@@ -9,7 +9,7 @@
         <div class="row">
           <div class="col-md-3">
             <label>Tipo de membro</label>
-            <v-select v-model="membro.tipo_membro" :options="tiposMembroToSelectList">
+            <v-select :disabled="$route.query.delete" v-model="membro.tipo_membro" :options="tiposMembroToSelectList">
               <span slot="no-options">
                 Nenhum resultado encontrado
               </span>
@@ -18,13 +18,13 @@
         </div>
         <div class="row">
           <div class="col-md-4">
-            <fg-input type="text" :required="true" label="Nome" placeholder="Nome" v-model="membro.nome" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Nome" placeholder="Nome" v-model="membro.nome" />
           </div>
           <div class="col-md-4">
-            <fg-input :type="'email'" :required="true" label="Email" placeholder="Email" v-model="membro.email" />
+            <fg-input :disabled="$route.query.delete" :type="'email'" :required="true" label="Email" placeholder="Email" v-model="membro.email" />
           </div>
           <div class="col-md-4">
-            <fg-input :type="'date'" :required="true" label="Data de Nascimento" placeholder="Data de Nascimento" v-model="membro.data_Nascimento" />
+            <fg-input :disabled="$route.query.delete" :type="'date'" :required="true" label="Data de Nascimento" placeholder="Data de Nascimento" v-model="membro.data_Nascimento" />
           </div>
         </div>
         <h4>Informações Religiosas</h4>
@@ -61,7 +61,7 @@
         <div class="row">
           <div class="col-md-4">
             <label for="">Comunidades que participa</label>
-            <v-select v-model="membro.comunidades" :options="comunidadesToSelectList" multiple>
+            <v-select :disabled="$route.query.delete" v-model="membro.comunidades" :options="comunidadesToSelectList" multiple>
               <span slot="no-options">
                 Nenhum resultado encontrado
               </span>
@@ -69,7 +69,7 @@
           </div>
           <div class="col-md-4">
             <label for="">Pastorais que participa</label>
-            <v-select v-model="membro.pastorais" :options="pastoraisToSelectList" multiple>
+            <v-select :disabled="$route.query.delete" v-model="membro.pastorais" :options="pastoraisToSelectList" multiple>
               <span slot="no-options">
                 Nenhum resultado encontrado
               </span>
@@ -85,7 +85,7 @@
         <div class="row telefone-row">
           <transition-group name="list" tag="div">
             <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
-              <fg-input type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
+              <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
               <button class="btn" @click="removeTelefone(index)" type="button" v-if="membro.telefones.length > 1">
                 <i aria-hidden="true" class="fa fa-minus"></i>
               </button>
@@ -100,28 +100,28 @@
               <label>
                 CEP
               </label>
-              <input class="form-control border-input" placeholder="CEP" v-model="membro.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" @change="searchCEP" required="required" type="text">
+              <input class="form-control border-input" placeholder="CEP" v-model="membro.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" @change="searchCEP" required="required" type="text" :disabled="$route.query.delete">
             </div>
           </div>
           <div class="col-md-5">
-            <fg-input type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="membro.endereco" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="membro.endereco" />
           </div>
           <div class="col-md-2">
-            <fg-input type="text" :required="true" label="Número" placeholder="Número" v-model="membro.nro" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="membro.nro" />
           </div>
           <div class="col-md-3">
-            <fg-input type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="membro.compl" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="membro.compl" />
           </div>
         </div>
         <div class="row">
           <div class="col-md-5">
-            <fg-input type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="membro.bairro" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="membro.bairro" />
           </div>
           <div class="col-md-5">
-            <fg-input type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="membro.cidade" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="membro.cidade" />
           </div>
           <div class="col-md-2">
-            <fg-input type="text" :required="true" label="UF" placeholder="UF" v-model="membro.uf" />
+            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="UF" placeholder="UF" v-model="membro.uf" />
           </div>
         </div>
 
@@ -134,7 +134,7 @@
           <div class="row" v-for="(dependente, index) in membro.dependentes" :key="index">
             <div class="col-md-3">
               <label>Dependente</label>
-              <v-select v-model="dependente.tipo_dependente" :options="tiposDependenteToSelectList">
+              <v-select :disabled="$route.query.delete" v-model="dependente.tipo_dependente" :options="tiposDependenteToSelectList">
                 <span slot="no-options">
                   Nenhum resultado encontrado
                 </span>
@@ -142,12 +142,12 @@
             </div>
             <transition name="list">
               <div class="col-md-3" v-if="dependente.tipo_dependente">
-                <fg-input type="text" :required="true" :label="`Nome ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Nome do dependente" v-model="dependente.nome" />
+                <fg-input :disabled="$route.query.delete" type="text" :required="true" :label="`Nome ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Nome do dependente" v-model="dependente.nome" />
               </div>
             </transition>
             <transition name="list">
               <div class="col-md-3" v-if="dependente.tipo_dependente">
-                <fg-input type="date" :required="true" :label="`Data de Nascimento ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Data de Nascimento" v-model="dependente.data_Nascimento" />
+                <fg-input :disabled="$route.query.delete" type="date" :required="true" :label="`Data de Nascimento ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Data de Nascimento" v-model="dependente.data_Nascimento" />
               </div>
             </transition>
             <div class="col-md-3" v-if="membro.dependentes.length > 1">
@@ -161,8 +161,14 @@
         </transition-group>
         <hr>
         <div class="text-center">
-          <button class="btn btn-info btn-fill btn-wd">
+          <button class="btn btn-info btn-fill btn-wd" v-if="!this.$route.params.id">
             Adicionar
+          </button>
+          <button class="btn btn-warning btn-fill btn-wd" v-if="$route.query.update">
+            Alterar Membro
+          </button>
+          <button class="btn btn-danger btn-fill btn-wd" @click.prevent="deleteMembro" v-if="$route.query.delete">
+            Deletar
           </button>
         </div>
         <div class="clearfix" />
@@ -199,18 +205,20 @@ export default {
     axios.get(tiposMembroUrl).then(({ data }) => {
       this.tiposMembro = data;
       const foo = this.tiposMembro.find(tipoMembro => tipoMembro.id === this.membro.tipo_membro_id);
-      if (foo) this.membro.tipo_membro = { label: foo.descricao, value: this.membro.tipo_membro_id };
+      if (foo) {
+        this.membro.tipo_membro = {
+          label: foo.descricao,
+          value: this.membro.tipo_membro_id,
+        };
+      }
     });
     axios.get(tiposDependenteUrl).then(({ data }) => {
       this.tiposDependente = data;
 
-      if (!this.$route.params.id) {
+      if (this.$route.params.id) {
         this.membro.dependentes.forEach((dependente) => {
           const { descricao } = this.tiposDependente.find(tipo => tipo.id === dependente.tipo_dependente_id);
-          Object.assign(dependente, { tipo_dependente: {
-            label: descricao,
-            value: dependente.id,
-          } });
+          Object.assign(dependente, { tipo_dependente: { label: descricao, value: dependente.id } });
         });
       }
     });
@@ -223,60 +231,37 @@ export default {
   },
   computed: {
     tiposMembroToSelectList() {
-      return this.tiposMembro.map(tipoMembro => ({
-        label: tipoMembro.descricao,
-        value: tipoMembro.id,
-      }));
+      return this.tiposMembro.map(tipoMembro => ({ label: tipoMembro.descricao, value: tipoMembro.id }));
     },
     tiposDependenteToSelectList() {
-      return this.tiposDependente.map(tipoDependente => ({
-        label: tipoDependente.descricao,
-        value: tipoDependente.id,
-      }));
+      return this.tiposDependente.map(tipoDependente => ({ label: tipoDependente.descricao, value: tipoDependente.id }));
     },
     comunidadesToSelectList() {
-      return this.comunidades.map(comunidade => ({
-        label: comunidade.nome,
-        value: comunidade.id,
-      }));
+      return this.comunidades.map(comunidade => ({ label: comunidade.nome, value: comunidade.id }));
     },
     pastoraisToSelectList() {
-      return this.pastorais.map(pastoral => ({
-        label: `${pastoral.nome} ${pastoral.id}`,
-        value: pastoral.id,
-      }));
+      return this.pastorais.map(pastoral => ({ label: `${pastoral.nome} ${pastoral.id}`, value: pastoral.id }));
     },
   },
   methods: {
     handleSubmit() {
       if (!this.$route.params.id) this.addMembro();
+      if (this.$route.query.update) this.updateMembro();
     },
     addMembro() {
       this.membro.tipo_membro_id = this.membro.tipo_membro.value;
 
       this.membro.dependentes = this.membro.dependentes
         .filter(dependente => dependente.tipo_dependente)
-        .map(dependente =>
-          Object.assign(dependente, {
-            tipo_dependente_id: dependente.tipo_dependente.value,
-          }),
-        );
+        .map(dependente => Object.assign(dependente, { tipo_dependente_id: dependente.tipo_dependente.value }));
 
-      this.membro.comunidades.forEach(comunidade => Object.assign(comunidade, {
-        comunidade_id: comunidade.value,
-      }));
+      this.membro.comunidades.forEach(comunidade => Object.assign(comunidade, { comunidade_id: comunidade.value }));
 
-      this.membro.pastorais.forEach(pastoral => Object.assign(pastoral, {
-        pastorai_id: pastoral.value,
-      }));
+      this.membro.pastorais.forEach(pastoral => Object.assign(pastoral, { pastorai_id: pastoral.value }));
 
       this.showLoader = true;
       axios
-        .post(membrosUrl, JSON.stringify(this.membro), {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+        .post(membrosUrl, JSON.stringify(this.membro), { headers: { 'Content-Type': 'application/json' } })
         .then(({ data }) => {
           this.$notifications.notify(this.notificationConfig(data.message));
           this.$router.push({ path: '/admin/membros' });
@@ -286,6 +271,39 @@ export default {
           this.showLoader = false;
           console.log(error);
         });
+    },
+    updateMembro() {
+      let dialog;
+      this.$dialog
+        .confirm()
+        .then((dialog_) => {
+          dialog = dialog_;
+          return axios
+            .put(`${membrosUrl}/${this.membro.id}`, JSON.stringify(this.membro), { headers: { 'Content-Type': 'application/json' } });
+        })
+        .then(({ data }) => {
+          dialog.close();
+          this.$notifications.notify(this.notificationConfig(data.message));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    deleteMembro() {
+      let dialog;
+      this.$dialog
+        .confirm()
+        .then((dialog_) => {
+          dialog = dialog_;
+          return axios
+            .delete(`${membrosUrl}/${this.membro.id}`);
+        })
+        .then(({ data }) => {
+          dialog.close();
+          this.$notifications.notify(this.notificationConfig(data.message));
+          this.$router.push({ path: '/admin/membros' });
+        })
+        .catch(err => console.log(err));
     },
     searchCEP(event) {
       const cep = event.target.value;
