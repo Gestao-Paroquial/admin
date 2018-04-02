@@ -26,7 +26,6 @@ import AddComunidade from '@/components/Dashboard/Views/Comunidades/Add';
 
 import Membros from '@/components/Dashboard/Views/Membros';
 import MembroProfile from '@/components/Dashboard/Views/Membros/Profile';
-import AddMembro from '@/components/Dashboard/Views/Membros/Add';
 
 import MensagensParoco from '@/components/Dashboard/Views/MensagensParoco';
 import MensagensParocoProfile from '@/components/Dashboard/Views/MensagensParoco/Profile';
@@ -138,12 +137,12 @@ const routes = [
       {
         path: 'membros/add',
         name: 'novo Membro',
-        component: AddMembro,
+        component: MembroProfile,
       },
       {
         path: 'membros/:id',
         name: 'membro',
-        component: AddMembro,
+        component: MembroProfile,
       },
       {
         path: 'membros',

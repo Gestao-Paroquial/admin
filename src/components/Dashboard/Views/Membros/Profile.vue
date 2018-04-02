@@ -2,45 +2,45 @@
   <div class="row">
     <back-button/>
     <div class="col-lg-12 ">
-      <update-form :membro="membro" />
+      <add-form :membro="membro" />
     </div>
   </div>
 </template>
 <script>
 import axios from '@/plugins/axios';
-import UpdateForm from './AddForm';
-import { membrosUrl, pastoraisApiUrl, tiposMembroUrl, tiposDependenteUrl, comunidadesApiUrl } from './../../../../api-url';
+import AddForm from './ProfileForm';
+import { membrosUrl } from '../../../../api-url/index';
+
+const CLASSE_TELEFONE_DO_MEMBRO = 3;
 
 export default {
   components: {
-    UpdateForm,
+    AddForm,
   },
   data() {
     return {
-      membro: {},
+      membro: {
+        classe_telefone_id: CLASSE_TELEFONE_DO_MEMBRO,
+        telefones: [{}],
+        dependentes: [{}],
+        crismado: 0,
+        batizado: 0,
+        '1_eucaristia': 0,
+        status: 1,
+      },
     };
   },
-  mounted() {
-    const self = this;
-    axios
-      .get(`${membrosUrl}/${self.$route.params.id}`)
-      .then(({ data }) => {
-        this.membro = data;
-      })
-      .catch(err => console.log(err));
-
-    axios.get(tiposMembroUrl).then(({ data }) => {
-      this.tiposMembro = data;
-    });
-    axios.get(tiposDependenteUrl).then(({ data }) => {
-      this.tiposDependente = data;
-    });
-    axios.get(comunidadesApiUrl).then(({ data }) => {
-      this.comunidades = data;
-    });
-    axios.get(pastoraisApiUrl).then(({ data }) => {
-      this.pastorais = data;
-    });
+  created() {
+    if (this.$route.params.id) {
+      axios
+        .get(`${membrosUrl}/${this.$route.params.id}`)
+        .then(({ data }) => {
+          this.membro = data;
+          this.membro.comunidades.forEach(comunidade => Object.assign(comunidade, { label: comunidade.nome, value: comunidade.id }));
+          this.membro.pastorais.forEach(pastoral => Object.assign(pastoral, { label: `${pastoral.nome} ${pastoral.id}`, value: pastoral.id }));
+        })
+        .catch(err => console.log(err));
+    }
   },
 };
 </script>
