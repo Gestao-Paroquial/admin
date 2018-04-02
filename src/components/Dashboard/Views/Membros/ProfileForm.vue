@@ -78,7 +78,7 @@
         </div>
 
         <h4>Telefones
-          <button @click="addTelefone" class="btn" type="button">
+          <button @click="addTelefone" class="btn" type="button" v-if="!$route.query.delete">
             <i aria-hidden="true" class="fa fa-plus"></i>
           </button>
         </h4>
@@ -86,7 +86,7 @@
           <transition-group name="list" tag="div">
             <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
               <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
-              <button class="btn" @click="removeTelefone(index)" type="button" v-if="membro.telefones.length > 1">
+              <button class="btn" @click="removeTelefone(index)" type="button" v-if="membro.telefones.length > 1 && !$route.query.delete">
                 <i aria-hidden="true" class="fa fa-minus"></i>
               </button>
             </div>
@@ -126,7 +126,7 @@
         </div>
 
         <h4>Dependentes
-          <button @click="addDependente" class="btn" type="button">
+          <button @click="addDependente" class="btn" type="button" v-if="!$route.query.delete">
             <i aria-hidden="true" class="fa fa-plus"></i>
           </button>
         </h4>
@@ -150,7 +150,7 @@
                 <fg-input :disabled="$route.query.delete" type="date" :required="true" :label="`Data de Nascimento ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Data de Nascimento" v-model="dependente.data_Nascimento" />
               </div>
             </transition>
-            <div class="col-md-3" v-if="membro.dependentes.length > 1">
+            <div class="col-md-3" v-if="membro.dependentes.length > 1 && !$route.query.delete">
               <label for="">Remover</label>
               <br>
               <button class="btn" @click="removeDependente(index)" type="button">
