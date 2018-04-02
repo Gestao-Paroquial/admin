@@ -90,7 +90,7 @@
 <script>
 import cepPromise from 'cep-promise';
 import axios from '@/plugins/axios';
-import { comunidadesApiUrl, telefonesUrl } from '../../../../api-url/index';
+import { comunidadesApiUrl } from '../../../../api-url/index';
 
 export default {
   props: {

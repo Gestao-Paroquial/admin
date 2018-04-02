@@ -186,7 +186,6 @@ import {
   pastoraisApiUrl,
   tiposDependenteUrl,
   dependentesUrl,
-  telefonesUrl,
 } from '../../../../api-url/index';
 
 export default {
