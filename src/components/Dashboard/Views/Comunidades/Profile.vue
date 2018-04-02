@@ -24,7 +24,7 @@
 </template>
 <script>
 import axios from '@/plugins/axios';
-import UpdateForm from './UpdateForm';
+import UpdateForm from './Form';
 import {
   comunidadesApiUrl,
   findBillingCycleByComunityId,
