@@ -63,7 +63,6 @@ export default {
       .then((response) => {
         this.membros = response.data;
         this.table.data = response.data;
-        console.log(response.data);
         this.showLoader = false;
       })
       .catch((error) => {

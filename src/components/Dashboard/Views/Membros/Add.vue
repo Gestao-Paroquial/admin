@@ -7,7 +7,9 @@
   </div>
 </template>
 <script>
+import axios from '@/plugins/axios';
 import AddForm from './AddForm';
+import { membrosUrl } from '../../../../api-url/index';
 
 const CLASSE_TELEFONE_DO_MEMBRO = 3;
 
@@ -21,12 +23,24 @@ export default {
         classe_telefone_id: CLASSE_TELEFONE_DO_MEMBRO,
         telefones: [{}],
         dependentes: [{}],
-        crismado: false,
-        batizado: false,
-        '1_eucaristia': false,
+        crismado: 0,
+        batizado: 0,
+        '1_eucaristia': 0,
         status: 1,
       },
     };
+  },
+  created() {
+    if (this.$route.params.id) {
+      axios
+        .get(`${membrosUrl}/${this.$route.params.id}`)
+        .then(({ data }) => {
+          this.membro = data;
+          this.membro.comunidades.forEach(comunidade => Object.assign(comunidade, { label: comunidade.nome, value: comunidade.id }));
+          this.membro.pastorais.forEach(pastoral => Object.assign(pastoral, { label: `${pastoral.nome} ${pastoral.id}`, value: pastoral.id }));
+        })
+        .catch(err => console.log(err));
+    }
   },
 };
 </script>

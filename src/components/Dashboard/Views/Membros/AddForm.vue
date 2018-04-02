@@ -5,7 +5,7 @@
       <h3>Adicionar Novo Membro da Pastoral</h3>
     </div>
     <div class="content">
-      <form @submit.prevent="add">
+      <form @submit.prevent="handleSubmit">
         <div class="row">
           <div class="col-md-3">
             <label>Tipo de membro</label>
@@ -32,28 +32,28 @@
           <div class="col-md-4">
             <label for="">Batizado?</label>
             <div class="">
-              <label><input type="radio" v-model="membro.batizado" name="batizado" :value="false">Não</label>
+              <label><input type="radio" v-model="membro.batizado" name="batizado" :value="0">Não</label>
             </div>
             <div class="">
-              <label><input type="radio" v-model="membro.batizado" name="batizado" :value="true">Sim</label>
+              <label><input type="radio" v-model="membro.batizado" name="batizado" :value="1">Sim</label>
             </div>
           </div>
           <div class="col-md-4">
             <label for="">Crismado?</label>
             <div class="">
-              <label><input type="radio" v-model="membro.crismado" name="crismado" :value="false">Não</label>
+              <label><input type="radio" v-model="membro.crismado" name="crismado" :value="0">Não</label>
             </div>
             <div class="">
-              <label><input type="radio" v-model="membro.crismado" name="crismado" :value="true">Sim</label>
+              <label><input type="radio" v-model="membro.crismado" name="crismado" :value="1">Sim</label>
             </div>
           </div>
           <div class="col-md-4">
             <label for="">1º Eucaristia?</label>
             <div class="">
-              <label><input type="radio" v-model="membro['1_eucaristia']" name="1_eucaristia" :value="false">Não</label>
+              <label><input type="radio" v-model="membro['1_eucaristia']" name="1_eucaristia" :value="0">Não</label>
             </div>
             <div class="">
-              <label><input type="radio" v-model="membro['1_eucaristia']" name="1_eucaristia" :value="true">Sim</label>
+              <label><input type="radio" v-model="membro['1_eucaristia']" name="1_eucaristia" :value="1">Sim</label>
             </div>
           </div>
         </div>
@@ -198,9 +198,21 @@ export default {
   mounted() {
     axios.get(tiposMembroUrl).then(({ data }) => {
       this.tiposMembro = data;
+      const foo = this.tiposMembro.find(tipoMembro => tipoMembro.id === this.membro.tipo_membro_id);
+      if (foo) this.membro.tipo_membro = { label: foo.descricao, value: this.membro.tipo_membro_id };
     });
     axios.get(tiposDependenteUrl).then(({ data }) => {
       this.tiposDependente = data;
+
+      if (!this.$route.params.id) {
+        this.membro.dependentes.forEach((dependente) => {
+          const { descricao } = this.tiposDependente.find(tipo => tipo.id === dependente.tipo_dependente_id);
+          Object.assign(dependente, { tipo_dependente: {
+            label: descricao,
+            value: dependente.id,
+          } });
+        });
+      }
     });
     axios.get(comunidadesApiUrl).then(({ data }) => {
       this.comunidades = data;
@@ -236,7 +248,10 @@ export default {
     },
   },
   methods: {
-    add() {
+    handleSubmit() {
+      if (!this.$route.params.id) this.addMembro();
+    },
+    addMembro() {
       this.membro.tipo_membro_id = this.membro.tipo_membro.value;
 
       this.membro.dependentes = this.membro.dependentes
@@ -246,6 +261,14 @@ export default {
             tipo_dependente_id: dependente.tipo_dependente.value,
           }),
         );
+
+      this.membro.comunidades.forEach(comunidade => Object.assign(comunidade, {
+        comunidade_id: comunidade.value,
+      }));
+
+      this.membro.pastorais.forEach(pastoral => Object.assign(pastoral, {
+        pastorai_id: pastoral.value,
+      }));
 
       this.showLoader = true;
       axios
