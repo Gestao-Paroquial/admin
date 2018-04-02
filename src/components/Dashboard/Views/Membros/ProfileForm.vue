@@ -299,7 +299,7 @@ export default {
           dialog.close();
           this.$notifications.notify(this.notificationConfig(data.message));
           this.deleteDependentes();
-          this.deleteTelefones();
+          this.deleteTelefones(this.telefonesToDelete);
         })
         .catch((error) => {
           console.log(error);
@@ -308,14 +308,6 @@ export default {
     deleteDependentes() {
       this.dependentesToDelete.forEach((dependente) => {
         axios.delete(`${dependentesUrl}/${dependente.id}`)
-          .then(({ data }) => {
-            this.$notifications.notify(this.notificationConfig(data.message));
-          });
-      });
-    },
-    deleteTelefones() {
-      this.telefonesToDelete.forEach((telefone) => {
-        axios.delete(`${telefonesUrl}/${telefone.id}`)
           .then(({ data }) => {
             this.$notifications.notify(this.notificationConfig(data.message));
           });

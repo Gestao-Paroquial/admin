@@ -90,7 +90,7 @@
 <script>
 import cepPromise from 'cep-promise';
 import axios from '@/plugins/axios';
-import { comunidadesApiUrl } from '../../../../api-url/index';
+import { comunidadesApiUrl, telefonesUrl } from '../../../../api-url/index';
 
 export default {
   props: {
@@ -152,6 +152,7 @@ export default {
         }).then(({ data }) => {
           dialog.close();
           this.$notifications.notify(this.notificationConfig(data.message));
+          this.deleteTelefones(this.telefonesToDelete);
         })
         .catch((error) => {
           console.log(error);

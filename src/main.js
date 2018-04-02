@@ -17,7 +17,7 @@ import SideBar from './components/UIComponents/SidebarPlugin';
 import App from './App';
 import routes from './routes/routes';
 import './assets/sass/paper-dashboard.scss';
-import { validateTokenUrl } from './api-url';
+import { validateTokenUrl, telefonesUrl } from './api-url';
 import axiosIntance from './plugins/axios';
 
 // plugin setup
@@ -64,6 +64,14 @@ Vue.mixin({
       verticalAlign,
       type,
     }),
+    deleteTelefones(telefones) {
+      telefones.forEach((telefone) => {
+        axios.delete(`${telefonesUrl}/${telefone.id}`)
+          .then(({ data }) => {
+            this.$notifications.notify(this.notificationConfig(data.message));
+          });
+      });
+    },
   },
 });
 
