@@ -307,12 +307,18 @@ export default {
     },
     deleteDependentes() {
       this.dependentesToDelete.forEach((dependente) => {
-        if (dependente.id) axios.delete(`${dependentesUrl}/${dependente.id}`);
+        axios.delete(`${dependentesUrl}/${dependente.id}`)
+          .then(({ data }) => {
+            this.$notifications.notify(this.notificationConfig(data.message));
+          });
       });
     },
     deleteTelefones() {
       this.telefonesToDelete.forEach((telefone) => {
-        if (telefone.id) axios.delete(`${telefonesUrl}/${telefone.id}`);
+        axios.delete(`${telefonesUrl}/${telefone.id}`)
+          .then(({ data }) => {
+            this.$notifications.notify(this.notificationConfig(data.message));
+          });
       });
     },
     deleteMembro() {
