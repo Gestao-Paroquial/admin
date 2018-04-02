@@ -13,8 +13,6 @@ import axios from '@/plugins/axios';
 import AddForm from './ProfileForm';
 import { membrosUrl } from '../../../../api-url/index';
 
-const CLASSE_TELEFONE_DO_MEMBRO = 3;
-
 export default {
   components: {
     AddForm,
@@ -22,7 +20,6 @@ export default {
   data() {
     return {
       membro: {
-        classe_telefone_id: CLASSE_TELEFONE_DO_MEMBRO,
         telefones: [{}],
         dependentes: [{}],
         crismado: 0,
