@@ -1,8 +1,10 @@
 <template>
   <div class="row">
     <back-button/>
+    <button v-if="this.$route.params.id" @click="changeActionToDelete" class="btn btn-danger btn-fill btn-wd pull-right">Habilitar Exclusão</button>
+    <button v-if="this.$route.params.id" @click="changeActionToUpdate" class="btn btn-warning btn-fill btn-wd pull-right">Habilitar Alteração</button>
     <div class="col-lg-12 ">
-      <add-form :membro="membro" />
+      <add-form :membro="membro" :isUpdate="isUpdate" :isDelete="isDelete"/>
     </div>
   </div>
 </template>
@@ -28,9 +30,13 @@ export default {
         '1_eucaristia': 0,
         status: 1,
       },
+      isUpdate: false,
+      isDelete: false,
     };
   },
-  created() {
+  mounted() {
+    this.isUpdate = this.$route.query.update;
+    this.isDelete = this.$route.query.delete;
     if (this.$route.params.id) {
       axios
         .get(`${membrosUrl}/${this.$route.params.id}`)
@@ -40,6 +46,16 @@ export default {
           this.membro.pastorais.forEach(pastoral => Object.assign(pastoral, { label: `${pastoral.nome} ${pastoral.id}`, value: pastoral.id }));
         })
         .catch(err => console.log(err));
+    }
+  },
+  methods: {
+    changeActionToUpdate() {
+      this.isDelete = false;
+      this.isUpdate = true;
+    },
+    changeActionToDelete(){
+      this.isDelete = true;
+      this.isUpdate = false;
     }
   },
 };

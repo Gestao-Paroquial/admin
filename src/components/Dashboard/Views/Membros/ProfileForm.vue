@@ -9,7 +9,7 @@
         <div class="row">
           <div class="col-md-4">
             <label>Tipo de membro</label>
-            <v-select :disabled="$route.query.delete" v-model="membro.tipo_membro" :options="tiposMembroToSelectList">
+            <v-select :disabled="isDelete" v-model="membro.tipo_membro" :options="tiposMembroToSelectList">
               <span slot="no-options">
                 Nenhum resultado encontrado
               </span>
@@ -18,13 +18,13 @@
         </div>
         <div class="row">
           <div class="col-md-4">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Nome" placeholder="Nome" v-model="membro.nome" />
+            <fg-input :disabled="isDelete" type="text" :required="true" label="Nome" placeholder="Nome" v-model="membro.nome" />
           </div>
           <div class="col-md-4">
-            <fg-input :disabled="$route.query.delete" :type="'email'" :required="true" label="Email" placeholder="Email" v-model="membro.email" />
+            <fg-input :disabled="isDelete" :type="'email'" :required="true" label="Email" placeholder="Email" v-model="membro.email" />
           </div>
           <div class="col-md-4">
-            <fg-input :disabled="$route.query.delete" :type="'date'" :required="true" label="Data de Nascimento" placeholder="Data de Nascimento" v-model="membro.data_Nascimento" />
+            <fg-input :disabled="isDelete" :type="'date'" :required="true" label="Data de Nascimento" placeholder="Data de Nascimento" v-model="membro.data_Nascimento" />
           </div>
         </div>
         <h4>Informações Religiosas</h4>
@@ -61,7 +61,7 @@
         <div class="row">
           <div class="col-md-6">
             <label for="">Comunidades que participa</label>
-            <v-select :disabled="$route.query.delete" v-model="membro.comunidades" :options="comunidadesToSelectList" multiple>
+            <v-select :disabled="isDelete" v-model="membro.comunidades" :options="comunidadesToSelectList" multiple>
               <span slot="no-options">
                 Nenhum resultado encontrado
               </span>
@@ -69,7 +69,7 @@
           </div>
           <div class="col-md-6">
             <label for="">Pastorais que participa</label>
-            <v-select :disabled="$route.query.delete" v-model="membro.pastorais" :options="pastoraisToSelectList" multiple>
+            <v-select :disabled="isDelete" v-model="membro.pastorais" :options="pastoraisToSelectList" multiple>
               <span slot="no-options">
                 Nenhum resultado encontrado
               </span>
@@ -78,15 +78,15 @@
         </div>
 
         <h4>Telefones
-          <button @click="addTelefone" class="btn" type="button" v-if="!$route.query.delete">
+          <button @click="addTelefone" class="btn" type="button" v-if="!isDelete">
             <i aria-hidden="true" class="fa fa-plus"></i>
           </button>
         </h4>
         <div class="row telefone-row">
           <transition-group name="list" tag="div">
             <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
-              <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
-              <button class="btn" @click="removeTelefone(index)" type="button" v-if="membro.telefones.length > 1 && !$route.query.delete">
+              <fg-input :disabled="isDelete" type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
+              <button class="btn" @click="removeTelefone(index)" type="button" v-if="membro.telefones.length > 1 && !isDelete">
                 <i aria-hidden="true" class="fa fa-minus"></i>
               </button>
             </div>
@@ -100,33 +100,33 @@
               <label>
                 CEP
               </label>
-              <input class="form-control border-input" placeholder="CEP" v-model="membro.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" @change="searchCEP" required="required" type="text" :disabled="$route.query.delete">
+              <input class="form-control border-input" placeholder="CEP" v-model="membro.cep" v-mask="[ '#####-###']" :pattern="'.{9}'" :title="'Número inválido'" @change="searchCEP" required="required" type="text" :disabled="isDelete">
             </div>
           </div>
           <div class="col-md-5">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="membro.endereco" />
+            <fg-input :disabled="isDelete" type="text" :required="true" label="Endereço" placeholder="Endereço" v-model="membro.endereco" />
           </div>
           <div class="col-md-2">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="membro.nro" />
+            <fg-input :disabled="isDelete" type="text" :required="true" label="Número" placeholder="Número" v-model="membro.nro" />
           </div>
           <div class="col-md-3">
-            <fg-input :disabled="$route.query.delete" type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="membro.compl" />
+            <fg-input :disabled="isDelete" type="text" :required="false" label="Complemento" placeholder="Complemento" v-model="membro.compl" />
           </div>
         </div>
         <div class="row">
           <div class="col-md-5">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="membro.bairro" />
+            <fg-input :disabled="isDelete" type="text" :required="true" label="Bairro" placeholder="Bairro" v-model="membro.bairro" />
           </div>
           <div class="col-md-5">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="membro.cidade" />
+            <fg-input :disabled="isDelete" type="text" :required="true" label="Cidade" placeholder="Cidade" v-model="membro.cidade" />
           </div>
           <div class="col-md-2">
-            <fg-input :disabled="$route.query.delete" type="text" :required="true" label="UF" placeholder="UF" v-model="membro.uf" />
+            <fg-input :disabled="isDelete" type="text" :required="true" label="UF" placeholder="UF" v-model="membro.uf" />
           </div>
         </div>
 
         <h4>Dependentes
-          <button @click="addDependente" class="btn" type="button" v-if="!$route.query.delete">
+          <button @click="addDependente" class="btn" type="button" v-if="!isDelete">
             <i aria-hidden="true" class="fa fa-plus"></i>
           </button>
         </h4>
@@ -134,7 +134,7 @@
           <div class="row" v-for="(dependente, index) in membro.dependentes" :key="index">
             <div class="col-md-3">
               <label>Dependente</label>
-              <v-select :disabled="$route.query.delete" v-model="dependente.tipo_dependente" :options="tiposDependenteToSelectList">
+              <v-select :disabled="isDelete" v-model="dependente.tipo_dependente" :options="tiposDependenteToSelectList">
                 <span slot="no-options">
                   Nenhum resultado encontrado
                 </span>
@@ -142,15 +142,15 @@
             </div>
             <transition name="list">
               <div class="col-md-3" v-if="dependente.tipo_dependente">
-                <fg-input :disabled="$route.query.delete" type="text" :required="true" :label="`Nome ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Nome do dependente" v-model="dependente.nome" />
+                <fg-input :disabled="isDelete" type="text" :required="true" :label="`Nome ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Nome do dependente" v-model="dependente.nome" />
               </div>
             </transition>
             <transition name="list">
               <div class="col-md-3" v-if="dependente.tipo_dependente">
-                <fg-input :disabled="$route.query.delete" type="date" :required="true" :label="`Data de Nascimento ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Data de Nascimento" v-model="dependente.data_Nascimento" />
+                <fg-input :disabled="isDelete" type="date" :required="true" :label="`Data de Nascimento ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Data de Nascimento" v-model="dependente.data_Nascimento" />
               </div>
             </transition>
-            <div class="col-md-3" v-if="membro.dependentes.length > 1 && !$route.query.delete">
+            <div class="col-md-3" v-if="membro.dependentes.length > 1 && !isDelete">
               <label for="">Remover</label>
               <br>
               <button class="btn" @click="removeDependente(index)" type="button">
@@ -164,10 +164,10 @@
           <button class="btn btn-info btn-fill btn-wd" v-if="!this.$route.params.id">
             Adicionar
           </button>
-          <button class="btn btn-warning btn-fill btn-wd" v-if="$route.query.update">
+          <button class="btn btn-warning btn-fill btn-wd" v-if="isUpdate">
             Alterar Membro
           </button>
-          <button class="btn btn-danger btn-fill btn-wd" @click.prevent="deleteMembro" v-if="$route.query.delete">
+          <button class="btn btn-danger btn-fill btn-wd" @click.prevent="deleteMembro" v-if="isDelete">
             Deletar
           </button>
         </div>
@@ -190,6 +190,8 @@ import {
 export default {
   props: {
     membro: Object,
+    isUpdate: Boolean,
+    isDelete: Boolean,
   },
   data() {
     return {
@@ -253,7 +255,7 @@ export default {
   methods: {
     handleSubmit() {
       if (!this.$route.params.id) this.addMembro();
-      if (this.$route.query.update) this.updateMembro();
+      if (this.isUpdate) this.updateMembro();
     },
     addMembro() {
       this.membro.tipo_membro_id = this.membro.tipo_membro.value;
