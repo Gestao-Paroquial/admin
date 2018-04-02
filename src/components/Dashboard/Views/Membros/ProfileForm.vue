@@ -7,7 +7,7 @@
     <div class="content">
       <form @submit.prevent="handleSubmit">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-4">
             <label>Tipo de membro</label>
             <v-select :disabled="$route.query.delete" v-model="membro.tipo_membro" :options="tiposMembroToSelectList">
               <span slot="no-options">
@@ -59,7 +59,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-6">
             <label for="">Comunidades que participa</label>
             <v-select :disabled="$route.query.delete" v-model="membro.comunidades" :options="comunidadesToSelectList" multiple>
               <span slot="no-options">
@@ -67,7 +67,7 @@
               </span>
             </v-select>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
             <label for="">Pastorais que participa</label>
             <v-select :disabled="$route.query.delete" v-model="membro.pastorais" :options="pastoraisToSelectList" multiple>
               <span slot="no-options">
@@ -202,32 +202,39 @@ export default {
     };
   },
   mounted() {
-    axios.get(tiposMembroUrl).then(({ data }) => {
-      this.tiposMembro = data;
-      const foo = this.tiposMembro.find(tipoMembro => tipoMembro.id === this.membro.tipo_membro_id);
-      if (foo) {
-        this.membro.tipo_membro = {
-          label: foo.descricao,
-          value: this.membro.tipo_membro_id,
-        };
-      }
-    });
-    axios.get(tiposDependenteUrl).then(({ data }) => {
-      this.tiposDependente = data;
+    this.showLoader = true;
 
-      if (this.$route.params.id) {
-        this.membro.dependentes.forEach((dependente) => {
-          const { descricao } = this.tiposDependente.find(tipo => tipo.id === dependente.tipo_dependente_id);
-          Object.assign(dependente, { tipo_dependente: { label: descricao, value: dependente.id } });
-        });
-      }
-    });
-    axios.get(comunidadesApiUrl).then(({ data }) => {
-      this.comunidades = data;
-    });
-    axios.get(pastoraisApiUrl).then(({ data }) => {
-      this.pastorais = data;
-    });
+    axios.get(tiposMembroUrl)
+      .then(({ data }) => {
+        this.tiposMembro = data;
+        const foo = this.tiposMembro.find(tipoMembro => tipoMembro.id === this.membro.tipo_membro_id);
+        if (foo) {
+          this.membro.tipo_membro = {
+            label: foo.descricao,
+            value: this.membro.tipo_membro_id,
+          };
+        }
+        return axios.get(tiposDependenteUrl);
+      })
+      .then(({ data }) => {
+        this.tiposDependente = data;
+
+        if (this.$route.params.id) {
+          this.membro.dependentes.forEach((dependente) => {
+            const { descricao } = this.tiposDependente.find(tipo => tipo.id === dependente.tipo_dependente_id);
+            Object.assign(dependente, { tipo_dependente: { label: descricao, value: dependente.id } });
+          });
+        }
+        return axios.get(comunidadesApiUrl);
+      })
+      .then(({ data }) => {
+        this.comunidades = data;
+        return axios.get(pastoraisApiUrl);
+      })
+      .then(({ data }) => {
+        this.pastorais = data;
+        this.showLoader = false;
+      });
   },
   computed: {
     tiposMembroToSelectList() {
