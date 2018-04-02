@@ -53,10 +53,10 @@ export default {
       this.isDelete = false;
       this.isUpdate = true;
     },
-    changeActionToDelete(){
+    changeActionToDelete() {
       this.isDelete = true;
       this.isUpdate = false;
-    }
+    },
   },
 };
 </script>
