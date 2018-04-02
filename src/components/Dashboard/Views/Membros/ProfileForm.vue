@@ -150,7 +150,7 @@
                 <fg-input :disabled="isDelete" type="date" :required="true" :label="`Data de Nascimento ${dependente.tipo_dependente? dependente.tipo_dependente.label: ''}`" placeholder="Data de Nascimento" v-model="dependente.data_Nascimento" />
               </div>
             </transition>
-            <div class="col-md-3" v-if="membro.dependentes.length > 1 && !isDelete">
+            <div class="col-md-3" v-if="!isDelete">
               <label for="">Remover</label>
               <br>
               <button class="btn" @click="removeDependente(index)" type="button">
@@ -185,6 +185,7 @@ import {
   comunidadesApiUrl,
   pastoraisApiUrl,
   tiposDependenteUrl,
+  dependentesUrl,
 } from '../../../../api-url/index';
 
 export default {
@@ -201,6 +202,7 @@ export default {
       comunidades: [],
       pastorais: [],
       tiposDependente: [],
+      dependentesToDelete: [],
     };
   },
   mounted() {
@@ -283,6 +285,7 @@ export default {
     },
     updateMembro() {
       let dialog;
+
       this.$dialog
         .confirm()
         .then((dialog_) => {
@@ -293,10 +296,16 @@ export default {
         .then(({ data }) => {
           dialog.close();
           this.$notifications.notify(this.notificationConfig(data.message));
+          this.deleteDependentes();
         })
         .catch((error) => {
           console.log(error);
         });
+    },
+    deleteDependentes() {
+      this.dependentesToDelete.forEach((dependente) => {
+        if (dependente.id) axios.delete(`${dependentesUrl}/${dependente.id}`);
+      });
     },
     deleteMembro() {
       let dialog;
@@ -342,11 +351,10 @@ export default {
       this.membro.dependentes.push({});
     },
     removeTelefone(index) {
-      if (this.membro.telefones.length === 1) return;
       this.membro.telefones.splice(index, 1);
     },
     removeDependente(index) {
-      if (this.membro.dependentes.length === 1) return;
+      this.dependentesToDelete.push(this.membro.dependentes[index]);
       this.membro.dependentes.splice(index, 1);
     },
   },
