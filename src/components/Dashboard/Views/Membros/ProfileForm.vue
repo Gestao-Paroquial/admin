@@ -86,7 +86,7 @@
           <transition-group name="list" tag="div">
             <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
               <fg-input :disabled="isDelete" type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
-              <button class="btn" @click="removeTelefone(index)" type="button" v-if="!isDelete">
+              <button class="btn" @click="removeDependenteOuTelefone(index, 'telefones')" type="button" v-if="!isDelete">
                 <i aria-hidden="true" class="fa fa-minus"></i>
               </button>
             </div>
@@ -153,7 +153,7 @@
             <div class="col-md-3" v-if="!isDelete">
               <label for="">Remover</label>
               <br>
-              <button class="btn" @click="removeDependente(index)" type="button">
+              <button class="btn" @click="removeDependenteOuTelefone(index, 'dependentes')" type="button">
                 <i aria-hidden="true" class="fa fa-minus"></i>
               </button>
             </div>
@@ -358,13 +358,23 @@ export default {
     addDependente() {
       this.membro.dependentes.push({});
     },
-    removeTelefone(index) {
-      this.telefonesToDelete.push(this.membro.telefones[index]);
-      this.membro.telefones.splice(index, 1);
-    },
-    removeDependente(index) {
-      this.dependentesToDelete.push(this.membro.dependentes[index]);
-      this.membro.dependentes.splice(index, 1);
+    removeDependenteOuTelefone(index, telefoneOrDependente = '') {
+      if (!telefoneOrDependente.match(/telefones|dependentes/g)) throw new Error('telefone ou dependente deve ser passado no plural');
+
+      if (this.membro[telefoneOrDependente][index].id) {
+        this.$dialog
+          .confirm('Você tem certeza?')
+          .then((dialog) => {
+            dialog.close();
+            this[`${telefoneOrDependente}ToDelete`].push(this.membro[telefoneOrDependente][index]);
+            this.membro[telefoneOrDependente].splice(index, 1);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.membro[telefoneOrDependente].splice(index, 1);
+      }
     },
   },
 };
