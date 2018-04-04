@@ -1,11 +1,10 @@
 <template>
-  <div class="row">
+  <div class="row telefone-row">
     <h4>Telefones
       <button @click="addTelefone" class="btn" type="button" v-if="!disabled">
         <i aria-hidden="true" class="fa fa-plus"></i>
       </button>
     </h4>
-    <div class="row telefone-row">
       <transition-group name="list" tag="div">
         <div class="col-md-4" v-for="(telefone, index) in telefones" :key="index">
           <fg-input :disabled="disabled" type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
@@ -15,7 +14,6 @@
         </div>
       </transition-group>
     </div>
-  </div>
 </template>
 <script>
 export default {

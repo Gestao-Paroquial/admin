@@ -5,16 +5,29 @@
       <h4 class="title">Informações do pastoral</h4>
     </div>
     <div class="content">
-      <form @submit.prevent="update">
+      <form @submit.prevent="handleSubmit">
         <div class="row">
-          <div class="col-md-6">
-            <fg-input :disabled="$route.query.delete" :required="true" type="text" label="Nome" placeholder="Paper dashboard" v-model="pastoral.nome" />
+          <div class="col-md-4">
+            <fg-input :disabled="$route.query.delete" :required="true" type="text" label="Nome" placeholder="Nome da pastoral" v-model="pastoral.nome" />
           </div>
-          <div class="col-md-6">
-            <select-list :selectList="selectList" :disabled="$route.query.delete" :required="true"></select-list>
+          <div class="col-md-4">
+            <label for="">Comunidade</label>
+            <v-select  v-model="pastoral.comunidade" :options="comunidadesToSelectList">
+              <span slot="no-options">
+                Nenhum resultado encontrado
+              </span>
+            </v-select>
+          </div>
+          <div class="col-md-4">
+          <label for="">Coordenador</label>
+            <v-select  v-model="pastoral.coordenador" :options="coordenadoresToSelectList">
+              <span slot="no-options">
+                Nenhum resultado encontrado
+              </span>
+            </v-select>
           </div>
         </div>
-
+        <telefones :disabled="$route.query.delete" :telefones="pastoral.telefones" :removeTelefone="removeTelefone"/>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
@@ -26,10 +39,13 @@
 
         <hr>
         <div class="text-center">
-          <button class="btn btn-info btn-fill btn-wd" v-if="$route.query.update">
-            Update Profile
+          <button class="btn btn-info btn-fill btn-wd" v-if="!this.$route.params.id">
+           Adicionar
           </button>
-          <button class="btn btn-danger btn-fill btn-wd" v-if="$route.query.delete" @click.prevent="del">
+          <button class="btn btn-warning btn-fill btn-wd" v-if="$route.query.update">
+            Alterar
+          </button>
+          <button class="btn btn-danger btn-fill btn-wd" v-if="$route.query.delete" @click.prevent="deletePastoral">
             Deletar
           </button>
         </div>
@@ -39,86 +55,112 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
-import SelectList from '@/components/UIComponents/Forms/SelectList';
-import { pastoraisApiUrl } from '../../../../api-url/index';
+import axios from '@/plugins/axios';
+import { pastoraisApiUrl, comunidadesApiUrl, membrosUrl } from '../../../../api-url/index';
+import Telefones from '../../../../components/UIComponents/TelefonesInputs';
 
 export default {
+  components: { Telefones },
   props: {
     pastoral: Object,
-    selectList: Object,
-  },
-  components: {
-    SelectList,
   },
   data() {
     return {
       showLoader: false,
+      comunidades: [],
+      coordenadores: [],
+      telefonesToDelete: [],
     };
   },
+  mounted() {
+    axios
+      .get(comunidadesApiUrl)
+      .then(({ data }) => {
+        this.comunidades = data;
+        return axios.get(membrosUrl);
+      })
+      .then(({ data }) => {
+        this.coordenadores = data.filter(coordenador => coordenador.tipo_membro_id >= 0);
+      });
+  },
   methods: {
-    update() {
+    handleSubmit() {
+      if (this.$route.query.update) this.updatePastoral();
+      if (!this.$route.params.id) this.addPastoral();
+    },
+    addPastoral() {
+      this.showLoader = true;
+      this.pastoral.comunidade_id = this.pastoral.comunidade.value;
+      this.pastoral.coordenador_id = this.pastoral.coordenador.value;
+      axios
+        .post(pastoraisApiUrl, JSON.stringify(this.pastoral), {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(({ data }) => {
+          this.showLoader = false;
+          this.$notifications.notify(this.notificationConfig(data.message));
+          this.$router.push({ path: '/admin/pastorais' });
+        })
+        .catch(error => console.log(error));
+    },
+    updatePastoral() {
+      let dialog;
       this.$dialog
         .confirm()
-        .then((dialog) => {
-          this.pastoral.comunidades_id = document.querySelector(
-            '[name="comunidades_id"]',
-          ).value;
-
-          axios
-            .put(
-              `${pastoraisApiUrl}/${this.pastoral.id}`,
-              JSON.stringify(this.pastoral),
-              {
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-              },
-            )
-            .then((response) => {
-              dialog.close();
-              this.$notify({
-                group: 'top-right',
-                title: 'Sucesso!',
-                text: 'pastoral alterado',
-                type: 'success',
-                speed: 1000,
-              });
-              console.log(response);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+        .then((dialog2) => {
+          dialog = dialog2;
+          return axios
+            .put(`${pastoraisApiUrl}/${this.pastoral.id}`, JSON.stringify(this.pastoral), { headers: { 'Content-Type': 'application/json' } });
+        }).then(({ data }) => {
+          dialog.close();
+          this.$notifications.notify(this.notificationConfig(data.message));
+          this.deleteTelefones(this.telefonesToDelete);
         })
-        .catch(() => {
-          console.log('Clicked on cancel');
+        .catch((error) => {
+          console.log(error);
         });
     },
-    del() {
+    deletePastoral() {
+      let dialog;
       this.$dialog
         .confirm()
-        .then((dialog) => {
-          axios
-            .delete(`${pastoraisApiUrl}/${this.pastoral.id}`)
-            .then((response) => {
-              console.log(response);
-              dialog.close();
-              this.$notify({
-                group: 'top-right',
-                title: 'Sucesso!',
-                text: 'pastoral excluído',
-                type: 'success',
-                speed: 1000,
-              });
-              this.$router.push({ path: '/admin/pastorais' });
-            })
-            .catch(err => console.log(err));
+        .then((dialog_) => {
+          dialog = dialog_;
+          return axios.delete(`${pastoraisApiUrl}/${this.pastoral.id}`);
         })
-        .catch(() => {
-          console.log('Clicked on cancel');
-        });
+        .then(({ data }) => {
+          dialog.close();
+          this.$notifications.notify(this.notificationConfig(data.message));
+          this.$router.push({ path: '/admin/pastorais' });
+        })
+        .catch(err => console.log(err));
+    },
+    removeTelefone(index) {
+      if (this.pastoral.telefones[index].id) {
+        this.$dialog
+          .confirm('Você tem certeza?')
+          .then((dialog) => {
+            dialog.close();
+            this.telefonesToDelete.push(this.pastoral.telefones[index]);
+            this.pastoral.telefones.splice(index, 1);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        this.pastoral.telefones.splice(index, 1);
+      }
     },
   },
+  computed: {
+    comunidadesToSelectList() {
+      return this.objectToSelectList(this.comunidades);
+    },
+    coordenadoresToSelectList() {
+      return this.objectToSelectList(this.coordenadores);
+    },
+  },
+
 };
 </script>
 <style>
