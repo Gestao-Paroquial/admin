@@ -72,7 +72,7 @@ Vue.mixin({
           });
       });
     },
-    objectToSelectList(array, label = 'nome', value = 'id') {
+    arrayToSelectList(array, label = 'nome', value = 'id') {
       return array.map(element => ({ label: element[label], value: element[value] }));
     },
   },

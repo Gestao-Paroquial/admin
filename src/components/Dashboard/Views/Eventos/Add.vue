@@ -59,7 +59,7 @@
 </template>
 <script>
 import axios from '@/plugins/axios';
-import { tiposEventoUrl, comunidadesApiUrl } from '../../../../api-url/index';
+import { tiposUrl, comunidadesApiUrl } from '../../../../api-url/index';
 
 export default {
   data() {
@@ -75,25 +75,20 @@ export default {
     };
   },
   mounted() {
-    axios.get(tiposEventoUrl).then(({ data }) => {
-      this.tiposEvento = data;
-    });
-    axios.get(comunidadesApiUrl).then(({ data }) => {
+    this.showLoader = true;
+    axios.get(tiposUrl).then(({ data }) => {
+      this.tiposEvento = data.eventos;
+      return axios.get(comunidadesApiUrl);
+    }).then(({ data }) => {
       this.comunidades = data;
-    });
+    }).finally(() => { this.showLoader = false; });
   },
   computed: {
     tiposEventoToSelectList() {
-      return this.tiposEvento.map(tipoEvento => ({
-        label: tipoEvento.descricao,
-        value: tipoEvento.id,
-      }));
+      return this.arrayToSelectList(this.tiposEvento, 'descricao');
     },
     comunidadesToSelectList() {
-      return this.comunidades.map(comunidade => ({
-        label: comunidade.nome,
-        value: comunidade.id,
-      }));
+      return this.arrayToSelectList(this.comunidades, 'descricao');
     },
   },
   methods: {

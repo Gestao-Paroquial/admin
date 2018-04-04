@@ -232,13 +232,13 @@ export default {
   },
   computed: {
     tiposMembroToSelectList() {
-      return this.objectToSelectList(this.tiposMembro, 'descricao');
+      return this.arrayToSelectList(this.tiposMembro, 'descricao');
     },
     tiposDependenteToSelectList() {
-      return this.objectToSelectList(this.tiposDependente, 'descricao');
+      return this.arrayToSelectList(this.tiposDependente, 'descricao');
     },
     comunidadesToSelectList() {
-      return this.objectToSelectList(this.comunidades);
+      return this.arrayToSelectList(this.comunidades);
     },
     pastoraisToSelectList() {
       return this.pastorais.map(pastoral => ({ label: `${pastoral.nome} ${pastoral.id}`, value: pastoral.id }));

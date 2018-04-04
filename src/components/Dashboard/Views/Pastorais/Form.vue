@@ -154,10 +154,10 @@ export default {
   },
   computed: {
     comunidadesToSelectList() {
-      return this.objectToSelectList(this.comunidades);
+      return this.arrayToSelectList(this.comunidades);
     },
     coordenadoresToSelectList() {
-      return this.objectToSelectList(this.coordenadores);
+      return this.arrayToSelectList(this.coordenadores);
     },
   },
 
