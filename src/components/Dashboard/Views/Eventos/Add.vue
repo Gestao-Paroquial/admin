@@ -88,7 +88,7 @@ export default {
       return this.arrayToSelectList(this.tiposEvento, 'descricao');
     },
     comunidadesToSelectList() {
-      return this.arrayToSelectList(this.comunidades, 'descricao');
+      return this.arrayToSelectList(this.comunidades);
     },
   },
   methods: {
