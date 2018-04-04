@@ -243,13 +243,13 @@ export default {
   },
   computed: {
     tiposMembroToSelectList() {
-      return this.tiposMembro.map(tipoMembro => ({ label: tipoMembro.descricao, value: tipoMembro.id }));
+      return this.objectToSelectList(this.tiposMembro, 'descricao');
     },
     tiposDependenteToSelectList() {
-      return this.tiposDependente.map(tipoDependente => ({ label: tipoDependente.descricao, value: tipoDependente.id }));
+      return this.objectToSelectList(this.tiposDependente, 'descricao');
     },
     comunidadesToSelectList() {
-      return this.comunidades.map(comunidade => ({ label: comunidade.nome, value: comunidade.id }));
+      return this.objectToSelectList(this.comunidades);
     },
     pastoraisToSelectList() {
       return this.pastorais.map(pastoral => ({ label: `${pastoral.nome} ${pastoral.id}`, value: pastoral.id }));
