@@ -21,7 +21,7 @@
             <fg-input :disabled="$route.query.delete" type="text" :required="false" label="CNPJ" placeholder="CNPJ" v-model="comunidade.cnpj" v-mask="'##.###.###/####-##'" :pattern="'.{0}|.{18}'" :title="'Número inválido'" />
           </div>
         </div>
-        <telefones :telefones="comunidades.telefones" :disabled="$route.query.delete" :removeTelefone="removeTelefone"/>
+        <telefones :telefones="comunidade.telefones" :disabled="$route.query.delete" :removeTelefone="removeTelefone"/>
         <div class="row">
           <div class="col-md-2">
             <div class="form-group">
@@ -123,11 +123,11 @@ export default {
           },
         })
         .then(({ data }) => {
-          this.showLoader = false;
           this.$notifications.notify(this.notificationConfig(data.message));
           this.$router.push({ path: '/admin/comunidades' });
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log(error))
+        .finally(() => { this.showLoader = false; });
     },
     updateComunidade() {
       let dialog;
@@ -170,12 +170,11 @@ export default {
           this.comunidade.cidade = data.city;
           this.comunidade.uf = data.state;
           this.comunidade.bairro = data.neighborhood;
-          this.showLoader = false;
         })
         .catch(() => {
           this.$notifications.notify(this.notificationConfig('O CEP fornecido não foi encontrado na base do correio', 'danger'));
-          this.showLoader = false;
-        });
+        })
+        .finally(() => { this.showLoader = false; });
     },
   },
 };

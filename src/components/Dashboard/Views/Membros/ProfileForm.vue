@@ -165,10 +165,9 @@ import cepPromise from 'cep-promise';
 import axios from '@/plugins/axios';
 import {
   membrosUrl,
-  tiposMembroUrl,
+  tiposUrl,
   comunidadesApiUrl,
   pastoraisApiUrl,
-  tiposDependenteUrl,
   dependentesUrl,
 } from '../../../../api-url/index';
 import Telefones from '../../../UIComponents/TelefonesInputs';
@@ -179,8 +178,8 @@ export default {
   },
   props: {
     membro: Object,
-    isUpdate: Boolean,
-    isDelete: Boolean,
+    isUpdate: [Boolean, String],
+    isDelete: [Boolean, String],
   },
   data() {
     return {
@@ -197,9 +196,9 @@ export default {
   mounted() {
     this.showLoader = true;
 
-    axios.get(tiposMembroUrl)
+    axios.get(tiposUrl)
       .then(({ data }) => {
-        this.tiposMembro = data;
+        this.tiposMembro = data.membros;
         const foo = this.tiposMembro.find(tipoMembro => tipoMembro.id === this.membro.tipo_membro_id);
         if (foo) {
           this.membro.tipo_membro = {
@@ -207,25 +206,27 @@ export default {
             value: this.membro.tipo_membro_id,
           };
         }
-        return axios.get(tiposDependenteUrl);
-      })
-      .then(({ data }) => {
-        this.tiposDependente = data;
 
-        if (this.$route.params.id) {
+        this.tiposDependente = data.dependentes;
+
+        if (this.$route.params.id && this.membro.dependentes > 0) {
           this.membro.dependentes.forEach((dependente) => {
             const { descricao } = this.tiposDependente.find(tipo => tipo.id === dependente.tipo_dependente_id);
             Object.assign(dependente, { tipo_dependente: { label: descricao, value: dependente.id } });
           });
         }
+
         return axios.get(comunidadesApiUrl);
       })
+
       .then(({ data }) => {
         this.comunidades = data;
         return axios.get(pastoraisApiUrl);
       })
       .then(({ data }) => {
         this.pastorais = data;
+      })
+      .finally(() => {
         this.showLoader = false;
       });
   },
@@ -265,12 +266,11 @@ export default {
         .then(({ data }) => {
           this.$notifications.notify(this.notificationConfig(data.message));
           this.$router.push({ path: '/admin/membros' });
-          this.showLoader = false;
         })
         .catch((error) => {
-          this.showLoader = false;
           console.log(error);
-        });
+        })
+        .finally(() => { this.showLoader = false; });
     },
     updateMembro() {
       let dialog;
@@ -325,7 +325,6 @@ export default {
           this.membro.cidade = data.city;
           this.membro.uf = data.state;
           this.membro.bairro = data.neighborhood;
-          this.showLoader = false;
         })
         .catch(() => {
           this.$notifications.notify(
@@ -334,8 +333,8 @@ export default {
               'danger',
             ),
           );
-          this.showLoader = false;
-        });
+        })
+        .finally(() => { this.showLoader = false; });
     },
     addTelefone() {
       this.membro.telefones.push({});
