@@ -76,23 +76,7 @@
             </v-select>
           </div>
         </div>
-
-        <h4>Telefones
-          <button @click="addTelefone" class="btn" type="button" v-if="!isDelete">
-            <i aria-hidden="true" class="fa fa-plus"></i>
-          </button>
-        </h4>
-        <div class="row telefone-row">
-          <transition-group name="list" tag="div">
-            <div class="col-md-4" v-for="(telefone, index) in membro.telefones" :key="index">
-              <fg-input :disabled="isDelete" type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
-              <button class="btn" @click="removeDependenteOuTelefone(index, 'telefones')" type="button" v-if="!isDelete">
-                <i aria-hidden="true" class="fa fa-minus"></i>
-              </button>
-            </div>
-          </transition-group>
-        </div>
-
+        <telefones :disabled="isDelete" :telefones="membro.telefones" :removeTelefone="removeDependenteOuTelefone"/>
         <h4>Endereço</h4>
         <div class="row">
           <div class="col-md-2">
@@ -187,8 +171,12 @@ import {
   tiposDependenteUrl,
   dependentesUrl,
 } from '../../../../api-url/index';
+import Telefones from '../../../UIComponents/TelefonesInputs';
 
 export default {
+  components: {
+    Telefones,
+  },
   props: {
     membro: Object,
     isUpdate: Boolean,
@@ -377,16 +365,6 @@ export default {
 };
 </script>
 <style>
-.telefone-row {
-  padding: 15px;
-}
-.telefone-row [class*="col-"] {
-  padding-left: 5px !important;
-  padding-right: 5px !important;
-}
-.telefone-row .form-group {
-  display: inline-block;
-}
 .list-enter-active,
 .list-leave-active {
   transition: all 1s;
