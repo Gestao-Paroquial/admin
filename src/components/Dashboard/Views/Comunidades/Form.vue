@@ -21,23 +21,7 @@
             <fg-input :disabled="$route.query.delete" type="text" :required="false" label="CNPJ" placeholder="CNPJ" v-model="comunidade.cnpj" v-mask="'##.###.###/####-##'" :pattern="'.{0}|.{18}'" :title="'Número inválido'" />
           </div>
         </div>
-
-        <h4>Telefones
-          <button @click="addTelefone" class="btn" type="button" v-if="!$route.query.delete">
-            <i aria-hidden="true" class="fa fa-plus"></i>
-          </button>
-        </h4>
-        <div class="row telefone-row">
-          <transition-group name="list" tag="div">
-            <div class="col-md-4" v-for="(telefone, index) in comunidade.telefones" :key="index">
-              <fg-input :disabled="$route.query.delete" type="text" :required="true" label="Número" placeholder="Número" v-model="telefone.telefone" v-mask="['(##) ####-####', '(##) #####-####']" :pattern="'.{14}|.{15}'" :title="'Número inválido'" />
-              <button class="btn" @click="removeTelefone(index)" type="button" v-if="!$route.query.delete">
-                <i aria-hidden="true" class="fa fa-minus"></i>
-              </button>
-            </div>
-          </transition-group>
-        </div>
-
+        <telefones :telefones="comunidades.telefones" :disabled="$route.query.delete" :removeTelefone="removeTelefone"/>
         <div class="row">
           <div class="col-md-2">
             <div class="form-group">
@@ -91,8 +75,12 @@
 import cepPromise from 'cep-promise';
 import axios from '@/plugins/axios';
 import { comunidadesApiUrl } from '../../../../api-url/index';
+import Telefones from '../../../../components/UIComponents/TelefonesInputs';
 
 export default {
+  components: {
+    Telefones,
+  },
   props: {
     comunidade: Object,
   },
