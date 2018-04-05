@@ -10,7 +10,9 @@
       <tbody>
         <tr v-for="aniversariante in aniversariantes" :key="aniversariante.id">
           <td>{{getBirthday(aniversariante.data_Nascimento)}}</td>
-          <td>{{aniversariante.nome}}</td>
+          <td><router-link v-bind:to="{ path: 'membros/'+aniversariante.id.toString() }" >{{aniversariante.nome}}</router-link></td>
+
+
           <td>{{calcAge(aniversariante.data_Nascimento)}} anos</td>
         </tr>
       </tbody>
@@ -21,16 +23,20 @@
 import axios from '@/plugins/axios';
 import { aniversariantesUrl } from './../../api-url';
 
+const aniversariantes = localStorage.getItem('aniversariantes') ? JSON.parse(localStorage.getItem('aniversariantes')) : [];
+
+
 export default {
   data() {
     return {
-      aniversariantes: [],
+      aniversariantes,
     };
   },
   mounted() {
     axios.get(`${aniversariantesUrl}/${new Date().getMonth() + 1}`)
       .then(({ data }) => {
         this.aniversariantes = data.sort(this.sortByDay);
+        localStorage.setItem('aniversariantes', JSON.stringify(this.aniversariantes));
       });
   },
   methods: {
