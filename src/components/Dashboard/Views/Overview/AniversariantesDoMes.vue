@@ -1,25 +1,31 @@
 <template>
   <div class="col-md-4 col-sm-12 aniversariantes">
-    <h4>Aniversariantes do Mês de {{capitalize(getTheActualMonth())}}</h4>
-    <table class="table">
-      <thead>
-        <th><i class="fa fa-calendar"/></th>
-        <th>Nome</th>
-        <th><i class="fa fa-birthday-cake"/></th>
-      </thead>
-      <tbody>
-        <tr v-for="aniversariante in aniversariantes" :key="aniversariante.id">
-          <td>{{getBirthday(aniversariante.data_Nascimento)}}</td>
-          <td><router-link v-bind:to="{ path: 'membros/'+aniversariante.id.toString() }" >{{aniversariante.nome}}</router-link></td>
-          <td>{{calcAge(aniversariante.data_Nascimento)}} anos</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="card">
+      <div class="header">
+        <h4 class="title">Aniversariantes do Mês de {{capitalize(getTheActualMonth())}}</h4>
+      </div>
+      <div class="content">
+        <table class="table">
+        <thead>
+          <th><i class="fa fa-calendar"/></th>
+          <th>Nome</th>
+          <th><i class="fa fa-birthday-cake"/></th>
+        </thead>
+        <tbody>
+          <tr v-for="aniversariante in aniversariantes" :key="aniversariante.id">
+            <td>{{getBirthday(aniversariante.data_Nascimento)}}</td>
+            <td><router-link v-bind:to="{ path: 'membros/'+aniversariante.id.toString() }" >{{aniversariante.nome}}</router-link></td>
+            <td>{{calcAge(aniversariante.data_Nascimento)}} anos</td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import axios from '@/plugins/axios';
-import { aniversariantesUrl } from './../../api-url';
+import { aniversariantesUrl } from './../../../../api-url';
 
 const aniversariantes = localStorage.getItem('aniversariantes') ? JSON.parse(localStorage.getItem('aniversariantes')) : [];
 
