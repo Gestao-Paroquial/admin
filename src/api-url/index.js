@@ -13,6 +13,7 @@ export const tiposEventoUrl = `${backEndUrl}/api/tiposEvento`;
 export const tiposUrl = `${backEndUrl}/api/tipos`;
 export const dependentesUrl = `${backEndUrl}/api/dependentes`;
 export const telefonesUrl = `${backEndUrl}/api/telefones`;
+export const aniversariantesUrl = `${backEndUrl}/api/aniversariantes`;
 export const facebookApiUrl = `${billingCyclesUrl}/api/facebook`;
 export const billingCyclesApiUrl = `${billingCyclesUrl}/api/billingCycles`;
 export const billingSummaryApiUrl = `${billingCyclesUrl}/api/billingSummary`;
@@ -24,5 +25,6 @@ export const logoutApiUrl = `${backEndUrl}/api/logout`;
 export const validateTokenUrl = `${backEndUrl}/api/validateToken`;
 export const analyticsUrl = `${backEndUrl}/api/analytics`;
 export const agendaUrl = `${backEndUrl}/api/agenda`;
+
 // Helpers
 export const findBillingCycleByComunityId = comunidadeId => `${findBillingCycleByComunity}?id=${comunidadeId}`;
