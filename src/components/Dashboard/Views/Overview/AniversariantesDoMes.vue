@@ -2,14 +2,16 @@
   <div class="col-md-4 col-sm-12 aniversariantes">
     <div class="card">
       <div class="header">
-        <h4 class="title">Aniversariantes do Mês de {{capitalize(getTheActualMonth())}}</h4>
+        <h5 class="title">Aniversariantes do Mês de {{capitalize(getTheActualMonth())}}</h5>
       </div>
       <div class="content">
         <table class="table">
         <thead>
-          <th><i class="fa fa-calendar"/></th>
-          <th>Nome</th>
-          <th><i class="fa fa-birthday-cake"/></th>
+          <tr>
+            <th><i class="fa fa-calendar"/></th>
+            <th>Nome</th>
+            <th><i class="fa fa-birthday-cake"/></th>
+          </tr>
         </thead>
         <tbody>
           <tr v-for="aniversariante in aniversariantes" :key="aniversariante.id">
