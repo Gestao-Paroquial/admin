@@ -32,6 +32,6 @@ export default {
           this.event.data_fim_evento = data.data_fim_evento.replace(' ', 'T');
         }
       });
-  }
+  },
 };
 </script>
