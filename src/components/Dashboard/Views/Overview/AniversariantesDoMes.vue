@@ -55,11 +55,6 @@ export default {
     getBirthday(date) {
       return date.split('-')[2];
     },
-    calcAge(dateString) {
-      /* eslint no-bitwise: ["error", { "allow": ["~"] }] */
-      const birthday = +new Date(dateString);
-      return ~~((Date.now() - birthday) / (31557600000));
-    },
   },
 };
 </script>

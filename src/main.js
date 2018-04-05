@@ -77,6 +77,11 @@ Vue.mixin({
     arrayToSelectList(array, label = 'nome', value = 'id') {
       return array.map(element => ({ label: element[label], value: element[value] }));
     },
+    calcAge(dateString) {
+      /* eslint no-bitwise: ["error", { "allow": ["~"] }] */
+      const birthday = +new Date(dateString);
+      return ~~((Date.now() - birthday) / (31557600000));
+    },
   },
 });
 
