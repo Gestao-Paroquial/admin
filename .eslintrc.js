@@ -50,6 +50,7 @@ module.exports = {
     'no-console': 0,
     'no-alert': 0,
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    "no-unused-expressions": ["error", {"allowTernary": true}]
   }
 }
