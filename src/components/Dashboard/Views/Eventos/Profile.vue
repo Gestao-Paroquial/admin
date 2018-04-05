@@ -1,113 +1,37 @@
 <template>
   <div class="row">
     <back-button/>
-    <div class="col-lg-12 ">
-      <div class="card">
-        <loader v-if="showLoader" />
-        <div class="header">
-          <h4 class="title">Evento {{event.title}}</h4>
-        </div>
-        <div class="content">
-          <form @submit.prevent="update">
-            <div class="row">
-              <div class="col-md-6">
-                <fg-input  type="text" :required="true" label="Título do Evento" placeholder="Título" v-model="event.title" />
-              </div>
-              <div class="col-md-6">
-                <fg-input  :type="'text'" :required="true" label="Descricão do Evento" placeholder="Descricão" v-model="event.description" />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <fg-input  type="datetime-local" :required="true" label="Início do Evento"  v-model="event.start" />
-              </div>
-              <div class="col-md-6">
-                <fg-input  type="datetime-local" :required="false" label="Fim do Evento"  v-model="event.end" />
-              </div>
-            </div>
-            <hr>
-            <div class="text-center">
-              <button class="btn btn-warning btn-fill btn-wd" >
-                Alterar
-              </button>
-              <button class="btn btn-danger btn-fill btn-wd"  @click.prevent="del">
-                Deletar
-              </button>
-            </div>
-            <div class="clearfix" />
-          </form>
-        </div>
-      </div>
-    </div>
+    <update-form :event="event" />
   </div>
 </template>
 <script>
+import axios from '@/plugins/axios';
+import { agendaUrl } from '../../../../api-url/index';
+import UpdateForm from './Form';
+
 export default {
+  components: { UpdateForm },
   data() {
     return {
-      event: {
-        date: '', // Required
-        title: '', // Required
-        description: '',
-      },
-      showLoader: false,
+      event: { },
     };
   },
   mounted() {
-    const events = JSON.parse(localStorage.getItem('events'));
+    axios.get(`${agendaUrl}/${this.$route.params.id}`)
+      .then(({ data }) => {
+        this.event = data;
 
-    this.event = events.find(
-      event => event.id.toString() === this.$route.params.id,
-    );
-  },
-  methods: {
-    notify(eventTitle = 'Evento', action = '') {
-      this.$notifications.notify(
-        this.notificationConfig(`${eventTitle} ${action} com sucesso`),
-      );
-    },
-    del() {
-      this.$dialog
-        .confirm()
-        .then((dialog) => {
-          dialog.close();
-          const events = JSON.parse(localStorage.getItem('events'));
+        this.event.comunidade.value = this.event.comunidade.id;
+        this.event.comunidade.label = this.event.comunidade.nome;
 
-          const index = events.findIndex(event => event.id.toString() === this.$route.params.id);
+        this.event.tipo_evento.value = this.event.tipo_evento.id;
+        this.event.tipo_evento.label = this.event.tipo_evento.descricao;
 
-          events.splice(index, 1);
-
-          localStorage.setItem('events', JSON.stringify(events));
-
-          this.notify(this.event.title, 'removido');
-
-          this.$router.push({ path: '/admin/eventos' });
-        })
-        .catch(() => {
-          console.log('Clicked on cancel');
-        });
-    },
-    update() {
-      this.$dialog
-        .confirm()
-        .then((dialog) => {
-          dialog.close();
-          const events = JSON.parse(localStorage.getItem('events'));
-
-          const index = events.findIndex(event => event.id.toString() === this.$route.params.id);
-
-          events[index] = this.event;
-
-          localStorage.setItem('events', JSON.stringify(events));
-
-          this.notify(this.event.title, 'alterado');
-
-          this.$router.push({ path: '/admin/eventos' });
-        })
-        .catch(() => {
-          console.log('Clicked on cancel');
-        });
-    },
+        this.event.data_inicio_evento = data.data_inicio_evento.replace(' ', 'T');
+        if (this.event.data_fim_evento) {
+          this.event.data_fim_evento = data.data_fim_evento.replace(' ', 'T');
+        }
+      });
   },
 };
 </script>

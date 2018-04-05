@@ -37,6 +37,7 @@ const pastoraisHeaders = [
   'id',
   'nome',
   'comunidade.nome',
+  'coordenador.nome',
   'descricao',
 ];
 

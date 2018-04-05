@@ -2,14 +2,14 @@
   <div class="row">
     <back-button/>
     <div class="col-lg-12 ">
-      <update-form :pastoral="pastoral" :select-list="selectList" />
+      <update-form :pastoral="pastoral" />
     </div>
   </div>
 </template>
 <script>
 import axios from 'axios';
-import UpdateForm from './UpdateForm';
-import { pastoraisApiUrl, comunidadesApiUrl } from './../../../../api-url';
+import UpdateForm from './Form';
+import { pastoraisApiUrl } from './../../../../api-url';
 
 export default {
   components: {
@@ -18,38 +18,16 @@ export default {
   data() {
     return {
       pastoral: {},
-      selectList: {
-        label: 'Comunidades',
-        name: 'comunidades_id',
-        options: [],
-      },
     };
   },
-  created() {
-    const self = this;
+  mounted() {
     axios
-      .get(`${pastoraisApiUrl}/${self.$route.params.id}`)
+      .get(`${pastoraisApiUrl}/${this.$route.params.id}`)
       .then(({ data }) => {
         this.pastoral = data;
-        const comunidadeAtual = data.comunidade;
-        this.selectList.options.push({
-          value: data.comunidade.nome,
-          id: data.comunidade.id,
-        });
+        this.pastoral.coordenador = { label: this.pastoral.coordenador.nome, value: this.pastoral.coordenador.id };
 
-        axios.get(comunidadesApiUrl).then((response) => {
-          const comunidadesToSelectList = response.data
-            .filter(
-              comunidade =>
-                (comunidadeAtual.id !== comunidade.id ? comunidade : null),
-            )
-            .map(comunidade => ({
-              value: comunidade.nome,
-              id: comunidade.id,
-            }));
-
-          this.selectList.options.push(...comunidadesToSelectList);
-        });
+        this.pastoral.comunidade = { label: this.pastoral.comunidade.nome, value: this.pastoral.comunidade.id };
       })
       .catch(err => console.log(err));
   },

@@ -1,5 +1,6 @@
 <template>
   <div class="eventos">
+    <loader v-if="loader"/>
     <go-to-add-page></go-to-add-page>
     <full-calendar :events="events" locale="pt-br" @eventClick="eventClick" @dayClick="dayClick" @moreClick="moreClick">
     </full-calendar>
@@ -7,25 +8,44 @@
 </template>
 
 <script>
-// const demoEvents = [
-//   {
-//     title: 'Sunny Out of Office',
-//     start: '2018-03-25',
-//     end: null,
-//     cssClass: ['family', 'career'],
-//   },
-// ];
+import axios from '@/plugins/axios';
+import { agendaUrl, tiposUrl } from '../../../../api-url/index';
+
 export default {
   data() {
     return {
       events: [],
+      tiposEvento: [],
+      loader: false,
     };
   },
   mounted() {
-    const events = JSON.parse(localStorage.getItem('events'));
-    if (events) this.events = events;
+    this.loader = true;
+
+    axios.get(tiposUrl)
+      .then(({ data }) => {
+        this.tiposEvento = data.eventos;
+        return axios.get(agendaUrl);
+      })
+      .then(({ data }) => {
+        this.events = data.map((event) => {
+          const reassingObj = {
+            start: event.data_inicio_evento,
+            end: event.data_fim_evento,
+            title: event.titulo,
+            cssClass: this.getEventType(event).descricao.toLowerCase(),
+          };
+
+          Object.assign(event, reassingObj);
+          return event;
+        });
+      })
+      .finally(() => { this.loader = false; });
   },
   methods: {
+    getEventType(event) {
+      return this.tiposEvento.find(type => event.tipo_evento_id === type.id);
+    },
     changeMonth(start, end, current) {
       console.log('changeMonth', start, end, current);
     },
@@ -70,6 +90,26 @@ export default {
   }
   .comp-full-calendar {
     max-width: initial;
+  }
+
+  .batismo{
+    background-color: rgb(51, 40, 207) !important;
+    color: #fff !important;
+  }
+
+  .festa{
+    background-color: #3c763d !important;
+    color: #fff !important;
+  }
+
+  .casamento{
+    background-color: #86a7c2 !important;
+    color: #fff !important;
+  }
+
+  .quermesse{
+    background-color: #a33502 !important;
+    color: #fff !important;
   }
 }
 </style>

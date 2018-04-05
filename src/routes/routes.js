@@ -24,9 +24,8 @@ import Comunidades from '@/components/Dashboard/Views/Comunidades';
 import ComunidadeProfile from '@/components/Dashboard/Views/Comunidades/Profile';
 import AddComunidade from '@/components/Dashboard/Views/Comunidades/Add';
 
-import MembrosPastorais from '@/components/Dashboard/Views/MembrosPastorais';
-import MembroPastoralProfile from '@/components/Dashboard/Views/MembrosPastorais/Profile';
-import AddMembroPastoral from '@/components/Dashboard/Views/MembrosPastorais/Add';
+import Membros from '@/components/Dashboard/Views/Membros';
+import MembroProfile from '@/components/Dashboard/Views/Membros/Profile';
 
 import MensagensParoco from '@/components/Dashboard/Views/MensagensParoco';
 import MensagensParocoProfile from '@/components/Dashboard/Views/MensagensParoco/Profile';
@@ -136,19 +135,19 @@ const routes = [
         component: Visitantes,
       },
       {
-        path: 'membros-pastorais/add',
-        name: 'novo Membro Pastoral',
-        component: AddMembroPastoral,
+        path: 'membros/add',
+        name: 'novo Membro',
+        component: MembroProfile,
       },
       {
-        path: 'membros-pastorais/:id',
-        name: 'membro Pastoral',
-        component: MembroPastoralProfile,
+        path: 'membros/:id',
+        name: 'membro',
+        component: MembroProfile,
       },
       {
-        path: 'membros-pastorais',
-        name: 'membros Pastorais',
-        component: MembrosPastorais,
+        path: 'membros',
+        name: 'membros',
+        component: Membros,
       },
       {
         path: 'pastorais/add',

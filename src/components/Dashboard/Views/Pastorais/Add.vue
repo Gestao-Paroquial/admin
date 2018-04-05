@@ -2,14 +2,12 @@
   <div class="row">
     <back-button/>
     <div class="col-lg-12 ">
-      <add-form :pastoral="pastoral" :select-list="selectList" />
+      <add-form :pastoral="pastoral" />
     </div>
   </div>
 </template>
 <script>
-import axios from 'axios';
-import AddForm from './AddForm';
-import { comunidadesApiUrl } from './../../../../api-url';
+import AddForm from './Form';
 
 export default {
   components: {
@@ -17,26 +15,11 @@ export default {
   },
   data() {
     return {
-      pastoral: {},
-      selectList: {
-        label: 'Comunidades',
-        name: 'comunidades_id',
-        options: [{}],
-      },
+      pastoral: { telefones: [] },
     };
   },
-  created() {
-    axios
-      .get(comunidadesApiUrl)
-      .then(({ data }) => {
-        const comunidadesToSelectList = data.map(comunidade => ({
-          value: comunidade.nome,
-          id: comunidade.id,
-        }));
+  mounted() {
 
-        this.selectList.options.push(...comunidadesToSelectList);
-      })
-      .catch(err => console.log(err));
   },
 };
 </script>
