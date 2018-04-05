@@ -20,6 +20,19 @@
     </div>
 
     <div class="row">
+      <div class="col-md-4 col-xs-12">
+        <chart-card :chart-data="relacaoDeIdade.data" chart-type="Pie">
+          <h4 class="title" slot="title">Faixa Etária</h4>
+          <span slot="subTitle"> Dos membros e dizimista</span>
+          <!-- <span slot="footer">
+            <i class="ti-timer" /> Campaign set 2 days ago</span> -->
+          <div slot="legend">
+            <i class="fa fa-circle text-info" /> Crianças
+            <i class="fa fa-circle text-danger" /> Adultos
+            <i class="fa fa-circle text-warning" /> Idosos
+          </div>
+        </chart-card>
+      </div>
       <aniversariantes-do-mes />
     </div>
 
@@ -85,8 +98,8 @@ import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
-import { facebookApiUrl, analyticsUrl } from './../../../../api-url';
-import AniversariantesDoMes from '../../../UIComponents/AniversariantesDoMes';
+import { facebookApiUrl, analyticsUrl, membrosUrl } from './../../../../api-url';
+import AniversariantesDoMes from './AniversariantesDoMes';
 
 export default {
   components: {
@@ -101,6 +114,7 @@ export default {
    */
   data() {
     return {
+      membros: [],
       casamentos: [
         {
           nome: 'Pavan kumar',
@@ -252,13 +266,52 @@ export default {
         },
         options: {},
       },
+      relacaoDeIdade: {
+        data: JSON.parse(localStorage.getItem('relacaoDeIdadeData')),
+        options: {},
+      },
     };
   },
   mounted() {
     this.getFacebook();
     this.getAnalytics();
+
+    axios.get(membrosUrl)
+      .then(({ data }) => {
+        this.membros = data;
+
+        this.makeCalc();
+      });
   },
   methods: {
+    makeCalc() {
+      const objIdade = this.membros.reduce((prev, membro) => {
+        const idade = this.calcAge(membro.data_Nascimento);
+
+        if (idade <= 18) {
+          prev.criancas++;
+        } else if (idade <= 60) {
+          prev.adultos++;
+        } else {
+          prev.idosos++;
+        }
+
+        return prev;
+      }, { idosos: 0, criancas: 0, adultos: 0 });
+
+
+      const series = Object.values(objIdade).map(type => this.percent(type));
+
+      this.relacaoDeIdade.data = {
+        labels: series.map(serie => `${serie.toFixed(2)}%`),
+        series,
+      };
+
+      localStorage.setItem('relacaoDeIdadeData', JSON.stringify(this.relacaoDeIdade.data));
+    },
+    percent(value) {
+      return (value / this.membros.length * 100);
+    },
     getFacebook() {
       axios
         .get(facebookApiUrl)

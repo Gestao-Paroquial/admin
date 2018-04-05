@@ -55,6 +55,11 @@ export default {
       chartId: 'no-id',
     };
   },
+  watch: {
+    chartData() {
+      this.initChart();
+    },
+  },
   methods: {
     /** *
      * Initializes the chart by merging the chart options sent via props and the default chart options
