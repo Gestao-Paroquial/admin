@@ -24,7 +24,7 @@
       <div class="col-md-5 col-xs-12">
         <chart-card :chart-data="relacaoDeIdade.data" :chart-options="relacaoDeIdade.options" chart-type="Pie">
           <h4 class="title" slot="title">Faixa Etária</h4>
-          <span slot="subTitle"> Dos membros e membro</span>
+          <span slot="subTitle"> Dos membros e visitantes</span>
           <!-- <span slot="footer">
             <i class="ti-timer" /> Campaign set 2 days ago</span> -->
           <div slot="legend">
