@@ -20,20 +20,60 @@
     </div>
 
     <div class="row">
-      <div class="col-md-4 col-xs-12">
-        <chart-card :chart-data="relacaoDeIdade.data" chart-type="Pie">
+
+      <div class="col-md-5 col-xs-12">
+        <chart-card :chart-data="relacaoDeIdade.data" :chart-options="relacaoDeIdade.options" chart-type="Pie">
           <h4 class="title" slot="title">Faixa Etária</h4>
-          <span slot="subTitle"> Dos membros e dizimista</span>
+          <span slot="subTitle"> Dos membros e membro</span>
           <!-- <span slot="footer">
             <i class="ti-timer" /> Campaign set 2 days ago</span> -->
           <div slot="legend">
-            <i class="fa fa-circle text-info" /> Crianças
-            <i class="fa fa-circle text-danger" /> Adultos
-            <i class="fa fa-circle text-warning" /> Idosos
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Faixas de Idade</th>
+                  <th>Porcentagem</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(label, index) in relacaoDeIdade.data.labels" :key="label">
+                  <td>{{label}}</td>
+                  <td>{{relacaoDeIdade.data.series[index].toFixed(2)}}%</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </chart-card>
       </div>
+
       <aniversariantes-do-mes />
+
+      <div class="col-md-4">
+        <div class="card">
+          <div class="header">
+            <h5 class="title">Ultimos Membros Cadastrados</h5>
+          </div>
+          <div class="content">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="membro in ultimosMembros" :key="membro.id">
+                  <td>
+                    <router-link v-bind:to="{ path: 'membros/'+membro.id.toString() }" >
+                      {{membro.nome}}
+                    </router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Controle Financeiro -->
@@ -268,8 +308,11 @@ export default {
       },
       relacaoDeIdade: {
         data: JSON.parse(localStorage.getItem('relacaoDeIdadeData')),
-        options: {},
+        options: {
+
+        },
       },
+      ultimosMembros: [],
     };
   },
   mounted() {
@@ -280,16 +323,24 @@ export default {
       .then(({ data }) => {
         this.membros = data;
 
-        this.makeCalc();
+        this.makeCalcOfAges();
+
+        this.ultimosMembros =
+        data
+          .sort((a, b) => new Date(b.created_at) + new Date(a.created_at)).splice(0, 8);
       });
   },
   methods: {
-    makeCalc() {
-      const objIdade = this.membros.reduce((prev, membro) => {
+    makeCalcOfAges() {
+      const contagemDeFaixaEtaria = this.membros.reduce((prev, membro) => {
         const idade = this.calcAge(membro.data_Nascimento);
 
-        if (idade <= 18) {
+        if (idade <= 12) {
           prev.criancas++;
+        } else if (idade <= 18) {
+          prev.adolescentes++;
+        } else if (idade <= 29) {
+          prev.jovens++;
         } else if (idade <= 60) {
           prev.adultos++;
         } else {
@@ -297,13 +348,12 @@ export default {
         }
 
         return prev;
-      }, { idosos: 0, criancas: 0, adultos: 0 });
+      }, { criancas: 0, adolescentes: 0, jovens: 0, adultos: 0, idosos: 0 });
 
-
-      const series = Object.values(objIdade).map(type => this.percent(type));
+      const series = Object.values(contagemDeFaixaEtaria).map(faixaEtaria => this.percent(faixaEtaria));
 
       this.relacaoDeIdade.data = {
-        labels: series.map(serie => `${serie.toFixed(2)}%`),
+        labels: ['Crianças', 'Adolescentes', 'Jovens', 'Adultos', 'Idosos'],
         series,
       };
 
