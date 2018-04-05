@@ -43,18 +43,20 @@
             <table class="table table-striped">
               <thead>
                 <tr>
-                  <th>Descrição do gasto</th>
+                  <th>Data</th>
+                  <th>Descrição</th>
                   <th>Valor</th>
                 </tr>
               </thead>
               <tfoot>
                 <tr :class="{success: sumOfBillingCyclesValue > 0, danger: sumOfBillingCyclesValue < 0  }">
-                  <td>Total</td>
+                  <td colspan="2">Total</td>
                   <td>{{formatToPrice(sumOfBillingCyclesValue)}}</td>
                 </tr>
               </tfoot>
               <tbody>
                 <tr v-for="(item, index) in valuesOfBillingCycles" :key="index">
+                  <td>{{formatDate(item.date)}}</td>
                   <td>{{item.name}}</td>
                   <td :class="{'text-success': item.value > 0, 'text-danger': item.value < 0  }">{{formatToPrice(item.value)}}</td>
                 </tr>
@@ -160,7 +162,7 @@ export default {
 
       const filteredBillingCycles = this.billingCycles.filter(
         billingCycle =>
-          this.formatDate(billingCycle.date) === this.selectedPeriod,
+          this.formatDateByMonth(billingCycle.date) === this.selectedPeriod,
       );
 
       setTimeout(() => {
@@ -175,7 +177,8 @@ export default {
     comunidadeSelecionada() {
       this.showLoader = true;
 
-      axios.get(findBillingCycleByComunityId(this.comunidadeSelecionada.value.id))
+      axios
+        .get(findBillingCycleByComunityId(this.comunidadeSelecionada.value.id))
         .then(({ data }) => {
           this.comunidadeSelecionada.billingCycles = data;
           this.showLoader = false;
@@ -185,11 +188,16 @@ export default {
   },
   computed: {
     nomeDasComunidades() {
-      return this.comunidades.map(comunidade => ({ label: comunidade.nome, value: comunidade }));
+      return this.comunidades.map(comunidade => ({
+        label: comunidade.nome,
+        value: comunidade,
+      }));
     },
     uniqPeriods() {
       return [
-        ...new Set(this.billingCycles.map(item => this.formatDate(item.date))),
+        ...new Set(
+          this.billingCycles.map(item => this.formatDateByMonth(item.date)),
+        ),
       ];
     },
     sumOfBillingCyclesValue() {
@@ -204,13 +212,19 @@ export default {
       const valuesOfBillingCycles = [];
 
       billingCycles.forEach((billingCycle) => {
-        const values = billingCycle.debts.map(debt => ({
+        const debts = billingCycle.debts.map(debt => ({
           value: debt.value * -1,
           name: debt.name,
+          date: billingCycle.date,
         }));
-        if (values.length > 0) valuesOfBillingCycles.push(...values);
+        if (debts.length > 0) valuesOfBillingCycles.push(...debts);
 
-        valuesOfBillingCycles.push(...billingCycle.credits);
+        valuesOfBillingCycles.push(...billingCycle.credits.map((credit) => {
+          /* eslint-disable no-param-reassign */
+          credit.date = billingCycle.date;
+          /* eslint-enable no-param-reassign */
+          return credit;
+        }));
       });
 
       return valuesOfBillingCycles;
@@ -224,6 +238,13 @@ export default {
       const setNull = obj => setAll(obj, null);
       setNull(this.tipoDeRelatorio);
       this.tipoDeRelatorio[type] = true;
+    },
+    formatDateByMonth(date) {
+      return new Date(date).toLocaleDateString('pt-BR', {
+        year: 'numeric',
+        month: 'long',
+        timeZone: 'UTC',
+      });
     },
   },
 };
