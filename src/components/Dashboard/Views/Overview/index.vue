@@ -20,17 +20,18 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6 col-xs-12">
+
+      <div class="col-md-5 col-xs-12">
         <chart-card :chart-data="relacaoDeIdade.data" :chart-options="relacaoDeIdade.options" chart-type="Pie">
           <h4 class="title" slot="title">Faixa Etária</h4>
-          <span slot="subTitle"> Dos membros e dizimista</span>
+          <span slot="subTitle"> Dos membros e membro</span>
           <!-- <span slot="footer">
             <i class="ti-timer" /> Campaign set 2 days ago</span> -->
           <div slot="legend">
             <table class="table">
               <thead>
                 <tr>
-                  <th>Faixas</th>
+                  <th>Faixas de Idade</th>
                   <th>Porcentagem</th>
                 </tr>
               </thead>
@@ -44,8 +45,35 @@
           </div>
         </chart-card>
       </div>
+
       <aniversariantes-do-mes />
-       <aniversariantes-do-mes />
+
+      <div class="col-md-4">
+        <div class="card">
+          <div class="header">
+            <h5 class="title">Ultimos Membros Cadastrados</h5>
+          </div>
+          <div class="content">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="membro in ultimosMembros" :key="membro.id">
+                  <td>
+                    <router-link v-bind:to="{ path: 'membros/'+membro.id.toString() }" >
+                      {{membro.nome}}
+                    </router-link>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Controle Financeiro -->
@@ -284,6 +312,7 @@ export default {
 
         },
       },
+      ultimosMembros: [],
     };
   },
   mounted() {
@@ -295,6 +324,10 @@ export default {
         this.membros = data;
 
         this.makeCalcOfAges();
+
+        this.ultimosMembros =
+        data
+          .sort((a, b) => new Date(b.created_at) + new Date(a.created_at)).splice(0, 8);
       });
   },
   methods: {
