@@ -30,7 +30,7 @@ export default {
   mounted() {
     axios.get(`${aniversariantesUrl}/${new Date().getMonth() + 1}`)
       .then(({ data }) => {
-        this.aniversariantes = data;
+        this.aniversariantes = data.sort((a, b) => (a.data_Nascimento.split('-')[2]) - (b.data_Nascimento.split('-')[2]));
       });
   },
   methods: {
