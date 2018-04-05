@@ -19,6 +19,10 @@
       </div>
     </div>
 
+    <div class="row">
+      <aniversariantes-do-mes />
+    </div>
+
     <!-- Controle Financeiro -->
     <value-row/>
 
@@ -82,6 +86,7 @@ import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
 import { facebookApiUrl, analyticsUrl } from './../../../../api-url';
+import AniversariantesDoMes from '../../../UIComponents/AniversariantesDoMes';
 
 export default {
   components: {
@@ -89,6 +94,7 @@ export default {
     ChartCard,
     ValueRow,
     Solicitacoes,
+    AniversariantesDoMes,
   },
   /**
    * Chart data used to render stats, charts. Should be replaced with server data
