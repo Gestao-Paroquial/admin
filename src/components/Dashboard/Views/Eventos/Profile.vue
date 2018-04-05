@@ -32,55 +32,6 @@ export default {
           this.event.data_fim_evento = data.data_fim_evento.replace(' ', 'T');
         }
       });
-  },
-  methods: {
-    notify(eventTitle = 'Evento', action = '') {
-      this.$notifications.notify(
-        this.notificationConfig(`${eventTitle} ${action} com sucesso`),
-      );
-    },
-    del() {
-      this.$dialog
-        .confirm()
-        .then((dialog) => {
-          dialog.close();
-          const events = JSON.parse(localStorage.getItem('events'));
-
-          const index = events.findIndex(event => event.id.toString() === this.$route.params.id);
-
-          events.splice(index, 1);
-
-          localStorage.setItem('events', JSON.stringify(events));
-
-          this.notify(this.event.title, 'removido');
-
-          this.$router.push({ path: '/admin/eventos' });
-        })
-        .catch(() => {
-          console.log('Clicked on cancel');
-        });
-    },
-    update() {
-      this.$dialog
-        .confirm()
-        .then((dialog) => {
-          dialog.close();
-          const events = JSON.parse(localStorage.getItem('events'));
-
-          const index = events.findIndex(event => event.id.toString() === this.$route.params.id);
-
-          events[index] = this.event;
-
-          localStorage.setItem('events', JSON.stringify(events));
-
-          this.notify(this.event.title, 'alterado');
-
-          this.$router.push({ path: '/admin/eventos' });
-        })
-        .catch(() => {
-          console.log('Clicked on cancel');
-        });
-    },
-  },
+  }
 };
 </script>

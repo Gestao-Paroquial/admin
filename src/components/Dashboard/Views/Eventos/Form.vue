@@ -41,14 +41,7 @@
               <fg-input type="datetime-local" :required="false" label="Fim do Evento" placeholder="Data" v-model="event.data_fim_evento" />
             </div>
           </div>
-
-          <hr>
-          <div class="text-center">
-            <button class="btn btn-info btn-fill btn-wd" type="submit">
-              Adicionar
-            </button>
-          </div>
-          <div class="clearfix" />
+          <form-buttons :showAdd="!$route.params.id" :showUpdate="$route.params.id" :showDelete="$route.params.id" :deleteFunction="deleteEvento"/>
         </form>
       </div>
     </div>
@@ -71,12 +64,16 @@ export default {
   },
   mounted() {
     this.showLoader = true;
-    axios.get(tiposUrl).then(({ data }) => {
-      this.tiposEvento = data.eventos;
-      return axios.get(comunidadesApiUrl);
-    }).then(({ data }) => {
-      this.comunidades = data;
-    }).finally(() => { this.showLoader = false; });
+
+    axios
+      .get(tiposUrl).then(({ data }) => {
+        this.tiposEvento = data.eventos;
+        return axios.get(comunidadesApiUrl);
+      })
+      .then(({ data }) => {
+        this.comunidades = data;
+      })
+      .finally(() => { this.showLoader = false; });
   },
   computed: {
     tiposEventoToSelectList() {
@@ -87,29 +84,57 @@ export default {
     },
   },
   methods: {
-    notify(eventTitle = 'Evento', action = '') {
-      this.$notifications.notify(
-        this.notificationConfig(`${eventTitle} ${action} com sucesso`),
-      );
-    },
     handleSubmit() {
-      if (this.$route.query.update) this.updatePastoral();
-      if (!this.$route.params.id) this.addEvento();
+      (!this.$route.params.id) ? this.addEvento() : this.updateEvento();
     },
     addEvento() {
       this.showLoader = true;
       this.event.tipo_evento_id = this.event.tipo_evento.value;
       this.event.comunidade_id = this.event.comunidade.value;
       axios
-        .post(agendaUrl, JSON.stringify(this.event), {
-          headers: { 'Content-Type': 'application/json' },
-        })
+        .post(agendaUrl, JSON.stringify(this.event), { headers: { 'Content-Type': 'application/json' } })
         .then(({ data }) => {
           this.$notifications.notify(this.notificationConfig(data.message));
           this.$router.push({ path: '/admin/eventos' });
         })
         .catch(error => console.log(error))
         .finally(() => { this.showLoader = false; });
+    },
+    deleteEvento() {
+      let dialog;
+      this.$dialog
+        .confirm()
+        .then((dialog_) => {
+          dialog = dialog_;
+          return axios.delete(`${agendaUrl}/${this.event.id}`);
+        })
+        .then(({ data }) => {
+          dialog.close();
+          this.$notifications.notify(this.notificationConfig(data.message));
+          this.$router.push({ path: '/admin/eventos' });
+        })
+        .catch((err) => {
+          dialog.close();
+          console.log(err);
+        });
+    },
+    updateEvento() {
+      let dialog;
+      this.$dialog
+        .confirm()
+        .then((dialog_) => {
+          dialog = dialog_;
+          return axios.put(`${agendaUrl}/${this.event.id}`, JSON.stringify(this.event), { headers: { 'Content-Type': 'application/json' } });
+        })
+        .then(({ data }) => {
+          dialog.close();
+          this.$notifications.notify(this.notificationConfig(data.message));
+          // this.$router.push({ path: '/admin/eventos' });
+        })
+        .catch((err) => {
+          dialog.close();
+          console.log(err);
+        });
     },
   },
 };
