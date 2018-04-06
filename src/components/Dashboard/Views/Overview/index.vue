@@ -57,7 +57,14 @@
             <h5 class="title">Ultimos Membros Cadastrados</h5>
           </div>
           <div class="content">
-            <table class="table">
+            <vue-content-loading v-if="ultimosMembros.length === 0" :width="300" :height="100">
+              <rect x="0" y="20" rx="4" ry="4" width="100%" height="15" />
+              <rect x="0" y="40" rx="4" ry="4" width="100%" height="15" />
+              <rect x="0" y="60" rx="4" ry="4" width="100%" height="15" />
+              <rect x="0" y="80" rx="4" ry="4" width="100%" height="15" />
+              <rect x="0" y="100" rx="4" ry="4" width="100%" height="15" />
+            </vue-content-loading>
+            <table class="table" v-if="ultimosMembros.length > 0">
               <tbody>
                 <tr v-for="membro in ultimosMembros" :key="membro.id">
                   <td>
@@ -128,6 +135,7 @@
   </div>
 </template>
 <script>
+import VueContentLoading from 'vue-content-loading';
 import axios from '@/plugins/axios';
 import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
@@ -137,7 +145,7 @@ import { facebookApiUrl, analyticsUrl, membrosUrl } from './../../../../api-url'
 import AniversariantesDoMes from './AniversariantesDoMes';
 
 
-const ultimosMembros = localStorage.getItem('ultimosMembros') ? JSON.parse(localStorage.getItem('ultimosMembros')) : [];
+// const ultimosMembros = localStorage.getItem('ultimosMembros') ? JSON.parse(localStorage.getItem('ultimosMembros')) : [];
 
 export default {
   components: {
@@ -146,6 +154,7 @@ export default {
     ValueRow,
     Solicitacoes,
     AniversariantesDoMes,
+    VueContentLoading,
   },
   /**
    * Chart data used to render stats, charts. Should be replaced with server data
@@ -310,7 +319,7 @@ export default {
 
         },
       },
-      ultimosMembros,
+      ultimosMembros: [],
     };
   },
   mounted() {

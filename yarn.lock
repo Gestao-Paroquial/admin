@@ -8641,6 +8641,12 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+vue-content-loading@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/vue-content-loading/-/vue-content-loading-1.4.0.tgz#a551c9663898942788de9c64bc466ad3bddd8d0a"
+  dependencies:
+    vue "^2.5.13"
+
 vue-eslint-parser@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/vue-eslint-parser/-/vue-eslint-parser-2.0.3.tgz#c268c96c6d94cfe3d938a5f7593959b0ca3360d1"
@@ -8747,7 +8753,7 @@ vue2-editor@^2.4.2:
     quill-image-drop-module "^1.0.3"
     quill-image-resize-module "^3.0.0"
 
-vue@^2.1.8:
+vue@^2.1.8, vue@^2.5.13:
   version "2.5.16"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
 
