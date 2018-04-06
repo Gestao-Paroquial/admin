@@ -5,7 +5,7 @@
         <h5 class="title">Aniversariantes do Mês de {{capitalize(getTheActualMonth())}}</h5>
       </div>
       <div class="content">
-        <table class="table">
+        <table class="">
         <thead>
           <tr>
             <th><i class="fa fa-calendar"/></th>

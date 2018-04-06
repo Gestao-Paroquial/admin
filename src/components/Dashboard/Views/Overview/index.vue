@@ -19,6 +19,9 @@
       </div>
     </div>
 
+    <!-- Controle Financeiro -->
+    <value-row/>
+
     <div class="row">
 
       <div class="col-md-5">
@@ -55,11 +58,6 @@
           </div>
           <div class="content">
             <table class="table">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                </tr>
-              </thead>
               <tbody>
                 <tr v-for="membro in ultimosMembros" :key="membro.id">
                   <td>
@@ -75,9 +73,6 @@
       </div>
 
     </div>
-
-    <!-- Controle Financeiro -->
-    <value-row/>
 
     <div class="row">
       <solicitacoes title="Casamentos" :solicitacoes="casamentos"></solicitacoes>
@@ -140,6 +135,9 @@ import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
 import { facebookApiUrl, analyticsUrl, membrosUrl } from './../../../../api-url';
 import AniversariantesDoMes from './AniversariantesDoMes';
+
+
+const ultimosMembros = localStorage.getItem('ultimosMembros') ? JSON.parse(localStorage.getItem('ultimosMembros')) : [];
 
 export default {
   components: {
@@ -312,7 +310,7 @@ export default {
 
         },
       },
-      ultimosMembros: [],
+      ultimosMembros,
     };
   },
   mounted() {
@@ -328,6 +326,8 @@ export default {
         this.ultimosMembros =
         data
           .sort((a, b) => new Date(b.created_at) + new Date(a.created_at)).splice(0, 8);
+
+        localStorage.setItem('ultimosMembros', JSON.stringify(this.ultimosMembros));
       });
   },
   methods: {

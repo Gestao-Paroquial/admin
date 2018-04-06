@@ -24,25 +24,15 @@ const SidebarStore = {
       path: '/admin/mensagens-paroco',
     },
     {
-      name: 'Eventos Home',
+      name: 'Banners do Site',
       icon: 'fa fa-calendar',
       path: '/admin/eventos-home',
-    },
-    {
-      name: 'Visitantes',
-      icon: 'fa fa-users',
-      path: '/admin/visitantes',
     },
     {
       name: 'Membros',
       icon: 'fa fa-users',
       path: '/admin/membros',
     },
-    // {
-    //  name: 'Dizimistas',
-    //  icon: 'fa fa-user-plus',
-    //  path: '/admin/dizimistas'
-    // },
     {
       name: 'Pastorais',
       icon: 'fa fa-building-o',
@@ -79,11 +69,11 @@ const SidebarStore = {
     //  path: '/admin/maps'
     // },
     //
-    {
-      name: 'Notifications',
-      icon: 'ti-bell',
-      path: '/admin/notifications',
-    },
+    // {
+    //   name: 'Notifications',
+    //   icon: 'ti-bell',
+    //   path: '/admin/notifications',
+    // },
   ],
   displaySidebar(value) {
     this.showSidebar = value;

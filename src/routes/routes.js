@@ -12,10 +12,6 @@ import Maps from '@/components/Dashboard/Views/Maps';
 import Typography from '@/components/Dashboard/Views/Typography';
 import TableList from '@/components/Dashboard/Views/TableList';
 
-import Visitantes from '@/components/Dashboard/Views/Visitantes';
-import VisitanteProfile from '@/components/Dashboard/Views/Visitantes/Profile';
-import AddVisitantes from '@/components/Dashboard/Views/Visitantes/Add';
-
 import Pastorais from '@/components/Dashboard/Views/Pastorais';
 import PastoralProfile from '@/components/Dashboard/Views/Pastorais/Profile';
 import AddPastoral from '@/components/Dashboard/Views/Pastorais/Add';
@@ -48,7 +44,6 @@ const routes = [
     component: DashboardLayout,
     redirect: '/admin/overview',
     meta: { requiresAuth: true },
-
   },
   {
     path: '/login',
@@ -91,17 +86,17 @@ const routes = [
       },
       {
         path: 'eventos-home/add',
-        name: 'Novo evento home',
+        name: 'Novo Banner',
         component: AddEventosHome,
       },
       {
         path: 'eventos-home/:id',
-        name: 'Evento Home',
+        name: 'Banner',
         component: EventosHomeProfile,
       },
       {
         path: 'eventos-home',
-        name: 'Eventos Home',
+        name: 'Banners',
         component: EventosHome,
       },
       {
@@ -118,21 +113,6 @@ const routes = [
         path: 'mensagens-paroco',
         name: 'mensagens do Paroco',
         component: MensagensParoco,
-      },
-      {
-        path: 'visitantes/add',
-        name: 'novo Visitante',
-        component: AddVisitantes,
-      },
-      {
-        path: 'visitantes/:id',
-        name: 'Visitante',
-        component: VisitanteProfile,
-      },
-      {
-        path: 'visitantes',
-        name: 'visitantes',
-        component: Visitantes,
       },
       {
         path: 'membros/add',
@@ -211,7 +191,6 @@ const routes = [
       },
     ],
   },
-  { path: '/admin/*', requiresAuth: true },
   { path: '*', component: NotFound },
 ];
 
