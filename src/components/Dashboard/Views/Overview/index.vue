@@ -21,7 +21,7 @@
 
     <div class="row">
 
-      <div class="col-md-5 col-xs-12">
+      <div class="col-md-5">
         <chart-card :chart-data="relacaoDeIdade.data" :chart-options="relacaoDeIdade.options" chart-type="Pie">
           <h4 class="title" slot="title">Faixa Etária</h4>
           <span slot="subTitle"> Dos membros e visitantes</span>
@@ -48,7 +48,7 @@
 
       <aniversariantes-do-mes />
 
-      <div class="col-md-4">
+      <div class="col-md-5">
         <div class="card">
           <div class="header">
             <h5 class="title">Ultimos Membros Cadastrados</h5>
