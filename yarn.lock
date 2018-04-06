@@ -199,6 +199,17 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
+animated-number-vue@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/animated-number-vue/-/animated-number-vue-0.0.2.tgz#b8ae6dc6cdbaff77fbf6604e84db564c00e3ca8d"
+  dependencies:
+    animejs "^2.2.0"
+    vue "^2.5.13"
+
+animejs@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/animejs/-/animejs-2.2.0.tgz#35eefdfc535b81949c9cb06f0b3e60c02e6fdc80"
+
 ansi-escapes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-3.0.0.tgz#ec3e8b4e9f8064fc02c3ac9b65f1c275bda8ef92"

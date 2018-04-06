@@ -3,8 +3,8 @@
     <div class="card">
       <div class="small-box " :class="colorClass">
         <div class="inner">
-          <h3 class="ng-binding">{{formatToPrice(value)}}</h3>
-          <p class="ng-binding">{{text}}</p>
+          <h3 class=""><animated-number :value="value" :formatValue="formatToPrice" :duration="300"/></h3>
+          <p class="">{{text}}</p>
         </div>
         <div class="icon">
           <i :class="iconClass"></i>
@@ -14,7 +14,12 @@
   </div>
 </template>
 <script>
+import AnimatedNumber from 'animated-number-vue';
+
 export default {
+  components: {
+    AnimatedNumber,
+  },
   props: {
     grid: String,
     text: String,
