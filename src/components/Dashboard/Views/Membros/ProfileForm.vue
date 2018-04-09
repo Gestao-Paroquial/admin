@@ -199,13 +199,6 @@ export default {
     axios.get(tiposUrl)
       .then(({ data }) => {
         this.tiposMembro = data.membros;
-        const foo = this.tiposMembro.find(tipoMembro => tipoMembro.id === this.membro.tipo_membro_id);
-        if (foo) {
-          this.membro.tipo_membro = {
-            label: foo.descricao,
-            value: this.membro.tipo_membro_id,
-          };
-        }
 
         this.tiposDependente = data.dependentes;
 
