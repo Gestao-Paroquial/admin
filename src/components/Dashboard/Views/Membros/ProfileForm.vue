@@ -196,28 +196,26 @@ export default {
   mounted() {
     this.showLoader = true;
 
-    axios.get(tiposUrl)
-      .then(({ data }) => {
-        this.tiposMembro = data.membros;
-
-        this.tiposDependente = data.dependentes;
-
-        if (this.$route.params.id && this.membro.dependentes > 0) {
-          this.membro.dependentes.forEach((dependente) => {
-            const { descricao } = this.tiposDependente.find(tipo => tipo.id === dependente.tipo_dependente_id);
-            Object.assign(dependente, { tipo_dependente: { label: descricao, value: dependente.id } });
-          });
-        }
-
-        return axios.get(comunidadesApiUrl);
-      })
-
+    axios.get(comunidadesApiUrl)
       .then(({ data }) => {
         this.comunidades = data;
         return axios.get(pastoraisApiUrl);
       })
       .then(({ data }) => {
         this.pastorais = data;
+        return axios.get(tiposUrl);
+      })
+      .then(({ data }) => {
+        this.tiposMembro = data.membros;
+
+        this.tiposDependente = data.dependentes;
+
+        if (this.$route.params.id && this.membro.dependentes.length > 0) {
+          this.membro.dependentes.forEach((dependente) => {
+            const { descricao } = this.tiposDependente.find(tipo => tipo.id === dependente.tipo_dependente_id);
+            Object.assign(dependente, { tipo_dependente: { label: descricao, value: dependente.id } });
+          });
+        }
       })
       .finally(() => {
         this.showLoader = false;

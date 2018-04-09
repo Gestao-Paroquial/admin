@@ -39,7 +39,7 @@ export default {
         .get(`${membrosUrl}/${this.$route.params.id}`)
         .then(({ data }) => {
           this.membro = data;
-          this.membro.tipo_membro = {label: this.membro.tipo_membro.descricao, value: this.membro.tipo_membro.id};
+          this.membro.tipo_membro = { label: this.membro.tipo_membro.descricao, value: this.membro.tipo_membro.id };
           this.membro.comunidades.forEach(comunidade => Object.assign(comunidade, { label: comunidade.nome, value: comunidade.id }));
           this.membro.pastorais.forEach(pastoral => Object.assign(pastoral, { label: `${pastoral.nome} ${pastoral.id}`, value: pastoral.id }));
         })
