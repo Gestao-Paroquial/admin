@@ -3,7 +3,7 @@
     <div class="card">
       <div class="small-box " :class="colorClass">
         <div class="inner">
-          <h3 class=""><animated-number :value="value" :formatValue="formatToPrice" :duration="300"/></h3>
+          <h3 class=""><animated-number :value="value" :formatValue="formatToPrice" :duration="500"/></h3>
           <p class="">{{text}}</p>
         </div>
         <div class="icon">
@@ -23,7 +23,10 @@ export default {
   props: {
     grid: String,
     text: String,
-    value: Number,
+    value: {
+      type: Number,
+      default: 0,
+    },
     colorClass: String,
     iconClass: String,
   },
