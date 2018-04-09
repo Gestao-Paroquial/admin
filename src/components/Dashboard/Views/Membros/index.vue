@@ -2,7 +2,7 @@
   <div class="col-md-12">
     <loader v-if="showLoader" />
     <div class="row">
-      <div class="col-md-5">
+      <div class="col-md-4">
         <stats-card>
           <div class="icon-big text-center icon-danger"  slot="header">
             <i class="fa fa-users" />
@@ -17,7 +17,7 @@
         </stats-card>
       </div>
 
-      <div class="col-md-5">
+      <div class="col-md-4">
         <stats-card>
           <div class="icon-big text-center icon-info"  slot="header">
             <i class="fa fa-users" />
@@ -32,7 +32,7 @@
         </stats-card>
       </div>
 
-      <div class="col-md-5">
+      <div class="col-md-4">
         <stats-card>
           <div class="icon-big text-center icon-success"  slot="header">
             <i class="fa fa-users" />
