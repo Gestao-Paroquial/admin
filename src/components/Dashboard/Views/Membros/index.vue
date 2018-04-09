@@ -28,7 +28,7 @@
 <script>
 import PaperTable from '@/components/UIComponents/PaperTable';
 import Modal from '@/components/UIComponents/Modal/Modal';
-import SimpleForm from '@/components/UIComponents/Forms/SimpleForm';
+import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
 import { membrosUrl } from './../../../../api-url';
@@ -41,7 +41,7 @@ export default {
   components: {
     PaperTable,
     Modal,
-    SimpleForm,
+    StatsCard,
   },
   data() {
     return {
@@ -53,7 +53,7 @@ export default {
       filterProperty: 'id',
       termToSearch: '',
       membrosHeaders,
-      title: 'Lista de membros',
+      title: 'Membros',
       subTitle: 'Aqui você ira encontrar a lista de membros completa',
     };
   },

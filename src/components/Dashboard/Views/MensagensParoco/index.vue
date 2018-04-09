@@ -28,7 +28,6 @@
 <script>
 import PaperTable from '@/components/UIComponents/PaperTable';
 import Modal from '@/components/UIComponents/Modal/Modal';
-import SimpleForm from '@/components/UIComponents/Forms/SimpleForm';
 import axios from 'axios';
 import debounce from 'lodash.debounce';
 import { mensagensParocoApiUrl } from './../../../../api-url';
@@ -39,7 +38,6 @@ export default {
   components: {
     PaperTable,
     Modal,
-    SimpleForm,
   },
   data() {
     return {
