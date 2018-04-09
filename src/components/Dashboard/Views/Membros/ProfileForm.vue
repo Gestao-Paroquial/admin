@@ -212,8 +212,8 @@ export default {
 
         if (this.$route.params.id && this.membro.dependentes.length > 0) {
           this.membro.dependentes.forEach((dependente) => {
-            const { descricao } = this.tiposDependente.find(tipo => tipo.id === dependente.tipo_dependente_id);
-            Object.assign(dependente, { tipo_dependente: { label: descricao, value: dependente.id } });
+            const { descricao, id } = this.tiposDependente.find(tipo => tipo.id === dependente.tipo_dependente_id);
+            Object.assign(dependente, { tipo_dependente: { label: descricao, value: id } });
           });
         }
       })
@@ -236,11 +236,7 @@ export default {
     },
   },
   methods: {
-    handleSubmit() {
-      if (!this.$route.params.id) this.addMembro();
-      if (this.isUpdate) this.updateMembro();
-    },
-    addMembro() {
+    prepareMembro() {
       this.membro.tipo_membro_id = this.membro.tipo_membro.value;
 
       this.membro.dependentes = this.membro.dependentes
@@ -250,8 +246,14 @@ export default {
       this.membro.comunidades.forEach(comunidade => Object.assign(comunidade, { comunidade_id: comunidade.value }));
 
       this.membro.pastorais.forEach(pastoral => Object.assign(pastoral, { pastorai_id: pastoral.value }));
-
+    },
+    handleSubmit() {
+      if (!this.$route.params.id) this.addMembro();
+      if (this.isUpdate) this.updateMembro();
+    },
+    addMembro() {
       this.showLoader = true;
+      this.prepareMembro();
       axios
         .post(membrosUrl, JSON.stringify(this.membro), { headers: { 'Content-Type': 'application/json' } })
         .then(({ data }) => {
@@ -265,7 +267,7 @@ export default {
     },
     updateMembro() {
       let dialog;
-
+      this.prepareMembro();
       this.$dialog
         .confirm()
         .then((dialog_) => {
