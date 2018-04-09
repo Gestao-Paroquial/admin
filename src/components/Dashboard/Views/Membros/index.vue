@@ -1,6 +1,53 @@
 <template>
   <div class="col-md-12">
     <loader v-if="showLoader" />
+    <div class="row">
+      <div class="col-md-5">
+        <stats-card>
+          <div class="icon-big text-center icon-danger"  slot="header">
+            <i class="fa fa-users" />
+          </div>
+          <div class="numbers" slot="content">
+            <p>Visitantes</p>
+            {{totalOfVisitantes}}
+          </div>
+          <div class="stats" slot="footer">
+            <i class="ti-reload" /> Atualizado agora
+          </div>
+        </stats-card>
+      </div>
+
+      <div class="col-md-5">
+        <stats-card>
+          <div class="icon-big text-center icon-info"  slot="header">
+            <i class="fa fa-users" />
+          </div>
+          <div class="numbers" slot="content">
+            <p>Membros</p>
+            {{totalOfMembros}}
+          </div>
+          <div class="stats" slot="footer">
+            <i class="ti-reload" /> Atualizado agora
+          </div>
+        </stats-card>
+      </div>
+
+      <div class="col-md-5">
+        <stats-card>
+          <div class="icon-big text-center icon-success"  slot="header">
+            <i class="fa fa-users" />
+          </div>
+          <div class="numbers" slot="content">
+            <p>Dizimistas</p>
+            {{totalOfDizimistas}}
+          </div>
+          <div class="stats" slot="footer">
+            <i class="ti-reload" /> Atualizado agora
+          </div>
+        </stats-card>
+      </div>
+    </div>
+
     <h4 class="title">{{ title }}</h4>
     <p class="category">{{ subTitle }}</p>
 
@@ -91,6 +138,20 @@ export default {
   methods: {
     updateTable(membros) {
       this.table.data = [...membros];
+    },
+  },
+  computed: {
+    totalOfVisitantes() {
+      const visitantes = this.membros.filter(membro => membro.tipo_membro_id === 1);
+      return visitantes.length;
+    },
+    totalOfMembros() {
+      const membross = this.membros.filter(membro => membro.tipo_membro_id === 2);
+      return membross.length;
+    },
+    totalOfDizimistas() {
+      const dizimistas = this.membros.filter(membro => membro.tipo_membro_id === 3);
+      return dizimistas.length;
     },
   },
 };
