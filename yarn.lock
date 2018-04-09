@@ -199,9 +199,9 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
 
-animated-number-vue@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/animated-number-vue/-/animated-number-vue-0.0.2.tgz#b8ae6dc6cdbaff77fbf6604e84db564c00e3ca8d"
+animated-number-vue@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/animated-number-vue/-/animated-number-vue-0.1.0.tgz#a408b5430dc5d0f9717f0b7d57d1582f345a75a2"
   dependencies:
     animejs "^2.2.0"
     vue "^2.5.13"

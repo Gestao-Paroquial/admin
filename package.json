@@ -15,7 +15,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "animated-number-vue": "^0.0.2",
+    "animated-number-vue": "^0.1.0",
     "axios": "^0.18.0",
     "bootstrap": "3.3.7",
     "cep-promise": "^3.0.0",
