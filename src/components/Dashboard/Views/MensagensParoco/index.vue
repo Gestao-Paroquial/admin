@@ -32,7 +32,7 @@ import axios from 'axios';
 import debounce from 'lodash.debounce';
 import { mensagensParocoApiUrl } from './../../../../api-url';
 
-const mensagensParocoHeaders = ['id', 'titulo', 'subtitulo', 'mensagem', 'link'];
+const mensagensParocoHeaders = ['id', 'titulo', 'subtitulo', 'mensagem'];
 
 export default {
   components: {

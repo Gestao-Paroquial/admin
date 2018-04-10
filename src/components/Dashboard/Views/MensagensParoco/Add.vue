@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import AddForm from './AddForm';
+import AddForm from './Form';
 
 export default {
   components: {

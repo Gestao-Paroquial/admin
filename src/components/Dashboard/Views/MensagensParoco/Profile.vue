@@ -8,7 +8,7 @@
 </template>
 <script>
 import axios from 'axios';
-import UpdateForm from './UpdateForm';
+import UpdateForm from './Form';
 import { mensagensParocoApiUrl } from './../../../../api-url';
 
 export default {
