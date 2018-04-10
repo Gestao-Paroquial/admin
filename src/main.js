@@ -15,7 +15,7 @@ import Notifications from './components/UIComponents/NotificationPlugin';
 import GlobalComponents from './globalComponents';
 import SideBar from './components/UIComponents/SidebarPlugin';
 import App from './App';
-import routes from './routes/routes';
+import routes from './routes';
 import './assets/sass/paper-dashboard.scss';
 import { validateTokenUrl, telefonesUrl } from './api-url';
 import axiosIntance from './plugins/axios';
@@ -90,6 +90,7 @@ Vue.mixin({
 const router = new VueRouter({
   routes, // short for routes: routes
   linkActiveClass: 'active',
+  mode: 'history',
 });
 
 router.beforeEach((to, from, next) => {
