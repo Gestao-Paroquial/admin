@@ -21,10 +21,12 @@
 
         <div class="row">
           <div class="col-md-12">
-            <vue-editor v-model="mensagemParoco.mensagem" :disabled="$route.query.delete"></vue-editor>
+            <div class="form-group">
+              <label>Descrição</label>
+              <textarea rows="5" class="form-control border-input" placeholder="Descrição da pastoral" v-model="mensagemParoco.mensagem" :disabled="$route.query.delete" />
+            </div>
           </div>
         </div>
-
         <hr>
         <form-buttons :showAdd="!$route.params.id" :showUpdate="$route.params.id" :showDelete="$route.params.id" :deleteFunction="del"/>
         <div class="clearfix" />
@@ -34,11 +36,9 @@
 </template>
 <script>
 import axios from 'axios';
-import { VueEditor } from 'vue2-editor';
 import { mensagensParocoApiUrl } from '../../../../api-url/index';
 
 export default {
-  components: { VueEditor },
   props: {
     mensagemParoco: Object,
   },
