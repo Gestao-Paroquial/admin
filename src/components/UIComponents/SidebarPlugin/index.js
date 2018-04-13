@@ -43,6 +43,11 @@ const SidebarStore = {
       icon: 'fa fa-globe',
       path: '/admin/comunidades',
     },
+    {
+      name: 'Tipos',
+      icon: 'fa fa-bars',
+      path: '/admin/tipos',
+    },
     // {
     //  name: 'User Profile',
     //  icon: 'ti-user',

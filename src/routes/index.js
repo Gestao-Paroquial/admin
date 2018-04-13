@@ -37,6 +37,8 @@ import Eventos from '@/components/Dashboard/Views/Eventos';
 import AddEventos from '@/components/Dashboard/Views/Eventos/Add';
 import ProfileEventos from '@/components/Dashboard/Views/Eventos/Profile';
 
+import Tipos from '@/components/Dashboard/Views/Tipos';
+
 
 const routes = [
   {
@@ -158,6 +160,11 @@ const routes = [
         path: 'comunidades',
         name: 'comunidades',
         component: Comunidades,
+      },
+      {
+        path: 'tipos',
+        name: 'tipos',
+        component: Tipos,
       },
       {
         path: 'stats',
