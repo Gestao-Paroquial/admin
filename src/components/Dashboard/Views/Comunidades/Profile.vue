@@ -19,6 +19,23 @@
       <div class="col-md-7">
         <update-form :comunidade="comunidade" />
       </div>
+
+      <div class="col-md-4 col-sm-12 ">
+        <div class="card">
+          <div class="header">
+            <h5 class="title">
+              Lista de membros da {{comunidade.nome}}
+            </h5>
+          </div>
+          <div class="content">
+            <ul>
+              <li v-for="membro in comunidade.membros" :key="membro.id">
+                <router-link v-bind:to="{ path: '/admin/membros/'+membro.id.toString() }" >{{membro.nome}}</router-link>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
