@@ -26,11 +26,11 @@
 
       <div class="col-xs-12">
         <chart-card :chart-data="movimentacaoAnual.data" :chart-options="movimentacaoAnual.options">
-          <h4 class="title" slot="title">Movimentação do caixa nos últimos meses</h4>
+          <h4 class="title" slot="title">Movimentação financeira nos últimos meses</h4>
           <span slot="subTitle">Todas as movimentações</span>
           <div slot="legend">
-            <i class="fa fa-circle text-info" /> Entradas
-            <i class="fa fa-circle text-warning" /> Sáidas
+            <i class="fa fa-circle text-success" /> Entradas
+            <i class="fa fa-circle text-danger" /> Saídas
           </div>
         </chart-card>
       </div>
@@ -277,7 +277,7 @@ export default {
         options: {
           seriesBarDistance: 10,
           axisX: {
-            showGrid: false,
+            showGrid: true,
           },
           height: '245px',
         },
@@ -415,5 +415,12 @@ export default {
 };
 </script>
 <style>
-
+.ct-series-a .ct-line,
+.ct-series-a .ct-point{
+  stroke: #00a65a;
+}
+.ct-series-b .ct-line,
+.ct-series-b .ct-point{
+  stroke: #dd4b39;
+}
 </style>
