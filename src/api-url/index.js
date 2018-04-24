@@ -18,6 +18,7 @@ export const aniversariantesUrl = `${backEndUrl}/api/aniversariantes`;
 export const facebookApiUrl = `${billingCyclesUrl}/api/facebook`;
 export const billingCyclesApiUrl = `${billingCyclesUrl}/api/billingCycles`;
 export const billingSummaryApiUrl = `${billingCyclesUrl}/api/billingSummary`;
+export const movimentacaoAnualApiUrl = `${billingCyclesUrl}/api/movimentacaoAnual`;
 export const findBillingCycleByComunity = `${billingCyclesUrl}/api/billingCycles/findByComunidade`;
 export const eventosHomeApiUrl = `${backEndUrl}/api/eventosHome`;
 export const uploadImageApiUrl = `${backEndUrl}/api/uploadImagem`;

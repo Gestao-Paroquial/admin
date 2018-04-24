@@ -24,6 +24,17 @@
 
     <div class="row">
 
+      <div class="col-xs-12">
+        <chart-card :chart-data="movimentacaoAnual.data" :chart-options="movimentacaoAnual.options">
+          <h4 class="title" slot="title">Movimentação do caixa nos últimos meses</h4>
+          <span slot="subTitle">Todas as movimentações</span>
+          <div slot="legend">
+            <i class="fa fa-circle text-info" /> Entradas
+            <i class="fa fa-circle text-warning" /> Sáidas
+          </div>
+        </chart-card>
+      </div>
+
       <div class="col-md-5">
         <chart-card :chart-data="relacaoDeIdade.data" :chart-options="relacaoDeIdade.options" chart-type="Pie">
           <h4 class="title" slot="title">Faixa Etária</h4>
@@ -68,7 +79,7 @@
               <tbody>
                 <tr v-for="membro in ultimosMembros" :key="membro.id">
                   <td>
-                    <router-link v-bind:to="{ path: 'membros/'+membro.id.toString() }" >
+                    <router-link v-bind:to="{ path: 'membros/'+membro.id.toString() }">
                       {{membro.nome}}
                     </router-link>
                   </td>
@@ -89,7 +100,7 @@
     <!--Charts-->
     <div class="row">
 
-      <div class="col-xs-12">
+      <!-- <div class="col-xs-12">
         <chart-card :chart-data="usersChart.data" :chart-options="usersChart.options">
           <h4 class="title" slot="title">Users behavior</h4>
           <span slot="subTitle"> 24 Hours performance</span>
@@ -115,20 +126,7 @@
             <i class="fa fa-circle text-warning" /> Unsubscribe
           </div>
         </chart-card>
-      </div>
-
-      <div class="col-md-6 col-xs-12">
-        <chart-card :chart-data="activityChart.data" :chart-options="activityChart.options">
-          <h4 class="title" slot="title">2015 Sales</h4>
-          <span slot="subTitle"> All products including Taxes</span>
-          <span slot="footer">
-            <i class="ti-check" /> Data information certified</span>
-          <div slot="legend">
-            <i class="fa fa-circle text-info" /> Tesla Model S
-            <i class="fa fa-circle text-warning" /> BMW 5 Series
-          </div>
-        </chart-card>
-      </div>
+      </div> -->
 
     </div>
 
@@ -141,7 +139,7 @@ import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
-import { facebookApiUrl, analyticsUrl, membrosUrl } from './../../../../api-url';
+import { facebookApiUrl, analyticsUrl, membrosUrl, movimentacaoAnualApiUrl } from './../../../../api-url';
 import AniversariantesDoMes from './AniversariantesDoMes';
 
 
@@ -156,9 +154,6 @@ export default {
     AniversariantesDoMes,
     VueContentLoading,
   },
-  /**
-   * Chart data used to render stats, charts. Should be replaced with server data
-   */
   data() {
     return {
       membros: [],
@@ -277,27 +272,8 @@ export default {
           showPoint: false,
         },
       },
-      activityChart: {
-        data: {
-          labels: [
-            'Jan',
-            'Feb',
-            'Mar',
-            'Apr',
-            'Mai',
-            'Jun',
-            'Jul',
-            'Aug',
-            'Sep',
-            'Oct',
-            'Nov',
-            'Dec',
-          ],
-          series: [
-            [542, 543, 520, 680, 653, 753, 326, 434, 568, 610, 756, 895],
-            [230, 293, 380, 480, 503, 553, 600, 664, 698, 710, 736, 795],
-          ],
-        },
+      movimentacaoAnual: {
+        data: {},
         options: {
           seriesBarDistance: 10,
           axisX: {
@@ -315,17 +291,30 @@ export default {
       },
       relacaoDeIdade: {
         data: JSON.parse(localStorage.getItem('relacaoDeIdadeData')),
-        options: {
-
-        },
+        options: { },
       },
       ultimosMembros: [],
+      months: [
+        'janeiro',
+        'fevereiro',
+        'março',
+        'abril',
+        'maio',
+        'junho',
+        'jullho',
+        'agosto',
+        'setembro',
+        'outubro',
+        'novembro',
+        'dezembro',
+      ],
+      billingCycles: [],
     };
   },
   mounted() {
     this.getFacebook();
     this.getAnalytics();
-
+    this.get();
     axios.get(membrosUrl)
       .then(({ data }) => {
         this.membros = data;
@@ -400,6 +389,27 @@ export default {
 
       analyticsStat.value = 5;
       localStorage.setItem('gaSessions', 5);
+    },
+    getMonthName(date) {
+      return new Date(date).toLocaleDateString('pt-BR', {
+        month: 'long',
+        timeZone: 'UTC',
+      });
+    },
+    get() {
+      axios.get(movimentacaoAnualApiUrl)
+        .then(({ data }) => {
+          const series = [[], []];
+
+          Object.values(data).forEach((foo) => {
+            series[0].push(foo.entradas);
+            series[1].push(foo.saidas);
+          });
+
+          const labels = this.months.map(month => this.capitalize(month.substring(0, 3)));
+
+          this.movimentacaoAnual.data = { series, labels };
+        });
     },
   },
 };
