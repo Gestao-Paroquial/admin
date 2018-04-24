@@ -3,6 +3,7 @@ export const backEndUrl = process.env.BACK_END_API_URI;
 
 // URL
 export const visitantesApiUrl = `${backEndUrl}/api/visitantes`;
+export const usersApiUrl = `${backEndUrl}/api/users`;
 export const comunidadesApiUrl = `${backEndUrl}/api/comunidades`;
 export const pastoraisApiUrl = `${backEndUrl}/api/pastorais`;
 export const membrosUrl = `${backEndUrl}/api/membros`;
