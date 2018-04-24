@@ -16,6 +16,10 @@ import Pastorais from '@/components/Dashboard/Views/Pastorais';
 import PastoralProfile from '@/components/Dashboard/Views/Pastorais/Profile';
 import AddPastoral from '@/components/Dashboard/Views/Pastorais/Add';
 
+import Usuarios from '@/components/Dashboard/Views/Usuarios';
+import UsuarioProfile from '@/components/Dashboard/Views/Usuarios/Profile';
+import AddUsuario from '@/components/Dashboard/Views/Usuarios/Add';
+
 import Comunidades from '@/components/Dashboard/Views/Comunidades';
 import ComunidadeProfile from '@/components/Dashboard/Views/Comunidades/Profile';
 import AddComunidade from '@/components/Dashboard/Views/Comunidades/Add';
@@ -160,6 +164,21 @@ const routes = [
         path: 'comunidades',
         name: 'comunidades',
         component: Comunidades,
+      },
+      {
+        path: 'usuarios/add',
+        name: 'novo Usuário',
+        component: AddUsuario,
+      },
+      {
+        path: 'usuarios/:id',
+        name: 'Usuário',
+        component: UsuarioProfile,
+      },
+      {
+        path: 'usuarios',
+        name: 'usuários',
+        component: Usuarios,
       },
       {
         path: 'tipos',

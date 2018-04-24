@@ -48,11 +48,11 @@ const SidebarStore = {
       icon: 'fa fa-bars',
       path: '/admin/tipos',
     },
-    // {
-    //  name: 'User Profile',
-    //  icon: 'ti-user',
-    //  path: '/admin/stats'
-    // },
+    {
+      name: 'Usuários',
+      icon: 'ti-user',
+      path: '/admin/usuarios',
+    },
     // {
     //  name: 'Table List',
     //  icon: 'ti-view-list-alt',

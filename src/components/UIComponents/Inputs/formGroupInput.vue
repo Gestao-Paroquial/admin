@@ -23,6 +23,7 @@ export default {
     required: Boolean,
     min: [String, Number],
     step: [String, Number],
+    'min-length': [String, Number],
   },
 };
 </script>
