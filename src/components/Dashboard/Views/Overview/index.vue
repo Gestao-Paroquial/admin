@@ -25,16 +25,17 @@
     <div class="row">
 
       <div class="col-xs-12">
-        <chart-card :chart-data="movimentacaoAnual.data" :chart-options="movimentacaoAnual.options">
-          <h4 class="title" slot="title">Movimentação financeira nos últimos meses</h4>
-          <span slot="subTitle">Todas as movimentações</span>
-          <div slot="legend">
-            <i class="fa fa-circle text-success" /> Entradas
-            <i class="fa fa-circle text-danger" /> Saídas
+        <div class="card">
+          <div class="header">
+            <h4 class="title" slot="title">Movimentação financeira do ano</h4>
           </div>
-        </chart-card>
+          <div class="content">
+            <line-chart :chart-data="datacollection" :options="{responsive: true, maintainAspectRatio: false}"  />
+          </div>
+        </div>
       </div>
-
+    </div>
+    <div class="row">
       <div class="col-md-5">
         <chart-card :chart-data="relacaoDeIdade.data" :chart-options="relacaoDeIdade.options" chart-type="Pie">
           <h4 class="title" slot="title">Faixa Etária</h4>
@@ -141,6 +142,7 @@ import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
 import { facebookApiUrl, analyticsUrl, membrosUrl, movimentacaoAnualApiUrl } from './../../../../api-url';
 import AniversariantesDoMes from './AniversariantesDoMes';
+import LineChart from '../../../UIComponents/Charts/Line';
 
 
 // const ultimosMembros = localStorage.getItem('ultimosMembros') ? JSON.parse(localStorage.getItem('ultimosMembros')) : [];
@@ -153,6 +155,7 @@ export default {
     Solicitacoes,
     AniversariantesDoMes,
     VueContentLoading,
+    LineChart,
   },
   data() {
     return {
@@ -309,12 +312,13 @@ export default {
         'dezembro',
       ],
       billingCycles: [],
+      datacollection: null,
     };
   },
   mounted() {
     this.getFacebook();
     this.getAnalytics();
-    this.get();
+    this.getMovimentacaoAnual();
     axios.get(membrosUrl)
       .then(({ data }) => {
         this.membros = data;
@@ -396,19 +400,35 @@ export default {
         timeZone: 'UTC',
       });
     },
-    get() {
+    getMovimentacaoAnual() {
       axios.get(movimentacaoAnualApiUrl)
         .then(({ data }) => {
-          const series = [[], []];
+          const entradas = [];
+          const saidas = [];
 
           Object.values(data).forEach((foo) => {
-            series[0].push(foo.entradas);
-            series[1].push(foo.saidas);
+            entradas.push(foo.entradas);
+            saidas.push(foo.saidas);
           });
 
-          const labels = this.months.map(month => this.capitalize(month.substring(0, 3)));
 
-          this.movimentacaoAnual.data = { series, labels };
+          this.datacollection = {
+            labels: this.months.map(month => this.capitalize(month.substring(0, 3))),
+            datasets: [
+              {
+                label: 'Receitas',
+                borderColor: '#00a65a',
+                data: entradas,
+                fill: false,
+              },
+              {
+                label: 'Gastos',
+                borderColor: '#dd4b39',
+                data: saidas,
+                fill: false,
+              },
+            ],
+          };
         });
     },
   },
