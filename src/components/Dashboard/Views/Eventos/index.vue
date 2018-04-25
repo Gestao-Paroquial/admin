@@ -2,6 +2,7 @@
   <div class="eventos">
     <loader v-if="loader"/>
     <go-to-add-page></go-to-add-page>
+    <relatorio-de-eventos-agrupado-por-tipo/>
     <full-calendar :events="events" locale="pt-br" @eventClick="eventClick" @dayClick="dayClick" @moreClick="moreClick">
     </full-calendar>
   </div>
@@ -9,9 +10,11 @@
 
 <script>
 import axios from '@/plugins/axios';
+import RelatorioDeEventosAgrupadoPorTipo from './RelatorioDeEventosAgrupadoPorTipo';
 import { agendaUrl, tiposUrl } from '../../../../api-url/index';
 
 export default {
+  components: { RelatorioDeEventosAgrupadoPorTipo },
   data() {
     return {
       events: [],

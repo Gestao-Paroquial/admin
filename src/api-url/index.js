@@ -27,6 +27,7 @@ export const logoutApiUrl = `${backEndUrl}/api/logout`;
 export const validateTokenUrl = `${backEndUrl}/api/validateToken`;
 export const analyticsUrl = `${backEndUrl}/api/analytics`;
 export const agendaUrl = `${backEndUrl}/api/agenda`;
+export const agendaAgrupadaPorTipoDeEventoUrl = `${agendaUrl}/relatorio/agrupadoPorTipoDeEvento`;
 
 // Helpers
 export const findBillingCycleByComunityId = comunidadeId => `${findBillingCycleByComunity}?id=${comunidadeId}`;
