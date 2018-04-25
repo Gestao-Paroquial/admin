@@ -2,9 +2,10 @@
   <div class="eventos">
     <loader v-if="loader"/>
     <go-to-add-page></go-to-add-page>
+    <div class="col-md-8">
+      <full-calendar :events="events" locale="pt-br" @eventClick="eventClick" @dayClick="dayClick" @moreClick="moreClick"/>
+    </div>
     <relatorio-de-eventos-agrupado-por-tipo/>
-    <full-calendar :events="events" locale="pt-br" @eventClick="eventClick" @dayClick="dayClick" @moreClick="moreClick">
-    </full-calendar>
   </div>
 </template>
 

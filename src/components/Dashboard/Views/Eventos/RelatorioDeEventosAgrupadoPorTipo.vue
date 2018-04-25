@@ -1,17 +1,22 @@
 <template>
-  <div class="row">
-    <div class="col-md-5">
-      <chart-card :chart-data="graph.data" :chart-options="graph.options" chart-type="Pie">
-        <h4 class="title" slot="title">Relatório do total de eventos</h4>
-        <h5 slot="subTitle">{{fromNow}}</h5>
-        <!-- <span slot="footer">
-            <i class="ti-timer" /> Campaign set 2 days ago</span> -->
-        <div slot="legend">
-          <fg-input type="date" label="Data" v-model="dateFilter"/>
-        </div>
-      </chart-card>
+<div class="col-md-4">
+  <div class="card">
+    <div class="header">
+      <h4 class="title" slot="title">Relatório do total de eventos</h4>
+      <p class="category">
+        {{fromNow}}
+      </p>
+    </div>
+    <div class="content">
+      <pie :chart-data="datacollection" :options="{responsive: true}" />
+      <hr>
+      <div class="stats">
+        <fg-input type="date" label="Data" v-model="dateFilter" />
+      </div>
+      <div class="pull-right" />
     </div>
   </div>
+</div>
 </template>
 <script>
 import moment from 'moment';
@@ -20,22 +25,25 @@ import 'moment/locale/pt-br';
 import axios from '@/plugins/axios';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import { agendaAgrupadaPorTipoDeEventoUrl } from '../../../../api-url/index';
+import Pie from '../../../UIComponents/Charts/Pie';
 
 moment.locale('pt-br');
-
 
 const format = 'YYYY-MM-DD';
 
 export default {
-  components: { ChartCard },
+  components: { ChartCard, Pie },
   data() {
     return {
+      datacollection: null,
       agendaAgrupadaPorTipoDeEvento: [],
       graph: {
         data: {},
-        options: { },
+        options: {},
       },
-      dateFilter: moment().subtract(3, 'months').format(format),
+      dateFilter: moment()
+        .subtract(3, 'months')
+        .format(format),
     };
   },
   mounted() {
@@ -58,12 +66,29 @@ export default {
 
   methods: {
     callApi() {
-      axios.get(`${agendaAgrupadaPorTipoDeEventoUrl}/${this.dateFilter}`).then(({ data }) => {
-        this.agendaAgrupadaPorTipoDeEvento = data;
-        const series = this.agendaAgrupadaPorTipoDeEvento.map(item => item.quantidade);
-        const labels = this.agendaAgrupadaPorTipoDeEvento.map(item => `${item.descricao} - ${item.quantidade}`);
-        this.graph.data = { series, labels };
-      });
+      axios
+        .get(`${agendaAgrupadaPorTipoDeEventoUrl}/${this.dateFilter}`)
+        .then(({ data }) => {
+          this.agendaAgrupadaPorTipoDeEvento = data;
+
+
+          this.datacollection = {
+            labels: this.agendaAgrupadaPorTipoDeEvento.map(item => item.descricao),
+            datasets: [
+              {
+                label: 'Data One',
+
+                backgroundColor: [
+                  '#ff6384',
+                  '#36a2eb',
+                  '#cc65fe',
+                  '#ffce56',
+                ],
+                data: this.agendaAgrupadaPorTipoDeEvento.map(item => item.quantidade),
+              },
+            ],
+          };
+        });
     },
     throttledMethod: debounce((callback) => {
       callback();
