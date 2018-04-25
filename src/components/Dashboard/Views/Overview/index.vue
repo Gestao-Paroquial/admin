@@ -140,7 +140,7 @@ import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
-import { facebookApiUrl, analyticsUrl, membrosUrl, movimentacaoAnualApiUrl } from './../../../../api-url';
+import { facebookApiUrl, analyticsUrl, membrosUrl, movimentacaoAnualApiUrl, membrosCountUrl } from './../../../../api-url';
 import AniversariantesDoMes from './AniversariantesDoMes';
 import LineChart from '../../../UIComponents/Charts/Line';
 
@@ -208,11 +208,12 @@ export default {
       ],
       statsCards: [
         {
+          id: 'membros',
           type: 'warning',
-          icon: 'ti-server',
-          title: 'Capacity',
-          value: '105GB',
-          footerText: 'Updated now',
+          icon: 'fa fa-users',
+          title: 'Membros',
+          value: localStorage.getItem('quantidadeDeMembros'),
+          footerText: 'Atualizado agora',
           footerIcon: 'ti-reload',
         },
         {
@@ -319,6 +320,7 @@ export default {
     this.getFacebook();
     this.getAnalytics();
     this.getMovimentacaoAnual();
+    this.getTotalOfMembers();
     axios.get(membrosUrl)
       .then(({ data }) => {
         this.membros = data;
@@ -333,6 +335,14 @@ export default {
       });
   },
   methods: {
+    getTotalOfMembers() {
+      axios.get(membrosCountUrl)
+        .then(({ data: { quantidade } }) => {
+          const membroStat = this.statsCards.find(stat => stat.id === 'membros');
+          membroStat.value = quantidade;
+          localStorage.setItem('quantidadeDeMembros', quantidade);
+        });
+    },
     makeCalcOfAges() {
       const contagemDeFaixaEtaria = this.membros.reduce((prev, membro) => {
         const idade = this.calcAge(membro.data_Nascimento);
