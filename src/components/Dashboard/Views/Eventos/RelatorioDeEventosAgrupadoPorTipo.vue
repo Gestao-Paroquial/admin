@@ -19,7 +19,7 @@
 </div>
 </template>
 <script>
-import moment from 'moment';
+import moment from '@/plugins/moment';
 import debounce from 'lodash.debounce';
 import 'moment/locale/pt-br';
 import axios from '@/plugins/axios';

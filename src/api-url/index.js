@@ -7,6 +7,7 @@ export const usersApiUrl = `${backEndUrl}/api/users`;
 export const comunidadesApiUrl = `${backEndUrl}/api/comunidades`;
 export const pastoraisApiUrl = `${backEndUrl}/api/pastorais`;
 export const membrosUrl = `${backEndUrl}/api/membros`;
+export const pedidosUrl = `${backEndUrl}/api/pedidos`;
 export const membrosCountUrl = `${membrosUrl}/relatorio/count`;
 export const mensagensParocoApiUrl = `${backEndUrl}/api/mensagensParoco`;
 export const tiposMembroUrl = `${backEndUrl}/api/tiposMembro`;

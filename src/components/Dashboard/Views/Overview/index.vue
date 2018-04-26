@@ -140,7 +140,7 @@ import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
-import { facebookApiUrl, analyticsUrl, membrosUrl, movimentacaoAnualApiUrl, membrosCountUrl } from './../../../../api-url';
+import { facebookApiUrl, analyticsUrl, membrosUrl, movimentacaoAnualApiUrl, membrosCountUrl, pedidosUrl } from './../../../../api-url';
 import AniversariantesDoMes from './AniversariantesDoMes';
 import LineChart from '../../../UIComponents/Charts/Line';
 
@@ -160,52 +160,8 @@ export default {
   data() {
     return {
       membros: [],
-      casamentos: [
-        {
-          nome: 'Pavan kumar',
-          data: new Date(),
-          status: 'Pendente',
-          mensagem:
-            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
-        },
-        {
-          nome: 'Sonu Nigam',
-          data: new Date(),
-          status: 'Aprovado',
-          mensagem:
-            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
-        },
-        {
-          nome: 'Arijit singh',
-          data: new Date(),
-          status: 'Rejeitado',
-          mensagem:
-            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
-        },
-      ],
-      batismos: [
-        {
-          nome: 'Pavan kumar',
-          data: new Date(),
-          status: 'Pendente',
-          mensagem:
-            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
-        },
-        {
-          nome: 'Sonu Nigam',
-          data: new Date(),
-          status: 'Pendente',
-          mensagem:
-            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
-        },
-        {
-          nome: 'Arijit singh',
-          data: new Date(),
-          status: 'Pendente',
-          mensagem:
-            'Donec ac condimentum massa. Etiam pellentesque pretium lacus. Phasellus ultricies dictum suscipit. Aenean commodo dui pellentesque molestie feugiat. Aenean commodo dui pellentesque molestie feugiat',
-        },
-      ],
+      casamentos: [],
+      batismos: [],
       statsCards: [
         {
           id: 'membros',
@@ -321,6 +277,7 @@ export default {
     this.getAnalytics();
     this.getMovimentacaoAnual();
     this.getTotalOfMembers();
+    this.getPedidos();
     axios.get(membrosUrl)
       .then(({ data }) => {
         this.membros = data;
@@ -335,6 +292,13 @@ export default {
       });
   },
   methods: {
+    getPedidos() {
+      axios.get(pedidosUrl)
+        .then(({ data }) => {
+          this.casamentos = data.filter(pedido => pedido.casamento);
+          this.batismo = data.filter(pedido => pedido.batismo);
+        });
+    },
     getTotalOfMembers() {
       axios.get(membrosCountUrl)
         .then(({ data: { quantidade } }) => {

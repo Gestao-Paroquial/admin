@@ -6,14 +6,14 @@
         <div class="comment-body" v-for="(solicitacao, index) in solicitacoes" :key="index">
           <div class="mail-contnet">
             <h5>{{solicitacao.nome}}</h5>
-            <span class="time">{{formatCompleteDate(solicitacao.data)}}</span>
-            <span class="label label-rouded" :class="statusClass(solicitacao.status)">{{solicitacao.status}}</span>
+            <span class="time">{{fromNow(solicitacao.data)}}</span>
+            <span class="label label-rouded" :class="statusClass(solicitacao.aprovado)">{{getNameStatus(solicitacao.aprovado)}}</span>
             <br>
             <span class="mail-desc">{{solicitacao.mensagem}}</span>
-            <div v-if="solicitacao.status === 'Pendente'">
-              <a @click.prevent="aprovarSolicitacao(solicitacao)" class="btn btn btn-rounded btn-default btn-outline m-r-5">
+            <div v-if="solicitacao.aprovado === 0">
+              <a @click.prevent="aprovarOuReprovar(solicitacao,1)" class="btn btn btn-rounded btn-default btn-outline m-r-5">
                 <i class="ti-check text-success m-r-5"></i>Aprovar</a>
-              <a @click.prevent="rejeitarSolicitacao(solicitacao)" class="btn-rounded btn btn-default btn-outline">
+              <a @click.prevent="aprovarOuReprovar(solicitacao,2)" class="btn-rounded btn btn-default btn-outline">
                 <i class="ti-close text-danger m-r-5"></i> Rejeitar</a>
             </div>
           </div>
@@ -23,6 +23,10 @@
   </div>
 </template>
 <script>
+import moment from '@/plugins/moment';
+import axios from '@/plugins/axios';
+import { pedidosUrl } from '../../../../api-url/index';
+
 export default {
   props: {
     title: {
@@ -34,34 +38,39 @@ export default {
     },
   },
   methods: {
-    statusClass(status) {
+    getNameStatus(status) {
       return {
-        Pendente: 'label-info',
-        Aprovado: 'label-success',
-        Rejeitado: 'label-danger',
+        0: 'Pendente',
+        1: 'Aprovado',
+        2: 'Reprovado',
       }[status];
     },
-    aprovarSolicitacao(solicitacao) {
+    statusClass(status) {
+      return {
+        0: 'label-info',
+        1: 'label-success',
+        2: 'label-danger',
+      }[status];
+    },
+    aprovarOuReprovar(solicitacao, aprovado) {
+      let dialog;
       this.$dialog
         .confirm()
-        .then((dialog) => {
-          dialog.close();
-          Object.assign(solicitacao, { status: 'Aprovado' });
+        .then((dialog_) => {
+          dialog = dialog_;
+          Object.assign(solicitacao, { aprovado });
+          return axios.put(`${pedidosUrl}/${solicitacao.id}`, JSON.stringify(solicitacao), { headers: { 'Content-Type': 'application/json' } });
         })
-        .catch(() => {
-          console.log('Clicked on cancel');
+        .then(({ data }) => {
+          dialog.close();
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
         });
     },
-    rejeitarSolicitacao(solicitacao) {
-      this.$dialog
-        .confirm()
-        .then((dialog) => {
-          dialog.close();
-          Object.assign(solicitacao, { status: 'Rejeitado' });
-        })
-        .catch(() => {
-          console.log('Clicked on cancel');
-        });
+    fromNow(data) {
+      return moment(data, 'YYYY-MM-DD').fromNow();
     },
   },
 };
