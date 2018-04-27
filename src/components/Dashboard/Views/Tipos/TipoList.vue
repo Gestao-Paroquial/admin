@@ -67,7 +67,9 @@ export default {
   },
   methods: {
     habilitarEdicao(tipoItem) {
+      /* eslint-disable */
       tipoItem.edit = true;
+      /* eslint-enable */
       this.$forceUpdate();
     },
     addTipo() {

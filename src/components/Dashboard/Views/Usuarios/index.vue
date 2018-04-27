@@ -63,8 +63,10 @@ export default {
       .get(usersApiUrl)
       .then(({ data }) => {
         const users = data.map((user) => {
+          /* eslint-disable */
           user.nome = user.name;
           user.verificado = user.is_verified ? 'Sim' : 'Não';
+           /* eslint-enable */
           return user;
         });
 

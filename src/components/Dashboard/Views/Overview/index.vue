@@ -93,6 +93,8 @@
 
     </div>
 
+    <pedidos-table :pedidos="pedidos"/>
+
     <div class="row">
       <solicitacoes title="Casamentos" :solicitacoes="casamentos"></solicitacoes>
       <solicitacoes title="Batismos" :solicitacoes="batismos"></solicitacoes>
@@ -140,6 +142,7 @@ import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Solicitacoes from './Solicitacoes';
+import PedidosTable from './Pedidos';
 import { facebookApiUrl, analyticsUrl, membrosUrl, movimentacaoAnualApiUrl, membrosCountUrl, pedidosUrl } from './../../../../api-url';
 import AniversariantesDoMes from './AniversariantesDoMes';
 import LineChart from '../../../UIComponents/Charts/Line';
@@ -156,6 +159,7 @@ export default {
     AniversariantesDoMes,
     VueContentLoading,
     LineChart,
+    PedidosTable,
   },
   data() {
     return {
@@ -270,6 +274,7 @@ export default {
       ],
       billingCycles: [],
       datacollection: null,
+      pedidos: [],
     };
   },
   mounted() {
@@ -295,6 +300,7 @@ export default {
     getPedidos() {
       axios.get(pedidosUrl)
         .then(({ data }) => {
+          this.pedidos = data;
           this.casamentos = data.filter(pedido => pedido.casamento);
           this.batismo = data.filter(pedido => pedido.batismo);
         });
@@ -310,20 +316,20 @@ export default {
     makeCalcOfAges() {
       const contagemDeFaixaEtaria = this.membros.reduce((prev, membro) => {
         const idade = this.calcAge(membro.data_Nascimento);
-
+        const obj = prev;
         if (idade <= 12) {
-          prev.criancas++;
+          obj.criancas++;
         } else if (idade <= 18) {
-          prev.adolescentes++;
+          obj.adolescentes++;
         } else if (idade <= 29) {
-          prev.jovens++;
+          obj.jovens++;
         } else if (idade <= 60) {
-          prev.adultos++;
+          obj.adultos++;
         } else {
-          prev.idosos++;
+          obj.idosos++;
         }
 
-        return prev;
+        return obj;
       }, { criancas: 0, adolescentes: 0, jovens: 0, adultos: 0, idosos: 0 });
 
       const series = Object.values(contagemDeFaixaEtaria).map(faixaEtaria => this.percent(faixaEtaria));

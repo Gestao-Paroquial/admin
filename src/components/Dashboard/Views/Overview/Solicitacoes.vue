@@ -6,7 +6,7 @@
         <div class="comment-body" v-for="(solicitacao, index) in solicitacoes" :key="index">
           <div class="mail-contnet">
             <h5>{{solicitacao.nome}}</h5>
-            <span class="time">{{fromNow(solicitacao.data)}}</span>
+            <span class="time">{{fromNow(solicitacao.created_at)}}</span>
             <span class="label label-rouded" :class="statusClass(solicitacao.aprovado)">{{getNameStatus(solicitacao.aprovado)}}</span>
             <br>
             <span class="mail-desc">{{solicitacao.mensagem}}</span>
