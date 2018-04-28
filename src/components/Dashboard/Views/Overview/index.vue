@@ -300,9 +300,10 @@ export default {
     getPedidos() {
       axios.get(pedidosUrl)
         .then(({ data }) => {
-          this.pedidos = data;
-          this.casamentos = data.filter(pedido => pedido.casamento);
-          this.batismo = data.filter(pedido => pedido.batismo);
+          this.pedidos = data.filter(pedido => pedido.code);
+
+          this.casamentos = data.filter(pedido => !pedido.code && pedido.casamento);
+          this.bastismos = data.filter(pedido => !pedido.code && pedido.bastismo);
         });
     },
     getTotalOfMembers() {
