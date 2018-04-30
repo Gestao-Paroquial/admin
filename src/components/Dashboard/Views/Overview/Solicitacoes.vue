@@ -11,15 +11,46 @@
             <br>
             <span class="mail-desc">{{solicitacao.mensagem}}</span>
             <div v-if="solicitacao.aprovado === 0">
-              <a @click.prevent="aprovarOuReprovar(solicitacao,1)" class="btn btn btn-rounded btn-default btn-outline m-r-5">
+              <a @click.prevent="updateSolicitacao(solicitacao,1)" class="btn btn btn-rounded btn-default btn-outline m-r-5">
                 <i class="ti-check text-success m-r-5"></i>Aprovar</a>
-              <a @click.prevent="aprovarOuReprovar(solicitacao,2)" class="btn-rounded btn btn-default btn-outline">
+              <a @click.prevent="motivoDaReprovacao(solicitacao)" class="btn-rounded btn btn-default btn-outline">
                 <i class="ti-close text-danger m-r-5"></i> Rejeitar</a>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <modal :name="title">
+      <div class="card">
+        <div class="header">
+          <h5 class="title">Texto para enviar ao solicitante</h5>
+        </div>
+        <div class="content">
+
+          <form @submit.prevent="reprovarSolicitacao">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                    <textarea v-model="conteudoEmail" required class="form-control border-input"></textarea>
+                </div>
+              </div>
+            </div>
+            <div class="text-center">
+              <button class="btn btn-info  btn-wd" type="submit">
+                Enviar
+              </button>
+              <hr>
+              <button class="btn  btn-wd" type="button" @click.prevent="hideModal">
+                Cancelar
+              </button>
+            </div>
+            <div class="clearfix" />
+          </form>
+        </div>
+
+      </div>
+    </modal>
   </div>
 </template>
 <script>
@@ -36,6 +67,13 @@ export default {
     solicitacoes: {
       type: Array,
     },
+
+  },
+  data() {
+    return {
+      conteudoEmail: null,
+      solicitacaoSelecionada: {},
+    };
   },
   methods: {
     getNameStatus(status) {
@@ -52,7 +90,25 @@ export default {
         2: 'label-danger',
       }[status];
     },
-    aprovarOuReprovar(solicitacao, aprovado) {
+    motivoDaReprovacao(solicitacao) {
+      this.conteudoEmail =
+`Olá ${solicitacao.nome}.
+
+Infelizmente essa data não está disponível.
+
+Caso queira mais informações ligue para (11) 98765-4321.
+
+Obrigado,
+Paroquia São Lucas Evangelista.`;
+      this.solicitacaoSelecionada = solicitacao;
+      this.showModal();
+    },
+    reprovarSolicitacao() {
+      this.solicitacaoSelecionada.conteudoEmail = this.conteudoEmail;
+      this.hideModal();
+      this.updateSolicitacao(this.solicitacaoSelecionada, 2);
+    },
+    updateSolicitacao(solicitacao, aprovado) {
       let dialog;
       this.$dialog
         .confirm()
@@ -71,6 +127,12 @@ export default {
     },
     fromNow(data) {
       return moment(data, 'YYYY-MM-DD').fromNow();
+    },
+    showModal() {
+      this.$modal.show(this.title);
+    },
+    hideModal() {
+      this.$modal.hide(this.title);
     },
   },
 };
