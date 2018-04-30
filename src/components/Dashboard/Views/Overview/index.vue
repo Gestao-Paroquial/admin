@@ -121,12 +121,13 @@ export default {
           footerIcon: 'ti-reload',
         },
         {
-          type: 'success',
-          icon: 'ti-wallet',
-          title: 'Revenue',
-          value: '$1,345',
-          footerText: 'Last day',
-          footerIcon: 'ti-calendar',
+          id: 'pedidos',
+          type: 'danger',
+          icon: 'fa fa-exchange',
+          title: 'Novos Pedidos',
+          value: 0,
+          footerText: 'Agora',
+          footerIcon: 'ti-reload',
         },
         {
           type: 'sucess',
@@ -215,7 +216,6 @@ export default {
       ],
       billingCycles: [],
       movimentacaoAnualData: null,
-      pedidos: [],
     };
   },
   mounted() {
@@ -241,10 +241,8 @@ export default {
     getPedidos() {
       axios.get(pedidosUrl)
         .then(({ data }) => {
-          this.pedidos = data.filter(pedido => pedido.code);
-
-          this.casamentos = data.filter(pedido => !pedido.code && pedido.casamento);
-          this.bastismos = data.filter(pedido => !pedido.code && pedido.bastismo);
+          const pedidoStat = this.statsCards.find(stat => stat.id === 'pedidos');
+          pedidoStat.value = data.filter(pedido => pedido.aprovado === 0).length;
         });
     },
     getTotalOfMembers() {
