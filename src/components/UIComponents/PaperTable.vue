@@ -45,8 +45,10 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12">
-          <ul class="pagination pull-right pagination-default">
+        <div class="col-md-12" v-if="Math.round(data.length / itemsPerPage) ">
+          <paginate :page-count="Math.ceil(data.length / itemsPerPage)" :click-handler="clickCallback" :prev-text="'«'" :next-text="'»'" :container-class="'pagination pull-right pagination-default'" :page-class="'page-item'">
+          </paginate>
+          <!-- <ul class="pagination pull-right pagination-default">
             <li class="page-item" :class="{'disabled': start == 0}" @click="previous">
               <a href="javascript:void(0)" aria-label="Previous" class="page-link">
                 <i aria-hidden="true" class="fa fa-angle-double-left" />
@@ -60,7 +62,7 @@
                 <i aria-hidden="true" class="fa fa-angle-double-right" />
               </a>
             </li>
-          </ul>
+          </ul> -->
         </div>
       </div>
     </div>
@@ -162,10 +164,13 @@ export default {
       this.selectedColumn = column;
       this.desc = this.desc * -1;
     },
+    clickCallback(page) {
+      this.start = this.itemsPerPage * (page - 1);
+    },
   },
 };
 </script>
-<style scoped>
+<style >
 th {
   padding: 12px;
   vertical-align: middle;

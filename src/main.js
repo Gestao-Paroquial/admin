@@ -11,6 +11,7 @@ import vSelect from 'vue-select';
 import Chartist from 'chartist';
 import fullCalendar from 'vue-fullcalendar';
 import VModal from 'vue-js-modal';
+import Paginate from 'vuejs-paginate';
 import 'bootstrap/dist/css/bootstrap.css';
 import Notifications from './components/UIComponents/NotificationPlugin';
 import GlobalComponents from './globalComponents';
@@ -23,6 +24,7 @@ import axiosIntance from './plugins/axios';
 
 // plugin setup
 Vue.use(VueRouter);
+Vue.component('paginate', Paginate);
 Vue.use(GlobalComponents);
 Vue.use(vClickOutside);
 Vue.use(Notifications);
