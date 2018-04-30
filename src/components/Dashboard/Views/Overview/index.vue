@@ -27,38 +27,25 @@
       <div class="col-xs-12">
         <div class="card">
           <div class="header">
-            <h4 class="title" slot="title">Movimentação financeira do ano</h4>
+            <h4 class="title text-center">Movimentação financeira do ano</h4>
           </div>
           <div class="content">
-            <line-chart :chart-data="datacollection" :options="{responsive: true, maintainAspectRatio: false}"  />
+            <line-chart :chart-data="movimentacaoAnualData" :options="{responsive: true, maintainAspectRatio: false}"  />
           </div>
         </div>
       </div>
     </div>
     <div class="row">
+
       <div class="col-md-5">
-        <chart-card :chart-data="relacaoDeIdade.data" :chart-options="relacaoDeIdade.options" chart-type="Pie">
-          <h4 class="title" slot="title">Faixa Etária</h4>
-          <span slot="subTitle"> Dos membros e visitantes</span>
-          <!-- <span slot="footer">
-            <i class="ti-timer" /> Campaign set 2 days ago</span> -->
-          <div slot="legend">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Faixas de Idade</th>
-                  <th>Porcentagem</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(label, index) in relacaoDeIdade.data.labels" :key="label">
-                  <td>{{label}}</td>
-                  <td>{{relacaoDeIdade.data.series[index].toFixed(2)}}%</td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="card">
+          <div class="header">
+            <h4 class="title text-center">Faixa Etária dos membros</h4>
           </div>
-        </chart-card>
+          <div class="content">
+           <pie-chart :chart-data="relacaoDeIdade" :options="{responsive: true}" />
+          </div>
+        </div>
       </div>
 
       <aniversariantes-do-mes />
@@ -66,7 +53,7 @@
       <div class="col-md-5">
         <div class="card">
           <div class="header">
-            <h5 class="title">Ultimos Membros Cadastrados</h5>
+            <h5 class="title text-center">Ultimos Membros Cadastrados</h5>
           </div>
           <div class="content">
             <vue-content-loading v-if="ultimosMembros.length === 0" :width="300" :height="100">
@@ -92,47 +79,6 @@
       </div>
 
     </div>
-
-    <pedidos-table :pedidos="pedidos"/>
-
-    <div class="row">
-      <solicitacoes title="Casamentos" :solicitacoes="casamentos"></solicitacoes>
-      <solicitacoes title="Batismos" :solicitacoes="batismos"></solicitacoes>
-    </div>
-
-    <!--Charts-->
-    <div class="row">
-
-      <!-- <div class="col-xs-12">
-        <chart-card :chart-data="usersChart.data" :chart-options="usersChart.options">
-          <h4 class="title" slot="title">Users behavior</h4>
-          <span slot="subTitle"> 24 Hours performance</span>
-          <span slot="footer">
-            <i class="ti-reload" /> Updated 3 minutes ago</span>
-          <div slot="legend">
-            <i class="fa fa-circle text-info" /> Open
-            <i class="fa fa-circle text-danger" /> Click
-            <i class="fa fa-circle text-warning" /> Click Second Time
-          </div>
-        </chart-card>
-      </div>
-
-      <div class="col-md-6 col-xs-12">
-        <chart-card :chart-data="preferencesChart.data" chart-type="Pie">
-          <h4 class="title" slot="title">Email Statistics</h4>
-          <span slot="subTitle"> Last campaign performance</span>
-          <span slot="footer">
-            <i class="ti-timer" /> Campaign set 2 days ago</span>
-          <div slot="legend">
-            <i class="fa fa-circle text-info" /> Open
-            <i class="fa fa-circle text-danger" /> Bounce
-            <i class="fa fa-circle text-warning" /> Unsubscribe
-          </div>
-        </chart-card>
-      </div> -->
-
-    </div>
-
   </div>
 </template>
 <script>
@@ -141,8 +87,7 @@ import axios from '@/plugins/axios';
 import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
-import Solicitacoes from './Solicitacoes';
-import PedidosTable from './Pedidos';
+import PieChart from '../../../UIComponents/Charts/Pie';
 import { facebookApiUrl, analyticsUrl, membrosUrl, movimentacaoAnualApiUrl, membrosCountUrl, pedidosUrl } from './../../../../api-url';
 import AniversariantesDoMes from './AniversariantesDoMes';
 import LineChart from '../../../UIComponents/Charts/Line';
@@ -153,13 +98,12 @@ import LineChart from '../../../UIComponents/Charts/Line';
 export default {
   components: {
     StatsCard,
+    PieChart,
     ChartCard,
     ValueRow,
-    Solicitacoes,
     AniversariantesDoMes,
     VueContentLoading,
     LineChart,
-    PedidosTable,
   },
   data() {
     return {
@@ -253,10 +197,7 @@ export default {
         },
         options: {},
       },
-      relacaoDeIdade: {
-        data: JSON.parse(localStorage.getItem('relacaoDeIdadeData')),
-        options: { },
-      },
+      relacaoDeIdade: null,
       ultimosMembros: [],
       months: [
         'janeiro',
@@ -273,7 +214,7 @@ export default {
         'dezembro',
       ],
       billingCycles: [],
-      datacollection: null,
+      movimentacaoAnualData: null,
       pedidos: [],
     };
   },
@@ -333,17 +274,23 @@ export default {
         return obj;
       }, { criancas: 0, adolescentes: 0, jovens: 0, adultos: 0, idosos: 0 });
 
-      const series = Object.values(contagemDeFaixaEtaria).map(faixaEtaria => this.percent(faixaEtaria));
-
-      this.relacaoDeIdade.data = {
+      this.relacaoDeIdade = {
         labels: ['Crianças', 'Adolescentes', 'Jovens', 'Adultos', 'Idosos'],
-        series,
-      };
+        datasets: [
+          {
+            label: 'Data One',
 
-      localStorage.setItem('relacaoDeIdadeData', JSON.stringify(this.relacaoDeIdade.data));
-    },
-    percent(value) {
-      return (value / this.membros.length * 100);
+            backgroundColor: [
+              '#ff6384',
+              '#36a2eb',
+              '#cc65fe',
+              '#ffce56',
+              '#000000',
+            ],
+            data: Object.values(contagemDeFaixaEtaria).map(faixaEtaria => faixaEtaria),
+          },
+        ],
+      };
     },
     getFacebook() {
       axios
@@ -393,7 +340,7 @@ export default {
           });
 
 
-          this.datacollection = {
+          this.movimentacaoAnualData = {
             labels: this.months.map(month => this.capitalize(month.substring(0, 3))),
             datasets: [
               {

@@ -9,6 +9,11 @@ const SidebarStore = {
       path: '/admin/overview',
     },
     {
+      name: 'Pedidos',
+      icon: 'fa fa-exchange',
+      path: '/admin/pedidos',
+    },
+    {
       name: 'Controle Financeiro',
       icon: 'fa fa-money',
       path: '/admin/financeiro',

@@ -5,8 +5,9 @@
                 <thead>
                     <tr>
                         <th>Nome</th>
-                        <th>CPF</th>
                         <th>Email</th>
+                        <th>Tipo</th>
+                        <th>CPF</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -14,6 +15,7 @@
                     <tr v-for="pedido in pedidos" :key="pedido.id">
                         <td>{{pedido.nome}}</td>
                         <td>{{pedido.email}}</td>
+                        <td>{{getTipo(pedido)}}</td>
                         <td>{{pedido.cpf}}</td>
                         <td>{{getStatusName(pedido.code)}}</td>
                     </tr>
@@ -33,7 +35,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.pedidos);
     this.pedidos.filter(pedido => pedido.code === 2);
   },
   methods: {
@@ -49,6 +50,7 @@ export default {
       };
       return obj[code];
     },
+    getTipo: pedido => (pedido.casamento ? 'Casamento' : 'Batismo'),
   },
 };
 </script>
