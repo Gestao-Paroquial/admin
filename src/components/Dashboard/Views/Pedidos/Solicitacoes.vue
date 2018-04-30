@@ -4,9 +4,10 @@
       <h3 class="box-title">Solicitações de {{title}}</h3>
       <div class="comment-center">
         <div class="comment-body" v-for="(solicitacao, index) in solicitacoes" :key="index">
-          <div class="mail-contnet">
+          <div class="mail-content">
             <h5>{{solicitacao.nome}}</h5>
-            <span class="time">{{fromNow(solicitacao.created_at)}}</span>
+            <h6>{{solicitacao.email}}</h6>
+            <span class="time">{{fromNow(solicitacao.updated_at)}}</span>
             <span class="label label-rouded" :class="statusClass(solicitacao.aprovado)">{{getNameStatus(solicitacao.aprovado)}}</span>
             <br>
             <span class="mail-desc">{{solicitacao.mensagem}}</span>
@@ -138,14 +139,18 @@ Paroquia São Lucas Evangelista.`;
 };
 </script>
 <style >
-.comment-center .mail-contnet h5 {
+.comment-center .mail-content h5 {
   margin-top: 0;
   font-weight: 400;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
 }
-.comment-center .mail-contnet .time {
+.comment-center .mail-content h6 {
+  text-transform: lowercase;
+  color: #c0c0c0;
+}
+.comment-center .mail-content .time {
   display: inline-block;
   font-size: 12px;
   color: #98a6ad;
@@ -169,12 +174,12 @@ Paroquia São Lucas Evangelista.`;
   padding: 20px 25px;
   transition: all ease-in 0.3s;
 }
-.comment-center .mail-contnet {
+.comment-center .mail-content {
   display: table-cell;
   padding-left: 15px;
   vertical-align: top;
 }
-.comment-center .mail-contnet .time {
+.comment-center .mail-content .time {
   display: inline-block;
   font-size: 12px;
   color: #98a6ad;
@@ -185,7 +190,7 @@ Paroquia São Lucas Evangelista.`;
   padding: 4px 12px 3px;
   font-weight: 500;
 }
-.comment-center .mail-contnet .mail-desc {
+.comment-center .mail-content .mail-desc {
   font-size: 14px;
   display: block;
   margin: 15px 0;

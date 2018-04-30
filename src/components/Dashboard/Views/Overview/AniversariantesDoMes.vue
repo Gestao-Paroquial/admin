@@ -2,10 +2,10 @@
   <div class="col-md-4 col-sm-12 aniversariantes">
     <div class="card">
       <div class="header">
-        <h5 class="title">Aniversariantes do Mês de {{capitalize(getTheActualMonth())}}</h5>
+        <h5 class="title text-center">Aniversariantes do Mês de {{capitalize(getTheActualMonth())}}</h5>
       </div>
       <div class="content">
-        <table class="">
+        <table class="table">
         <thead>
           <tr>
             <th><i class="fa fa-calendar"/></th>
