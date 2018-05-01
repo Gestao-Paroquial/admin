@@ -34,7 +34,7 @@ export default {
       const { data } = await axios.get(pedidosUrl);
       this.pedidos = data.filter(pedido => pedido.code);
       this.casamentos = data.filter(pedido => !pedido.code && pedido.casamento);
-      this.bastismos = data.filter(pedido => !pedido.code && pedido.bastismo);
+      this.batismos = data.filter(pedido => !pedido.code && pedido.batismo);
 
       this.showLoader = false;
     },
