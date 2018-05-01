@@ -17,7 +17,7 @@
           <tr v-for="aniversariante in aniversariantes" :key="aniversariante.id">
             <td>{{getBirthday(aniversariante.data_Nascimento)}}</td>
             <td><router-link v-bind:to="{ path: 'membros/'+aniversariante.id.toString() }" >{{aniversariante.nome}}</router-link></td>
-            <td>{{calcAge(aniversariante.data_Nascimento)}} anos</td>
+            <td>{{calcAge(aniversariante.data_Nascimento) + 1}} anos</td>
           </tr>
         </tbody>
       </table>
