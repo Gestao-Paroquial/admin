@@ -6,5 +6,5 @@ eval "$(ssh-agent -s)" # Start ssh-agent cache
 chmod 600 /tmp/deploy # Allow read access to the private key
 ssh-add /tmp/deploy # Add the private key to SSH
 
-rsync -cvrz dist deploy@165.227.197.233:/var/www/html/admin
+rsync -cvrz dist deploy@165.227.197.233:/var/www/html/admin --delete
 
