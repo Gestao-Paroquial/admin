@@ -16,6 +16,7 @@ export const tiposEventoUrl = `${backEndUrl}/api/tiposEvento`;
 export const tiposUrl = `${backEndUrl}/api/tipos`;
 export const dependentesUrl = `${backEndUrl}/api/dependentes`;
 export const telefonesUrl = `${backEndUrl}/api/telefones`;
+export const graphqlUri = `${billingCyclesUrl}/graphql`;
 export const aniversariantesUrl = `${backEndUrl}/api/aniversariantes`;
 export const facebookApiUrl = `${billingCyclesUrl}/api/facebook`;
 export const billingCyclesApiUrl = `${billingCyclesUrl}/api/billingCycles`;
