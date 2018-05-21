@@ -46,7 +46,6 @@ export default {
       },
     })
       .then(({ data: { data: { summary: { credit, debt } } } }) => {
-        console.log(credit);
         this.billingSummary.credit = credit;
         this.billingSummary.debt = debt;
         this.billingSummary.total = credit - debt;
