@@ -13,9 +13,13 @@
 <script>
 import axios from '@/plugins/axios';
 import ValueBox from './ValueBox';
-import { billingSummaryApiUrl } from '../../api-url/index';
+import { graphqlUri } from '../../api-url/index';
 
-const billingSummary = JSON.parse(localStorage.getItem('billingSummary')) || { credit: 0, debt: 0, total: 0 };
+const billingSummary = JSON.parse(localStorage.getItem('billingSummary')) || {
+  credit: 0,
+  debt: 0,
+  total: 0,
+};
 
 export default {
   components: {
@@ -27,13 +31,28 @@ export default {
     };
   },
   mounted() {
-    axios
-      .get(billingSummaryApiUrl)
-      .then(({ data }) => {
-        this.billingSummary.credit = data.credit;
-        this.billingSummary.debt = data.debt;
-        this.billingSummary.total = data.credit - data.debt;
-        localStorage.setItem('billingSummary', JSON.stringify(this.billingSummary));
+    axios({
+      url: graphqlUri,
+      method: 'post',
+      data: {
+        query: `
+      query summary {
+          summary{
+            debt
+            credit
+          }
+        }
+      `,
+      },
+    })
+      .then(({ data: { data: { summary: { credit, debt } } } }) => {
+        this.billingSummary.credit = credit;
+        this.billingSummary.debt = debt;
+        this.billingSummary.total = credit - debt;
+        localStorage.setItem(
+          'billingSummary',
+          JSON.stringify(this.billingSummary),
+        );
       })
       .catch((response) => {
         console.log(response);
@@ -42,5 +61,4 @@ export default {
 };
 </script>
 <style>
-
 </style>

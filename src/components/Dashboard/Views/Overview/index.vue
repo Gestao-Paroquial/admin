@@ -30,7 +30,7 @@
             <h4 class="title text-center">Movimentação financeira do ano</h4>
           </div>
           <div class="content">
-            <line-chart :chart-data="movimentacaoAnualData" :options="{responsive: true, maintainAspectRatio: false}"  />
+            <line-chart :chart-data="movimentacaoAnualData" :options="{responsive: true, maintainAspectRatio: false}" />
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
             <h4 class="title text-center">Faixa Etária dos membros</h4>
           </div>
           <div class="content">
-           <pie-chart :chart-data="relacaoDeIdade" :options="{responsive: true}" />
+            <pie-chart :chart-data="relacaoDeIdade" :options="{responsive: true}" />
           </div>
         </div>
       </div>
@@ -88,10 +88,16 @@ import StatsCard from '@/components/UIComponents/Cards/StatsCard';
 import ChartCard from '@/components/UIComponents/Cards/ChartCard';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import PieChart from '../../../UIComponents/Charts/Pie';
-import { facebookApiUrl, analyticsUrl, membrosUrl, movimentacaoAnualApiUrl, membrosCountUrl, pedidosUrl } from './../../../../api-url';
+import {
+  facebookApiUrl,
+  analyticsUrl,
+  membrosUrl,
+  membrosCountUrl,
+  pedidosUrl,
+  graphqlUri,
+} from './../../../../api-url';
 import AniversariantesDoMes from './AniversariantesDoMes';
 import LineChart from '../../../UIComponents/Charts/Line';
-
 
 // const ultimosMembros = localStorage.getItem('ultimosMembros') ? JSON.parse(localStorage.getItem('ultimosMembros')) : [];
 
@@ -224,53 +230,56 @@ export default {
     this.getMovimentacaoAnual();
     this.getTotalOfMembers();
     this.getPedidos();
-    axios.get(membrosUrl)
-      .then(({ data }) => {
-        this.membros = data;
+    axios.get(membrosUrl).then(({ data }) => {
+      this.membros = data;
 
-        this.makeCalcOfAges();
+      this.makeCalcOfAges();
 
-        this.ultimosMembros =
-        data
-          .sort((a, b) => new Date(b.created_at) + new Date(a.created_at)).splice(0, 8);
+      this.ultimosMembros = data
+        .sort((a, b) => new Date(b.created_at) + new Date(a.created_at))
+        .splice(0, 8);
 
-        localStorage.setItem('ultimosMembros', JSON.stringify(this.ultimosMembros));
-      });
+      localStorage.setItem(
+        'ultimosMembros',
+        JSON.stringify(this.ultimosMembros),
+      );
+    });
   },
   methods: {
     getPedidos() {
-      axios.get(pedidosUrl)
-        .then(({ data }) => {
-          const pedidoStat = this.statsCards.find(stat => stat.id === 'pedidos');
-          pedidoStat.value = data.filter(pedido => pedido.aprovado === 0).length;
-        });
+      axios.get(pedidosUrl).then(({ data }) => {
+        const pedidoStat = this.statsCards.find(stat => stat.id === 'pedidos');
+        pedidoStat.value = data.filter(pedido => pedido.aprovado === 0).length;
+      });
     },
     getTotalOfMembers() {
-      axios.get(membrosCountUrl)
-        .then(({ data: { quantidade } }) => {
-          const membroStat = this.statsCards.find(stat => stat.id === 'membros');
-          membroStat.value = quantidade;
-          localStorage.setItem('quantidadeDeMembros', quantidade);
-        });
+      axios.get(membrosCountUrl).then(({ data: { quantidade } }) => {
+        const membroStat = this.statsCards.find(stat => stat.id === 'membros');
+        membroStat.value = quantidade;
+        localStorage.setItem('quantidadeDeMembros', quantidade);
+      });
     },
     makeCalcOfAges() {
-      const contagemDeFaixaEtaria = this.membros.reduce((prev, membro) => {
-        const idade = this.calcAge(membro.data_Nascimento);
-        const obj = prev;
-        if (idade <= 12) {
-          obj.criancas++;
-        } else if (idade <= 18) {
-          obj.adolescentes++;
-        } else if (idade <= 29) {
-          obj.jovens++;
-        } else if (idade <= 60) {
-          obj.adultos++;
-        } else {
-          obj.idosos++;
-        }
+      const contagemDeFaixaEtaria = this.membros.reduce(
+        (prev, membro) => {
+          const idade = this.calcAge(membro.data_Nascimento);
+          const obj = prev;
+          if (idade <= 12) {
+            obj.criancas++;
+          } else if (idade <= 18) {
+            obj.adolescentes++;
+          } else if (idade <= 29) {
+            obj.jovens++;
+          } else if (idade <= 60) {
+            obj.adultos++;
+          } else {
+            obj.idosos++;
+          }
 
-        return obj;
-      }, { criancas: 0, adolescentes: 0, jovens: 0, adultos: 0, idosos: 0 });
+          return obj;
+        },
+        { criancas: 0, adolescentes: 0, jovens: 0, adultos: 0, idosos: 0 },
+      );
 
       this.relacaoDeIdade = {
         labels: ['Crianças', 'Adolescentes', 'Jovens', 'Adultos', 'Idosos'],
@@ -285,7 +294,9 @@ export default {
               '#ffce56',
               '#000000',
             ],
-            data: Object.values(contagemDeFaixaEtaria).map(faixaEtaria => faixaEtaria),
+            data: Object.values(contagemDeFaixaEtaria).map(
+              faixaEtaria => faixaEtaria,
+            ),
           },
         ],
       };
@@ -327,46 +338,64 @@ export default {
       });
     },
     getMovimentacaoAnual() {
-      axios.get(movimentacaoAnualApiUrl)
-        .then(({ data }) => {
-          const entradas = [];
-          const saidas = [];
+      axios({
+        url: graphqlUri,
+        method: 'post',
+        data: {
+          query: `
+          {
+            annualTurnover{
+              month
+              summary {
+                debt
+                credit
+              }
+            }
+          }
+      `,
+        },
+      }).then(({ data: { data: { annualTurnover } } }) => {
+        const { entradas, saidas } = annualTurnover.reduce(
+          (prev, { summary: { debt, credit } }) => {
+            prev.entradas.push(debt);
+            prev.saidas.push(credit);
 
-          Object.values(data).forEach((foo) => {
-            entradas.push(foo.entradas);
-            saidas.push(foo.saidas);
-          });
+            return prev;
+          },
+          { entradas: [], saidas: [] },
+        );
 
-
-          this.movimentacaoAnualData = {
-            labels: this.months.map(month => this.capitalize(month.substring(0, 3))),
-            datasets: [
-              {
-                label: 'Receitas',
-                borderColor: '#00a65a',
-                data: entradas,
-                fill: false,
-              },
-              {
-                label: 'Gastos',
-                borderColor: '#dd4b39',
-                data: saidas,
-                fill: false,
-              },
-            ],
-          };
-        });
+        this.movimentacaoAnualData = {
+          labels: this.months.map(month =>
+            this.capitalize(month.substring(0, 3)),
+          ),
+          datasets: [
+            {
+              label: 'Receitas',
+              borderColor: '#00a65a',
+              data: entradas,
+              fill: false,
+            },
+            {
+              label: 'Gastos',
+              borderColor: '#dd4b39',
+              data: saidas,
+              fill: false,
+            },
+          ],
+        };
+      });
     },
   },
 };
 </script>
 <style>
 .ct-series-a .ct-line,
-.ct-series-a .ct-point{
+.ct-series-a .ct-point {
   stroke: #00a65a;
 }
 .ct-series-b .ct-line,
-.ct-series-b .ct-point{
+.ct-series-b .ct-point {
   stroke: #dd4b39;
 }
 </style>

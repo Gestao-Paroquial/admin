@@ -185,7 +185,10 @@ import ValueBox from '@/components/UIComponents/ValueBox';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Extrato from './Extrato';
 
-import { billingCyclesApiUrl, comunidadesApiUrl } from './../../../../api-url';
+import {
+  comunidadesApiUrl,
+  graphqlUri,
+} from './../../../../api-url';
 
 export default {
   components: {
@@ -213,11 +216,6 @@ export default {
       credit: 0,
       total: 0,
       debt: 0,
-      billingSummary: {
-        credit: 0,
-        debt: 0,
-        total: 0,
-      },
     };
   },
   mounted() {
@@ -328,9 +326,15 @@ export default {
       this.showLoader = true;
       this.removeNullValuesOfCreditsAndDebts();
       axios
-        .post(billingCyclesApiUrl, JSON.stringify(this.billingCycle), {
-          headers: {
-            'Content-Type': 'application/json',
+        .post(graphqlUri, {
+          query: `
+        mutation CreateBillingCycle($billingCycle: BillingCycleInput!)  {
+          createBillingCycle(input: $billingCycle) {
+            id
+          }
+        }`,
+          variables: {
+            billingCycle: this.billingCycle,
           },
         })
         .then((response) => {
@@ -339,16 +343,38 @@ export default {
           this.toggleTabs('tabList');
           this.notify(this.billingCycle.name, 'inserido');
         })
-        .catch((response) => {
-          console.log(response);
+        .catch((err) => {
+          console.log('graphql error:', err);
         });
     },
     getBillingCycles() {
       this.showLoader = true;
-      axios
-        .get(billingCyclesApiUrl)
-        .then(({ data }) => {
-          this.billingCycles = data;
+      axios({
+        url: graphqlUri,
+        method: 'post',
+        data: {
+          query: `
+            {
+              billingCycles {
+                name
+                id
+                date
+                comunidade_id
+                credits {
+                  name
+                  value
+                }
+                debts {
+                  name
+                  value
+                }
+              }
+            }
+      `,
+        },
+      })
+        .then(({ data: { data: { billingCycles } } }) => {
+          this.billingCycles = billingCycles;
         })
         .catch((response) => {
           console.log(response);
@@ -366,16 +392,20 @@ export default {
       this.$dialog
         .confirm()
         .then((dialog) => {
-          /* eslint-disable no-underscore-dangle */
-          const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
           dialog.close();
-          return axios
-            .delete(url);
+          return axios.post(graphqlUri, {
+            query: `
+              mutation DeleteBillingCycle($id: ID!)  {
+                  deleteBillingCycle(id: $id)
+              }`,
+            variables: {
+              id: this.billingCycle.id,
+            },
+          });
         })
         .then((response) => {
           console.log(response);
           this.getBillingCycles();
-          this.getBillingSumary();
           this.notify(this.billingCycle.name, 'excluído');
           this.toggleTabs('tabList');
         })
@@ -385,20 +415,32 @@ export default {
       this.$dialog
         .confirm()
         .then((dialog) => {
-          const url = `${billingCyclesApiUrl}/${this.billingCycle._id}`;
           this.removeNullValuesOfCreditsAndDebts();
           dialog.close();
-          return axios
-            .put(url, JSON.stringify(this.billingCycle), {
-              headers: {
-                'Content-Type': 'application/json',
-              },
-            });
+          const {
+            name,
+            date,
+            id,
+            comunidade_id,
+            debts,
+            credits,
+          } = this.billingCycle;
+          return axios.post(graphqlUri, {
+            query: `
+        mutation UpdateBillingCycle($id: ID!, $billingCycle: BillingCycleInput!)  {
+          updateBillingCycle(id: $id, input: $billingCycle) {
+            id
+          }
+        }`,
+            variables: {
+              id,
+              billingCycle: { name, date, comunidade_id, credits, debts },
+            },
+          });
         })
         .then((response) => {
           console.log(response);
           this.getBillingCycles();
-          this.getBillingSumary();
           this.toggleTabs('tabList');
           this.notify(this.billingCycle.name, 'alterado');
         })
