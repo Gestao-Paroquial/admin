@@ -92,7 +92,6 @@ import {
   facebookApiUrl,
   analyticsUrl,
   membrosUrl,
-  movimentacaoAnualApiUrl,
   membrosCountUrl,
   pedidosUrl,
   graphqlUri,

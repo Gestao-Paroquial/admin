@@ -44,7 +44,7 @@ import axios from '@/plugins/axios';
 import UpdateForm from './Form';
 import {
   comunidadesApiUrl,
-  findBillingCycleByComunityId,
+  graphqlUri,
 } from './../../../../api-url';
 import ValueBox from '../../../UIComponents/ValueBox';
 
@@ -66,10 +66,30 @@ export default {
         this.comunidade = data;
       })
       .then(() => {
-        axios
-          .get(findBillingCycleByComunityId(this.comunidade.id))
-          .then(({ data }) => {
-            this.billingCycles = data;
+        axios({
+          url: graphqlUri,
+          method: 'post',
+          data: {
+            query: `
+          {
+            findByComunidadeId(comunidade_id: ${this.comunidade.id}) {
+              id
+              name
+              debts{
+                name
+                value
+              }
+              credits{
+                name
+                value
+              }
+            }
+          }
+      `,
+          },
+        })
+          .then(({ data: { data: { findByComunidadeId } } }) => {
+            this.billingCycles = findByComunidadeId;
           });
       })
       .catch(err => console.log(err));
@@ -84,7 +104,9 @@ export default {
   },
   methods: {
     reduceCreditOrDebt(creditOrDebt) {
-      return this.billingCycles.reduce((prev, curr) => prev + curr[creditOrDebt].reduce((prevDebtOrCredit, currDebtOrCredit) => prevDebtOrCredit + currDebtOrCredit.value, 0), 0);
+      return this.billingCycles
+        .reduce((prev, curr) => prev + curr[creditOrDebt]
+          .reduce((prevDebtOrCredit, currDebtOrCredit) => prevDebtOrCredit + currDebtOrCredit.value, 0), 0);
     },
   },
 };

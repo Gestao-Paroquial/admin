@@ -86,7 +86,7 @@
                 <tr>
                   <th>Período</th>
                   <th>Descrição do gasto</th>
-                  <th>Valor</th>
+                  <th>Saldo do ciclo de pagamento</th>
                 </tr>
               </thead>
               <!-- <tfoot>
@@ -99,7 +99,13 @@
                 <tr v-for="(billingCycle) in comunidadeSelecionada.billingCycles" :key="billingCycle.id">
                   <td>{{formatDate(billingCycle.date)}}</td>
                   <td>{{billingCycle.name}}</td>
-                  <!-- <td :class="{'text-success': item.value > 0, 'text-danger': item.value < 0  }">{{formatToPrice(item.value)}}</td> -->
+                  <td :class="{
+                    'text-success': (sumProperty(billingCycle.credits) - sumProperty(billingCycle.debts)) > 0,
+                    'text-danger': (sumProperty(billingCycle.credits) - sumProperty(billingCycle.debts)) < 0
+                     }"
+                  >
+                    {{formatToPrice(sumProperty(billingCycle.credits) - sumProperty(billingCycle.debts))}}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -116,7 +122,7 @@
 <script>
 import axios from '@/plugins/axios';
 import Loader from './Loader';
-import { findBillingCycleByComunityId } from '../../../../api-url/index';
+import { graphqlUri } from '../../../../api-url/index';
 
 export default {
   components: {
@@ -176,13 +182,33 @@ export default {
     },
     comunidadeSelecionada() {
       this.showLoader = true;
-
-      axios
-        .get(findBillingCycleByComunityId(this.comunidadeSelecionada.value.id))
-        .then(({ data }) => {
-          this.comunidadeSelecionada.billingCycles = data;
+      axios({
+        url: graphqlUri,
+        method: 'post',
+        data: {
+          query: `
+          {
+            findByComunidadeId(comunidade_id: ${this.comunidadeSelecionada.value.id}) {
+              id
+              name
+              date
+              debts{
+                name
+                value
+              }
+              credits{
+                name
+                value
+              }
+            }
+          }
+      `,
+        },
+      })
+        .then(({ data: { data: { findByComunidadeId } } }) => {
+          console.log(findByComunidadeId);
+          this.comunidadeSelecionada.billingCycles = findByComunidadeId;
           this.showLoader = false;
-          console.log(data);
         });
     },
   },
@@ -208,6 +234,11 @@ export default {
     },
   },
   methods: {
+    sumProperty(array = []) {
+      if (array.length === 0) return 0;
+      const sum = array.reduce((prev, curr) => prev + curr.value, 0);
+      return sum;
+    },
     getAllValuesOfBillingCycles(billingCycles = []) {
       const valuesOfBillingCycles = [];
 
