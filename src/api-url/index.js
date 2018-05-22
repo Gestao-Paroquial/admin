@@ -2,6 +2,7 @@ export const billingCyclesUrl = process.env.BILLING_CYCLE_API_URI;
 export const backEndUrl = process.env.BACK_END_API_URI;
 
 // URL
+export const doacoesUri = `${backEndUrl}/api/doacoes`;
 export const visitantesApiUrl = `${backEndUrl}/api/visitantes`;
 export const usersApiUrl = `${backEndUrl}/api/users`;
 export const comunidadesApiUrl = `${backEndUrl}/api/comunidades`;

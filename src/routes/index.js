@@ -42,7 +42,10 @@ import AddEventos from '@/components/Dashboard/Views/Eventos/Add';
 import ProfileEventos from '@/components/Dashboard/Views/Eventos/Profile';
 
 import Tipos from '@/components/Dashboard/Views/Tipos';
+
 import Pedidos from '@/components/Dashboard/Views/Pedidos';
+
+import Doacoes from '@/components/Dashboard/Views/Doacoes';
 
 
 const routes = [
@@ -70,6 +73,11 @@ const routes = [
         path: 'overview',
         name: 'Visão Geral',
         component: Overview,
+      },
+      {
+        path: 'doacoes',
+        name: 'doações',
+        component: Doacoes,
       },
       {
         path: 'pedidos',
