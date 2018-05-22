@@ -13,7 +13,7 @@
 <script>
 import axios from '@/plugins/axios';
 import ValueBox from './ValueBox';
-import { billingSummaryApiUrl, graphqlUri } from '../../api-url/index';
+import { graphqlUri } from '../../api-url/index';
 
 const billingSummary = JSON.parse(localStorage.getItem('billingSummary')) || {
   credit: 0,

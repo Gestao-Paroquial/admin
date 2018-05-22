@@ -186,7 +186,6 @@ import ValueRow from '@/components/UIComponents/ValueRow';
 import Extrato from './Extrato';
 
 import {
-  billingCyclesApiUrl,
   comunidadesApiUrl,
   graphqlUri,
 } from './../../../../api-url';
@@ -393,12 +392,11 @@ export default {
       this.$dialog
         .confirm()
         .then((dialog) => {
-          /* eslint-disable no-underscore-dangle */
           dialog.close();
           return axios.post(graphqlUri, {
             query: `
               mutation DeleteBillingCycle($id: ID!)  {
-                  deleteBillingCycle(id: $id)          
+                  deleteBillingCycle(id: $id)
               }`,
             variables: {
               id: this.billingCycle.id,

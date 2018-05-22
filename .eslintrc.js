@@ -51,7 +51,8 @@ module.exports = {
     'no-alert': 0,
     // allow debugger during development
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    "no-unused-expressions": ["error", {"allowTernary": true}],
-    'no-param-reassign': 1
+    "no-unused-expressions": ["error", { "allowTernary": true }],
+    'no-param-reassign': 1,
+    "camelcase": "off"
   }
 }
