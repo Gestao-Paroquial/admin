@@ -19,6 +19,11 @@ const SidebarStore = {
       path: '/admin/financeiro',
     },
     {
+      name: 'Doações',
+      icon: 'fa fa-gift',
+      path: '/admin/doacoes',
+    },
+    {
       name: 'Eventos',
       icon: 'fa fa-calendar',
       path: '/admin/eventos',
