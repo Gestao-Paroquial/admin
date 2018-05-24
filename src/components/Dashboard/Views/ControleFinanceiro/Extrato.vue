@@ -130,6 +130,7 @@ export default {
   },
   data() {
     return {
+      billingCycles: [],
       selectedPeriod: null,
       showLoader: null,
       valuesOfBillingCycles: [],
@@ -156,7 +157,7 @@ export default {
     };
   },
   props: {
-    billingCycles: Array,
+    numberOfBillingCycles: Number,
     comunidades: Array,
   },
   watch: {
@@ -233,6 +234,9 @@ export default {
       );
     },
   },
+  mounted() {
+    this.getBillingCycles();
+  },
   methods: {
     sumProperty(array = []) {
       if (array.length === 0) return 0;
@@ -275,6 +279,37 @@ export default {
         year: 'numeric',
         month: 'long',
         timeZone: 'UTC',
+      });
+    },
+    getBillingCycles() {
+      axios.post(graphqlUri, {
+        query: `
+            query getBillingCycles($first: Int, $offset: Int)  {
+              billingCycles(first: $first, offset: $offset) {
+                name
+                id
+                date
+                comunidade_id
+                credits {
+                  name
+                  value
+                }
+                debts {
+                  name
+                  value
+                }
+              }
+            }`,
+        variables: {
+          first: 0,
+          offset: this.numberOfBillingCycles,
+        },
+      }).then(({ data: { data: { billingCycles } } }) => {
+        this.billingCycles = billingCycles;
+      }).catch((response) => {
+        console.log(response);
+      }).then(() => {
+        this.showLoader = false;
       });
     },
   },

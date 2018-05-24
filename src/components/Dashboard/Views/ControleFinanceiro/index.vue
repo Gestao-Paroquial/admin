@@ -52,6 +52,10 @@
             </tr>
           </tbody>
         </table>
+        <div class="row">
+          <paginate :page-count="Math.ceil(numberOfBillingCycles / offset)" :click-handler="paginate" :prev-text="'«'" :next-text="'»'" :container-class="'pagination pull-right pagination-default'" :page-class="'page-item'">
+          </paginate>
+        </div>
       </div>
       <transition name="fade">
         <form @submit.prevent="handleSubmit()" v-if="tabs.tabCreate || tabs.tabDelete || tabs.tabUpdate">
@@ -174,7 +178,7 @@
         </form>
       </transition>
       <transition name="fade">
-        <Extrato v-if="tabs.tabExtract" :billingCycles="billingCycles" :comunidades="comunidades" />
+        <Extrato v-if="tabs.tabExtract" :numberOfBillingCycles="numberOfBillingCycles" :comunidades="comunidades" />
       </transition>
     </div>
   </div>
@@ -185,10 +189,7 @@ import ValueBox from '@/components/UIComponents/ValueBox';
 import ValueRow from '@/components/UIComponents/ValueRow';
 import Extrato from './Extrato';
 
-import {
-  comunidadesApiUrl,
-  graphqlUri,
-} from './../../../../api-url';
+import { comunidadesApiUrl, graphqlUri } from './../../../../api-url';
 
 export default {
   components: {
@@ -198,6 +199,9 @@ export default {
   },
   data() {
     return {
+      first: 0,
+      offset: 10,
+      numberOfBillingCycles: 0,
       showLoader: false,
       comunidades: [],
       comunidadeSelecionada: null,
@@ -240,6 +244,10 @@ export default {
     },
   },
   methods: {
+    paginate(page) {
+      this.first = page * this.offset - this.offset;
+      this.getBillingCycles();
+    },
     getComunidades() {
       axios.get(comunidadesApiUrl).then(({ data }) => {
         this.comunidades = data;
@@ -347,15 +355,22 @@ export default {
           console.log('graphql error:', err);
         });
     },
+    count() {
+      axios.post(graphqlUri, {
+        query: `
+        {
+          count
+        }`,
+      }).then(({ data: { data: { count } } }) => {
+        this.numberOfBillingCycles = count;
+      });
+    },
     getBillingCycles() {
-      this.showLoader = true;
-      axios({
-        url: graphqlUri,
-        method: 'post',
-        data: {
-          query: `
-            {
-              billingCycles {
+      this.count();
+      axios.post(graphqlUri, {
+        query: `
+            query getBillingCycles($first: Int, $offset: Int)  {
+              billingCycles(first: $first, offset: $offset) {
                 name
                 id
                 date
@@ -369,19 +384,18 @@ export default {
                   value
                 }
               }
-            }
-      `,
+            }`,
+        variables: {
+          first: this.first,
+          offset: this.offset,
         },
-      })
-        .then(({ data: { data: { billingCycles } } }) => {
-          this.billingCycles = billingCycles;
-        })
-        .catch((response) => {
-          console.log(response);
-        })
-        .then(() => {
-          this.showLoader = false;
-        });
+      }).then(({ data: { data: { billingCycles } } }) => {
+        this.billingCycles = billingCycles;
+      }).catch((response) => {
+        console.log(response);
+      }).then(() => {
+        this.showLoader = false;
+      });
     },
     notify(billingCycleTitle = 'Ciclo de pagamento', action = '') {
       this.$notifications.notify(
