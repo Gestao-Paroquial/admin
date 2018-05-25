@@ -7,7 +7,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
+import axios from '@/plugins/axios';
 import UpdateForm from './Form';
 import { mensagensParocoApiUrl } from './../../../../api-url';
 

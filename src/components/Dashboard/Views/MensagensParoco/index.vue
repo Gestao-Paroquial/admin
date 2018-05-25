@@ -28,7 +28,7 @@
 <script>
 import PaperTable from '@/components/UIComponents/PaperTable';
 import Modal from '@/components/UIComponents/Modal/Modal';
-import axios from 'axios';
+import axios from '@/plugins/axios';
 import debounce from 'lodash.debounce';
 import { mensagensParocoApiUrl } from './../../../../api-url';
 
