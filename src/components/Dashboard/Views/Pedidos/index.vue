@@ -3,6 +3,7 @@
     <loader v-if="showLoader" />
     <div class="row">
       <div class="col-md-6 col-sm-12">
+        <h4>Selecione aqui os valores dos pedidos:</h4>
         <table class="table">
           <thead>
             <tr>
