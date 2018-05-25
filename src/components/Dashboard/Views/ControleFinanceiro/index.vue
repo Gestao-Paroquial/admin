@@ -293,16 +293,14 @@ export default {
       this.total = this.credit - this.debt;
     },
     configurarTabUpdateETabDelete(tab, billingCycle) {
-      /* eslint-disable no-param-reassign */
       this.toggleTabs(tab);
-      billingCycle.date = billingCycle.date.substring(0, 10);
+      billingCycle.date = new Date(billingCycle.date).toLocaleDateString('en-CA');
       axios
         .get(`${comunidadesApiUrl}/${billingCycle.comunidade_id}`)
         .then(({ data }) => {
           this.comunidadeSelecionada = { label: data.nome, value: data.id };
         });
       this.billingCycle = billingCycle;
-      /* eslint-enable no-param-reassign */
     },
     showTabUpdate(billingCycle) {
       this.configurarTabUpdateETabDelete('tabUpdate', billingCycle);
