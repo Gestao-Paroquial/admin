@@ -104,6 +104,8 @@ export default {
         .catch(error => console.log(error));
     },
     updatePastoral() {
+      this.pastoral.comunidade_id = this.pastoral.comunidade.value;
+      this.pastoral.coordenador_id = this.pastoral.coordenador.value;
       let dialog;
       this.$dialog
         .confirm()
