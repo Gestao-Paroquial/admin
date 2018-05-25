@@ -53,7 +53,7 @@
           </tbody>
         </table>
         <div class="row">
-          <paginate :page-count="Math.ceil(numberOfBillingCycles / offset)" :click-handler="paginate" :prev-text="'«'" :next-text="'»'" :container-class="'pagination pull-right pagination-default'" :page-class="'page-item'">
+          <paginate :page-count="Math.ceil(numberOfBillingCycles / offset)" :click-handler="paginate" :prev-text="'«'" :next-text="'»'" :container-class="'pagination pull-right pagination-default'" :page-class="'page-item'" :initial-page="initialPage()">
           </paginate>
         </div>
       </div>
@@ -244,6 +244,12 @@ export default {
     },
   },
   methods: {
+    initialPage() {
+      if (this.first > 0) {
+        return this.first / this.offset;
+      }
+      return 0;
+    },
     paginate(page) {
       this.first = page * this.offset - this.offset;
       this.getBillingCycles();
@@ -254,7 +260,7 @@ export default {
       });
     },
     handleSubmit() {
-      this.billingCycle.comunidade_id = this.comunidadeSelecionada.value;
+      this.billingCycle.comunidade_id = this.comunidadeSelecionada ? this.comunidadeSelecionada.value : null;
       if (this.tabs.tabCreate) this.createBillingCycle();
       if (this.tabs.tabUpdate) this.updateBillingCycle();
     },
@@ -295,11 +301,15 @@ export default {
     configurarTabUpdateETabDelete(tab, billingCycle) {
       this.toggleTabs(tab);
       billingCycle.date = new Date(billingCycle.date).toLocaleDateString('en-CA');
-      axios
-        .get(`${comunidadesApiUrl}/${billingCycle.comunidade_id}`)
-        .then(({ data }) => {
-          this.comunidadeSelecionada = { label: data.nome, value: data.id };
-        });
+      this.comunidadeSelecionada = null;
+      if (billingCycle.comunidade_id) {
+        axios
+          .get(`${comunidadesApiUrl}/${billingCycle.comunidade_id}`)
+          .then(({ data }) => {
+            this.comunidadeSelecionada = { label: data.nome, value: data.id };
+          });
+      }
+
       this.billingCycle = billingCycle;
     },
     showTabUpdate(billingCycle) {
@@ -439,7 +449,7 @@ export default {
           } = this.billingCycle;
           return axios.post(graphqlUri, {
             query: `
-        mutation UpdateBillingCycle($id: ID!, $billingCycle: BillingCycleInput!)  {
+        mutation UpdateBillingCycle($id: ID!, $billingCycle: BillingCycleUpdate!)  {
           updateBillingCycle(id: $id, input: $billingCycle) {
             id
           }
