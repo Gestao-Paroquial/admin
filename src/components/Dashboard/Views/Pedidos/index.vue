@@ -40,8 +40,8 @@
     <h4 class="title">{{ title }}</h4>
     <pedidos-table :pedidos="pedidos" />
     <div class="row">
-      <solicitacoes title="Casamentos" :solicitacoes="casamentos"></solicitacoes>
-      <solicitacoes title="Batismos" :solicitacoes="batismos"></solicitacoes>
+      <solicitacoes title="Casamentos" :preco="casamento.preco" :solicitacoes="casamentos"></solicitacoes>
+      <solicitacoes title="Batismos" :preco="batismo.preco"  :solicitacoes="batismos"></solicitacoes>
     </div>
   </div>
 </template>
@@ -49,7 +49,7 @@
 import axios from 'axios';
 import Solicitacoes from './Solicitacoes';
 import PedidosTable from './PedidosTable';
-import { pedidosUrl } from '../../../../api-url/index';
+import { pedidosUrl, graphqlUri } from '../../../../api-url/index';
 
 export default {
   components: { Solicitacoes, PedidosTable },
@@ -64,16 +64,19 @@ export default {
       precoBatismo: 50,
       casamento: {
         preco: 50,
+        name: 'Casamento',
         editable: false,
       },
       batismo: {
         preco: 50,
+        name: 'Batismo',
         editable: false,
       },
     };
   },
   mounted() {
     this.getPedidos();
+    this.getPrices();
   },
   methods: {
     habilitarEdicao(item) {
@@ -88,13 +91,43 @@ export default {
       this.showLoader = false;
     },
     handleChange(item) {
-      console.log(item);
+      this.changeValue(item);
     },
-    handleBlur(item){
+    handleBlur(item) {
       item.editable = false;
-    }
+    },
+    getPrices() {
+      axios.post(graphqlUri, {
+        query: `
+        query getPrices  {
+          pedidos{
+            name
+            value
+          }
+        }`,
+      }).then(({ data: { data: { pedidos } } }) => {
+        this.casamento.preco = pedidos.find(pedido => pedido.name === this.casamento.name).value;
+        this.batismo.preco = pedidos.find(pedido => pedido.name === this.batismo.name).value;
+      });
+    },
+    changeValue({ name, preco }) {
+      axios.post(graphqlUri, {
+        query: `
+        mutation ChangeValue($name: String!, $value: Float!)  {
+          changeValue(name: $name, value: $value) {
+            value
+          }
+        }`,
+        variables: {
+          name,
+          value: preco,
+        },
+      }).then(({ data }) => {
+        console.log(data);
+      });
+    },
   },
-}; 
+};
 </script>
 <style>
 </style>

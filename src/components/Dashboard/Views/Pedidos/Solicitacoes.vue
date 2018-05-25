@@ -68,7 +68,7 @@ export default {
     solicitacoes: {
       type: Array,
     },
-
+    preco: [Number, String],
   },
   data() {
     return {
@@ -111,6 +111,7 @@ Paroquia São Lucas Evangelista.`;
     },
     updateSolicitacao(solicitacao, aprovado) {
       let dialog;
+      solicitacao.preco = this.preco;
       this.$dialog
         .confirm()
         .then((dialog_) => {
