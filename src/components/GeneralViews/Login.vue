@@ -65,30 +65,26 @@ export default {
     };
   },
   methods: {
-    login() {
+    async login() {
       this.isLoading = true;
       this.errorInLogin = false;
       this.hasError = false;
 
-      const userAsJson = JSON.stringify(this.user);
-      axios
-        .post(loginApiUrl, userAsJson, {
+      try {
+        const { data } = await axios.post(loginApiUrl, JSON.stringify(this.user), {
           headers: {
             'Content-Type': 'application/json',
           },
-        })
-        .then(({ data }) => {
-          if (data.success) {
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
-            this.$router.push({ path: '/' });
-          }
-        })
-        .catch(() => {
-          this.errorInLogin = true;
-          this.hasError = true;
-          this.isLoading = false;
         });
+        if (!data.success) throw new Error();
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        this.$router.push({ path: '/' });
+      } catch (error) {
+        this.errorInLogin = true;
+        this.hasError = true;
+        this.isLoading = false;
+      }
     },
   },
   created() {
