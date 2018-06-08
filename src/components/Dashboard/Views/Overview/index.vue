@@ -357,8 +357,8 @@ export default {
       }).then(({ data: { data: { annualTurnover } } }) => {
         const { entradas, saidas } = annualTurnover.reduce(
           (prev, { summary: { debt, credit } }) => {
-            prev.entradas.push(debt);
-            prev.saidas.push(credit);
+            prev.entradas.push(credit);
+            prev.saidas.push(debt);
 
             return prev;
           },
