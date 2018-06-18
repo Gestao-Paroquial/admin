@@ -47,7 +47,10 @@ Vue.use(VuejsDialog, {
 Vue.mixin({
   methods: {
     capitalize: str => str.replace(/\b\w/g, l => l.toUpperCase()),
-    formatToPrice: value => `R$ ${Number(value).toFixed(2)}`,
+    formatToPrice: (value) => {
+      const p = value.toFixed(2).split('.');
+      return `R$ ${p[0].split('').reverse().reduce((acc, num, i) => (num === '-' ? acc : num + (i && !(i % 3) ? ',' : '') + acc), '')}.${p[1]}`;
+    },
     formatDate: date => new Date(date).toLocaleDateString('pt-BR', {
       year: 'numeric',
       month: 'long',
